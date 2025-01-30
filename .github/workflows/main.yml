@@ -31,7 +31,7 @@ jobs:
           name: oquanta-com
           include-hidden-files: true
           path: |
-            build
+            dist
   deploy:
     runs-on: ubuntu-latest
     needs: build
