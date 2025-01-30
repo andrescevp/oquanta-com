@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {Head} from "vite-react-ssg";
 import {t} from "./translations.ts";
 import {ChevronLeft, ChevronRight} from "lucide-react";
-import logo1 from "./../images/logos/logo_Mackay-1024x566.png";
-import logo2 from "./../images/logos/almaMater_negro-1024x192.png";
-import logo3 from "./../images/logos/cumLaude_negro-768x797.png";
-import logo4 from "./../images/logos/logoTora1-767x1024.png";
+import logo1 from "./../images/logos/logo_Mackay-1024x566.png?h=250&format=webp";
+import logo2 from "./../images/logos/almaMater_negro-1024x192.png?h=250&format=webp";
+import logo3 from "./../images/logos/cumLaude_negro-768x797.png?h=250&format=webp";
+import logo4 from "./../images/logos/logoTora1-767x1024.png?h=250&format=webp";
 
 
 export function TrustCarousel() {

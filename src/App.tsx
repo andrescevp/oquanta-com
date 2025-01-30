@@ -2,8 +2,8 @@ import React from 'react';
 import {BarChart2, CheckCircle2, ClipboardEdit, Instagram, QrCode as QrCodeIcon, Send} from 'lucide-react';
 import {t} from './translations';
 import {TrustCarousel} from "./TrustCarousel.tsx";
-import firstImage from './../images/Banner-Web-B2B-1024x1024.png';
-import secondImage from './../images/Banner-Web-B2B-1-1024x1024.png';
+import firstImage from './../images/Banner-Web-B2B-1024x1024.png?w=450&format=webp';
+import secondImage from './../images/Banner-Web-B2B-1-1024x1024.png?w=450&format=webp';
 import {Head} from "vite-react-ssg";
 import {AutoIframe} from "./AutoIframe.tsx";
 
