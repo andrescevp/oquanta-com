@@ -55,15 +55,6 @@ jobs:
           name: oquanta-com
           path: ${{ github.workspace }}/artifact
 
-      - name: Load .env file
-        uses: aarcangeli/load-dotenv@v1
-        with:
-          path: ./artifact
-          filenames: |
-            .env.prod.local
-            .env
-          quiet: false
-
       - name: Prepare deployment folder
         run: |
           ssh $SSH_ARGS ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
