@@ -6,6 +6,7 @@ import firstImage from './../images/Banner-Web-B2B-1024x1024.png?w=450&format=we
 import secondImage from './../images/Banner-Web-B2B-1-1024x1024.png?w=450&format=webp';
 import {Head} from "vite-react-ssg";
 import {AutoIframe} from "./AutoIframe.tsx";
+import WhatsAppButton from "./WhatsAppButton.tsx";
 
 function App() {
   return (
@@ -196,6 +197,7 @@ function App() {
             </div>
           </div>
         </footer>
+        <WhatsAppButton phoneNumber="34669202916" message="Hola, me gustaría saber más sobre oQuanta."/>
       </div>
   );
 }

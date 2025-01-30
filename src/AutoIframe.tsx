@@ -6,11 +6,11 @@ interface AutoIframeProps {
 }
 
 export const AutoIframe: React.FC<AutoIframeProps> = ({ src, title }) => {
-    const iframeRef = useRef<HTMLIFrameElement>({ current: null } as HTMLIFrameElement);
+    const iframeRef = useRef<HTMLIFrameElement>();
     const [iframeHeight, setIframeHeight] = useState('0px');
-    const onLoad = () => {
-        setIframeHeight(ref.current.contentWindow.document.body.scrollHeight + "px");
-    };
+    // const onLoad = () => {
+    //     setIframeHeight(iframeRef?.current?.contentWindow?.document.body.scrollHeight + "px");
+    // };
 
     // useEffect(() => {
     //     const handleResize = () => {
@@ -35,7 +35,6 @@ export const AutoIframe: React.FC<AutoIframeProps> = ({ src, title }) => {
     return (
         <div className="w-full overflow-hidden">
             <iframe
-                onLoad={onLoad}
                 ref={iframeRef}
                 src={src}
                 height="550px"
