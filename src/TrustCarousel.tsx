@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {t} from "./translations.ts";
 import {ChevronLeft, ChevronRight} from "lucide-react";
+import LazyLoad from 'react-lazy-load';
 import logo1 from "./../images/logos/logo_Mackay-1024x566.png?h=250&format=webp";
 import logo2 from "./../images/logos/almaMater_negro-1024x192.png?h=250&format=webp";
 import logo3 from "./../images/logos/cumLaude_negro-768x797.png?h=250&format=webp";
@@ -54,11 +55,13 @@ export function TrustCarousel() {
                                 {logos.slice(slideIndex * 4, (slideIndex + 1) * 4).map((logo, index) => (
                                     <div key={index}
                                          className="aspect-[3/2] rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow flex items-center justify-center">
-                                        <img
-                                            src={logo}
-                                            alt={t('trustImageAlt')}
-                                            className="object-scale-down w-full h-full w-auto"
-                                        />
+                                        <LazyLoad height="250px">
+                                            <img
+                                                src={logo}
+                                                alt={t('trustImageAlt')}
+                                                className="object-scale-down w-full h-full w-auto"
+                                            />
+                                        </LazyLoad>
                                     </div>
                                 ))}
                             </div>

@@ -2,13 +2,15 @@ import React from 'react';
 import {BarChart2, CheckCircle2, ClipboardEdit, Instagram, QrCode as QrCodeIcon, Send} from 'lucide-react';
 import {t} from './translations';
 import {TrustCarousel} from "./TrustCarousel.tsx";
-import firstImage from './../images/Banner-Web-B2B-1024x1024.png?w=450&format=webp';
-import secondImage from './../images/Banner-Web-B2B-1-1024x1024.png?w=450&format=webp';
+import firstImage from './../images/Banner-Web-B2B-1024x1024.png?h=450&format=webp';
+import secondImage from './../images/Banner-Web-B2B-1-1024x1024.png?h=450&format=webp';
 import {Head} from "vite-react-ssg";
 import {AutoIframe} from "./AutoIframe.tsx";
 import WhatsAppButton from "./WhatsAppButton.tsx";
 import { JsonLd } from "react-schemaorg";
 import { Organization as OrgSchema, WebSite as WebSiteSchema, WebPage as WebPageSchema, Service as ServiceSchema } from "schema-dts";
+import LazyLoad from 'react-lazy-load';
+
 
 function App() {
     return (
@@ -88,7 +90,7 @@ function App() {
                         <div className="text-xs text-black-60 uppercase tracking-wider">{t('tagline')}</div>
                     </div>
                     <nav className="flex gap-4 items-center">
-                        <a href="#contanct-form"
+                        <a href="#contact-form"
                            className="bg-pumpkin-orange text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-pumpkin-orange-60">
                             {t('tryFree')}
                         </a>
@@ -129,7 +131,7 @@ function App() {
                                 </div>
                             </div>
                             <div className="flex items-center justify-center">
-                                <a href="#contanct-form"
+                                <a href="#contact-form"
                                    className="inline-block bg-pumpkin-orange text-white px-8 py-3 rounded-full font-medium hover:bg-pumpkin-orange-60 transition-colors">
                                     {t('tryFree')}
                                 </a>
@@ -137,8 +139,10 @@ function App() {
                         </div>
                         <div className="relative">
                             <div className="aspect-[4/3] bg-black-30 rounded-lg">
-                                <img src={secondImage} alt={t('heroImageAlt')}
-                                     className="w-full h-full object-cover rounded-lg"/>
+                                <LazyLoad height="450px">
+                                    <img src={secondImage} alt={t('heroImageAlt')}
+                                         className="w-full h-full object-cover rounded-lg"/>
+                                </LazyLoad>
                             </div>
                         </div>
                     </div>
@@ -168,15 +172,17 @@ function App() {
                             <p className="text-black-60 mb-8">
                                 {t('whyDescription2')}
                             </p>
-                            <a href="#contanct-form"
+                            <a href="#contact-form"
                                className="inline-block bg-pumpkin-orange text-white px-8 py-3 rounded-full font-medium hover:bg-pumpkin-orange-60 transition-colors">
                                 {t('tryFree')}
                             </a>
                         </div>
                         <div className="relative">
                             <div className="aspect-[4/3] bg-black-30 rounded-lg">
-                                <img src={firstImage} alt={t('whyImageAlt')}
-                                     className="w-full h-full object-cover rounded-lg"/>
+                                <LazyLoad height="450px">
+                                    <img src={firstImage} alt={t('whyImageAlt')}
+                                         className="w-full h-full object-cover rounded-lg"/>
+                                </LazyLoad>
                             </div>
                         </div>
                     </div>
@@ -235,7 +241,7 @@ function App() {
                 </div>
             </section>
 
-            <section className="py-16 px-4 bg-[#C0F03E]" id="contanct-form">
+            <section className="py-16 px-4 bg-[#C0F03E]" id="contact-form">
                 <div className="container mx-auto max-w-2xl">
                     <h2 className="text-4xl font-bold text-center text-black mb-4">
                         {t('contactTitle')}
