@@ -17,6 +17,72 @@ function App() {
           <meta name="description"
                 content="oQuanta es una plataforma de inteligencia y analitica para hosteleria que te ayuda a tomar decisiones basadas en datos."/>
           <link rel="canonical" href="http://www.oquanta.com"/>
+          <script type="application/ld+json">
+            {
+              "@context": "https://schema.org",
+              "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://oquanta.com/#organization",
+              "name": "oQuanta",
+              "url": "https://oquanta.com",
+              "logo": "https://oquanta.com/ruta-al-logo.png",
+              "description": "oQuanta ofrece una plataforma de encuestas para recopilar opiniones de tus clientes, mejorar sus experiencias y potenciar tu negocio.",
+              "email": "hola@oquanta.com",
+              "telephone": "+34 660220216",
+              "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Burgos",
+              "addressCountry": "ES"
+            },
+              "contactPoint": [
+            {
+              "@type": "ContactPoint",
+              "telephone": "+34 660220216",
+              "contactType": "customer support",
+              "areaServed": "ES",
+              "availableLanguage": [
+              "Español"
+              ]
+            }
+              ]
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://oquanta.com/#website",
+              "url": "https://oquanta.com",
+              "name": "oQuanta",
+              "description": "Conoce qué piensan tus clientes sobre tu negocio gracias a la plataforma de encuestas de oQuanta.",
+              "publisher": {
+              "@id": "https://oquanta.com/#organization"
+            }
+            },
+            {
+              "@type": "WebPage",
+              "@id": "https://oquanta.com/#webpage",
+              "url": "https://oquanta.com",
+              "name": "Página principal de oQuanta",
+              "inLanguage": "es",
+              "isPartOf": {
+              "@id": "https://oquanta.com/#website"
+            },
+              "primaryImageOfPage": "https://oquanta.com/ruta-a-imagen-destacada.jpg",
+              "description": "Plataforma de encuestas de oQuanta que te ayuda a recopilar feedback real de tus clientes y mejorar tus servicios."
+            },
+            {
+              "@type": "Service",
+              "@id": "https://oquanta.com/#service",
+              "serviceType": "Plataforma de encuestas y recolección de datos de clientes",
+              "name": "Servicio de Encuestas oQuanta",
+              "description": "Recopila opiniones verificadas y mejora la experiencia de tus clientes con oQuanta.",
+              "provider": {
+              "@id": "https://oquanta.com/#organization"
+            },
+              "areaServed": "ES"
+            }
+              ]
+            }
+          </script>
         </Head>
         <header className="bg-white shadow-sm fixed w-full z-50">
           <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -29,14 +95,15 @@ function App() {
                  className="bg-pumpkin-orange text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-pumpkin-orange-60">
                 {t('tryFree')}
               </a>
-              <a href="https://instagram.com/oquanta_es" className="text-black p-2 hover:text-pumpkin-orange" target="_blank">
+              <a href="https://instagram.com/oquanta_es" className="text-black p-2 hover:text-pumpkin-orange"
+                 target="_blank">
                 <Instagram className="w-5 h-5"/>
               </a>
             </nav>
           </div>
         </header>
 
-        <section className="pt-32 pb-16 px-4">
+        <section className="pt-32 pb-16 px-4" id="website">
           <div className="container mx-auto max-w-6xl">
             <div className="grid md:grid-cols-2 gap-12">
               <div>
@@ -80,7 +147,7 @@ function App() {
           </div>
         </section>
 
-        <section className="py-16 px-4 bg-white">
+        <section className="py-16 px-4 bg-white" >
           <div className="container mx-auto max-w-6xl">
             <h2 className="text-4xl font-bold text-center text-pumpkin-orange mb-12">
               {t('trustTitle')}
@@ -89,7 +156,7 @@ function App() {
           </div>
         </section>
 
-        <section className="py-16 px-4">
+        <section className="py-16 px-4" id="webpage">
           <div className="container mx-auto max-w-6xl">
             <div className="grid md:grid-cols-2 gap-12">
               <div>
@@ -117,7 +184,7 @@ function App() {
           </div>
         </section>
 
-        <section className="py-16 px-4">
+        <section className="py-16 px-4" id="service">
           <div className="container mx-auto max-w-6xl text-center">
             <h2 className="text-4xl font-bold text-[#6B46FF] mb-16">
               {t('stepsTitle')}
