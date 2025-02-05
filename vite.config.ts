@@ -2,12 +2,14 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { imagetools } from 'vite-imagetools'
 import { VitePluginRadar } from 'vite-plugin-radar'
+import { compression } from 'vite-plugin-compression2'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(), 
-    imagetools(),    
+    imagetools(),   
+    compression(), 
     VitePluginRadar({
       // Google Analytics tag injection
       analytics: {
