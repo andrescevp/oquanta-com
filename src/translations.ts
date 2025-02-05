@@ -1,8 +1,14 @@
 export const translations = {
   es: {
+    // navbar
+    navbar: {
+      contact: "Contacto"
+    },
+
     // Header
     tagline: "Speak up. Shape the future",
     tryFree: "Prueba Gratis",
+    tryFree2: "Quiero probarlo",
 
     // Hero
     heroTitle: "Conoce qué piensan tus clientes sobre tu negocio",

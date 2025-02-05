@@ -10,6 +10,7 @@ export default {
           30: '#b8b6b2',
         },
         white: '#fbf8f3',
+        "pure-white": '#ffffff',
         'iris-purple': {
           DEFAULT: '#5a33ee',
           60: '#876AEF',

@@ -55,7 +55,7 @@ export function TrustCarousel() {
                                 {logos.slice(slideIndex * 4, (slideIndex + 1) * 4).map((logo, index) => (
                                     <div key={index}
                                          className="aspect-[3/2] rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow flex items-center justify-center">
-                                        <LazyLoad height="250px">
+                                        <LazyLoad height="250px" className="object-scale-down w-full h-full w-auto">
                                             <img
                                                 src={logo}
                                                 alt={t('trustImageAlt')}

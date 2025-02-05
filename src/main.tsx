@@ -1,19 +1,31 @@
-import { StrictMode } from 'react';
-// import { createRoot } from 'react-dom/client';
+import React, { StrictMode } from 'react';
 import App from './App.tsx';
 import './index.css';
-// import { ViteReactSSG } from 'vite-react-ssg'
-import { ViteReactSSG } from 'vite-react-ssg/single-page'
-// import {createRoot} from "react-dom/client";
+import { ViteReactSSG } from 'vite-react-ssg'
+import Index from './pages/Index.tsx';
+// import { ViteReactSSG } from 'vite-react-ssg/single-page'
+import type { RouteRecord } from 'vite-react-ssg'
+const Layout = React.lazy(() => import('./Layout'))
 
-// createRoot(document.getElementById('root')!).render(
-//     <StrictMode>
-//         <App />
-//     </StrictMode>
-// );
+export const routes: RouteRecord[] = [
+  {
+    path: '/',
+    Component: Layout,
+    children: [
+      {
+        index: true,
+        Component: React.lazy(() => import('./pages/Index')),
+      },
+      {
+        path: "/contact",
+        Component: React.lazy(() => import('./pages/Contact')),
+      }
+    ],
+  }
+]
+
 
 export const createRoot = ViteReactSSG(
-  <StrictMode>
-    <App />
-  </StrictMode>
+  // react-router-dom data routes
+  { routes }
 );
