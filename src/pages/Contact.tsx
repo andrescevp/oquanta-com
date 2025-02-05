@@ -15,6 +15,7 @@ function Contact() {
             <link rel="manifest" href="/site.webmanifest.json" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>oQuanta - Inteligencia y analitica para hosteleria</title>
+            <meta name="description" content="Contacta con oQuanta para llevar tu negocio al siguente nivel" />
             <link rel="canonical" href="http://www.oquanta.com" />
         </Head>
         <JsonLd<ContactPageSchema>
