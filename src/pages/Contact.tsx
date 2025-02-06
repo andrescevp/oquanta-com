@@ -1,11 +1,31 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { t } from '../translations.ts';
 import { Head } from "vite-react-ssg";
 import { JsonLd } from "react-schemaorg";
-import { InlineWidget } from "react-calendly";
 import { ContactPage as ContactPageSchema } from 'schema-dts';
+import { useCalendlyEventListener, InlineWidget } from "react-calendly";
 
 function Contact() {
+    useCalendlyEventListener({
+      //onProfilePageViewed: () => console.log("onProfilePageViewed"),
+      //onDateAndTimeSelected: () => console.log("onDateAndTimeSelected"),
+      //onEventTypeViewed: () => console.log("onEventTypeViewed"),
+      //onEventScheduled: (e) => console.log(e.data.payload),
+      onPageHeightResize: (e) => {
+        const { height: pHeight } = e.data.payload;
+        // remove px from height
+        const pHeightInt = parseInt(pHeight.replace("px", ""));
+        const minHeightInt = parseInt(minHeight.replace("px", ""));
+        if (pHeightInt > minHeightInt) {
+            setHeight(pHeightInt + "px");
+            return;
+        }
+      },
+    });
+
+    const minHeight = "598px";
+    const [height, setHeight] = useState(minHeight);
+    
     const head = (<>
         <Head>
             <meta charSet="UTF-8" />
@@ -53,17 +73,9 @@ function Contact() {
                             {t('contactDescription')}
                         </p>
                         <InlineWidget url="https://calendly.com/hola-oquanta/como-me-puede-ayudar-oquanta-a-mejorar-mi-negocio" styles={{
-                            height: '1000px'
+                            height: height,
+                            transition: "height 0.5s",
                         }} />
-                        {/*{root && <PopupWidget*/}
-                        {/*    url="https://calendly.com/hola-oquanta/como-me-puede-ayudar-oquanta-a-mejorar-mi-negocio"*/}
-                        {/*    rootElement={root}*/}
-                        {/*    text="Click here to schedule!"*/}
-                        {/*    textColor="#ffffff"*/}
-                        {/*    color="#00a2ff"*/}
-                        {/*/>}*/}
-                        {/*<AutoIframe src="https://survey.oquanta.com/872855?newtest=Y&lang=es"*/}
-                        {/*            title="Formulario de contacto"/>*/}
                     </div>
                 </section>
             </>
