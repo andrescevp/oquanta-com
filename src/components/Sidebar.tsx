@@ -18,11 +18,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, menuItems }) => {
   return (
     <Transition show={isOpen} as={Fragment}>
-      <Dialog
-        as="div"
-        className="fixed inset-0 z-50 overflow-hidden md:hidden"
-        onClose={onClose}
-      >
+      <Dialog as="div" className="fixed inset-0 z-50 overflow-hidden md:hidden" onClose={onClose}>
         {/* Panel de fondo con click para cerrar */}
         <Transition.Child
           as={Fragment}
@@ -33,7 +29,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, menuItems }) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div 
+          <div
             className="fixed inset-0 bg-black/30 backdrop-blur-sm"
             onClick={onClose}
             aria-hidden="true"
@@ -83,10 +79,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, menuItems }) => {
                           </a>
                         ))}
                     </div>
-                    
+
                     {/* Separador */}
                     <div className="border-t border-gray-200" />
-                    
+
                     {/* Enlaces de la derecha */}
                     <div className="space-y-2">
                       {menuItems

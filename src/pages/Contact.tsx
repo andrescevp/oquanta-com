@@ -6,7 +6,7 @@ import { ContactPage as ContactPageSchema } from 'schema-dts'
 
 import { useHead } from '../context/HeadContext'
 
-function Contact () {
+function Contact() {
   const { t } = useTranslation()
   const { updateHead } = useHead()
   useCalendlyEventListener({
@@ -14,7 +14,7 @@ function Contact () {
     // onDateAndTimeSelected: () => console.log("onDateAndTimeSelected"),
     // onEventTypeViewed: () => console.log("onEventTypeViewed"),
     // onEventScheduled: (e) => console.log(e.data.payload),
-    onPageHeightResize: (e) => {
+    onPageHeightResize: e => {
       const { height: pHeight } = e.data.payload
       // remove px from height
       const pHeightInt = parseInt(pHeight.replace('px', ''))
@@ -22,7 +22,7 @@ function Contact () {
       if (pHeightInt > minHeightInt) {
         setHeight(pHeightInt + 'px')
       }
-    },
+    }
   })
 
   const minHeight = '598px'
@@ -30,7 +30,9 @@ function Contact () {
 
   updateHead({
     title: t('¿Listo para llevar tu negocio al siguiente nivel?') + ' - oQuanta',
-    description: t('Déjanos tus datos y te contactaremos para explicarte cómo oQuanta puede ayudarte a mejorar la experiencia de tus clientes y potenciar tu negocio.'),
+    description: t(
+      'Déjanos tus datos y te contactaremos para explicarte cómo oQuanta puede ayudarte a mejorar la experiencia de tus clientes y potenciar tu negocio.'
+    ),
     canonicalLink: 'https://www.oquanta.com/contact'
   })
 
@@ -41,7 +43,9 @@ function Contact () {
           '@context': 'https://schema.org',
           '@type': 'ContactPage',
           name: t('¿Listo para llevar tu negocio al siguiente nivel?'),
-          description: t('Déjanos tus datos y te contactaremos para explicarte cómo oQuanta puede ayudarte a mejorar la experiencia de tus clientes y potenciar tu negocio.'),
+          description: t(
+            'Déjanos tus datos y te contactaremos para explicarte cómo oQuanta puede ayudarte a mejorar la experiencia de tus clientes y potenciar tu negocio.'
+          ),
           url: 'https://www.oquanta.com/contact',
           mainEntity: {
             '@type': 'Organization',
@@ -57,18 +61,21 @@ function Contact () {
           }
         }}
       />
-      <section className='py-16 px-4 snap-center' id='contact-form'>
-        <div className='container mx-auto max-w-2xl'>
-          <h2 className='text-4xl font-bold text-center text-black mb-4'>
+      <section className="py-16 px-4 snap-center" id="contact-form">
+        <div className="container mx-auto max-w-2xl">
+          <h2 className="text-4xl font-bold text-center text-black mb-4">
             {t('¿Listo para llevar tu negocio al siguiente nivel?')}
           </h2>
-          <p className='text-center text-black-60 mb-8'>
-            {t('Déjanos tus datos y te contactaremos para explicarte cómo oQuanta puede ayudarte a mejorar la experiencia de tus clientes y potenciar tu negocio.')}
+          <p className="text-center text-black-60 mb-8">
+            {t(
+              'Déjanos tus datos y te contactaremos para explicarte cómo oQuanta puede ayudarte a mejorar la experiencia de tus clientes y potenciar tu negocio.'
+            )}
           </p>
           <InlineWidget
-            url='https://calendly.com/hola-oquanta/como-me-puede-ayudar-oquanta-a-mejorar-mi-negocio' styles={{
+            url="https://calendly.com/hola-oquanta/como-me-puede-ayudar-oquanta-a-mejorar-mi-negocio"
+            styles={{
               height,
-              transition: 'height 0.5s',
+              transition: 'height 0.5s'
             }}
           />
         </div>

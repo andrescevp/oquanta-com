@@ -1,8 +1,8 @@
 import React, { useRef } from 'react'
 
 interface AutoIframeProps {
-  src: string;
-  title: string;
+  src: string
+  title: string
 }
 
 export const AutoIframe: React.FC<AutoIframeProps> = ({ src, title }) => {
@@ -33,16 +33,16 @@ export const AutoIframe: React.FC<AutoIframeProps> = ({ src, title }) => {
   // }, []);
 
   return (
-    <div className='w-full overflow-hidden'>
+    <div className="w-full overflow-hidden">
       <iframe
         ref={iframeRef}
         src={src}
-        height='550px'
+        height="550px"
         title={title}
-        width='100%'
-        frameBorder='0'
-        scrolling='no'
-        className='w-full border-none transition-height duration-500 ease-in-out overflow-hidden'
+        width="100%"
+        frameBorder="0"
+        scrolling="no"
+        className="w-full border-none transition-height duration-500 ease-in-out overflow-hidden"
       />
     </div>
   )

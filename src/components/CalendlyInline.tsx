@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { useCalendlyEventListener, InlineWidget } from 'react-calendly'
 
-function CalendlyInline () {
+function CalendlyInline() {
   useCalendlyEventListener({
     // onProfilePageViewed: () => console.log("onProfilePageViewed"),
     // onDateAndTimeSelected: () => console.log("onDateAndTimeSelected"),
     // onEventTypeViewed: () => console.log("onEventTypeViewed"),
     // onEventScheduled: (e) => console.log(e.data.payload),
-    onPageHeightResize: (e) => {
+    onPageHeightResize: e => {
       const { height: pHeight } = e.data.payload
       // remove px from height
       const pHeightInt = parseInt(pHeight.replace('px', ''))
@@ -15,7 +15,7 @@ function CalendlyInline () {
       if (pHeightInt > minHeightInt) {
         setHeight(pHeightInt + 'px')
       }
-    },
+    }
   })
 
   const minHeight = '598px'
@@ -23,9 +23,10 @@ function CalendlyInline () {
 
   return (
     <InlineWidget
-      url='https://calendly.com/hola-oquanta/como-me-puede-ayudar-oquanta-a-mejorar-mi-negocio' styles={{
+      url="https://calendly.com/hola-oquanta/como-me-puede-ayudar-oquanta-a-mejorar-mi-negocio"
+      styles={{
         height,
-        transition: 'height 0.5s',
+        transition: 'height 0.5s'
       }}
     />
   )

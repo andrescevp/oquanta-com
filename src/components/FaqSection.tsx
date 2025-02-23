@@ -11,7 +11,7 @@ import FaqItem from './FaqItem'
 const FaqSection: React.FC = () => {
   const { t } = useTranslation()
   return (
-    <section className='py-16 px-4 bg-white' id='faq'>
+    <section className="py-16 px-4 bg-white" id="faq">
       <JsonLd<FAQPage>
         item={{
           '@context': 'https://schema.org',
@@ -21,24 +21,24 @@ const FaqSection: React.FC = () => {
             // html string to text
             const answerText = answer.replace(/<[^>]*>?/gm, '')
 
-            return ({
+            return {
               '@type': 'Question',
               name: faq.fields.question,
               acceptedAnswer: {
                 '@type': 'Answer',
                 text: answerText
               }
-            })
+            }
           }) as never
         }}
       />
-      <div className='container mx-auto max-w-3xl'>
-        <h2 className='text-4xl font-bold text-center text-pumpkin-orange mb-12'>
+      <div className="container mx-auto max-w-3xl">
+        <h2 className="text-4xl font-bold text-center text-pumpkin-orange mb-12">
           {t('Preguntas frecuentes')}
         </h2>
 
-        <div className='bg-white rounded-lg shadow-lg divide-y divide-gray-200'>
-          {Object.values(faqEntries).map((entry) => (
+        <div className="bg-white rounded-lg shadow-lg divide-y divide-gray-200">
+          {Object.values(faqEntries).map(entry => (
             <FaqItem
               key={entry.sys.id}
               question={entry.fields.question}

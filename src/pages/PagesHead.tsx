@@ -13,15 +13,15 @@ const PagesHead: React.FC = () => {
   return (
     <>
       <Head>
-        <meta charSet='UTF-8' />
-        <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png' />
-        <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png' />
-        <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />
-        <link rel='manifest' href='/site.webmanifest.json' />
-        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+        <meta charSet="UTF-8" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest.json" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{title}</title>
-        <meta name='description' content={description} />
-        <link rel='canonical' href={canonicalLink} />
+        <meta name="description" content={description} />
+        <link rel="canonical" href={canonicalLink} />
         {extraNodes && extraNodes}
       </Head>
       <JsonLd<Organization>
@@ -32,7 +32,8 @@ const PagesHead: React.FC = () => {
           name: 'oQuanta',
           url: 'https://oquanta.com',
           logo: headerImage,
-          description: 'oQuanta ofrece una plataforma de encuestas para recopilar opiniones de tus clientes, mejorar sus experiencias y potenciar tu negocio.',
+          description:
+            'oQuanta ofrece una plataforma de encuestas para recopilar opiniones de tus clientes, mejorar sus experiencias y potenciar tu negocio.',
           email: 'hola@oquanta.com',
           telephone: '+34 660220216',
           image: headerImage,
