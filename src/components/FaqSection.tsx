@@ -1,18 +1,43 @@
-import React from 'react';
-import FaqItem from './FaqItem';
-import faqEntries from '../FaqEntries';
-import { useTranslation } from "react-i18next";
+import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
+import { JsonLd } from 'react-schemaorg'
+import { FAQPage } from 'schema-dts'
+
+import faqEntries from '../FaqEntries'
+
+import FaqItem from './FaqItem'
 
 const FaqSection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   return (
-    <section className="py-16 px-4 bg-white" id="faq">
-      <div className="container mx-auto max-w-3xl">
-        <h2 className="text-4xl font-bold text-center text-pumpkin-orange mb-12">
+    <section className='py-16 px-4 bg-white' id='faq'>
+      <JsonLd<FAQPage>
+        item={{
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: Object.values(faqEntries).map(faq => {
+            const answer = documentToHtmlString(faq.fields.answer as never)
+            // html string to text
+            const answerText = answer.replace(/<[^>]*>?/gm, '')
+
+            return ({
+              '@type': 'Question',
+              name: faq.fields.question,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: answerText
+              }
+            })
+          }) as never
+        }}
+      />
+      <div className='container mx-auto max-w-3xl'>
+        <h2 className='text-4xl font-bold text-center text-pumpkin-orange mb-12'>
           {t('Preguntas frecuentes')}
         </h2>
-        
-        <div className="bg-white rounded-lg shadow-lg divide-y divide-gray-200">
+
+        <div className='bg-white rounded-lg shadow-lg divide-y divide-gray-200'>
           {Object.values(faqEntries).map((entry) => (
             <FaqItem
               key={entry.sys.id}
@@ -23,7 +48,7 @@ const FaqSection: React.FC = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default FaqSection;
+export default FaqSection

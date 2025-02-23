@@ -1,12 +1,12 @@
-import React, { StrictMode } from 'react';
-import App from './App.tsx';
-import './index.css';
-import { ViteReactSSG, ViteReactSSGContext } from 'vite-react-ssg'
-import Index from './pages/Index.tsx';
+import React from 'react'
+import './index.css'
+import { ViteReactSSG } from 'vite-react-ssg'
+
 // import { ViteReactSSG } from 'vite-react-ssg/single-page'
+import { pages } from './BlogEntries.ts'
+
 import type { RouteRecord } from 'vite-react-ssg'
 const Layout = React.lazy(() => import('./Layout'))
-import {pages} from './BlogEntries.ts';
 
 export const routes: RouteRecord[] = [
   {
@@ -18,34 +18,33 @@ export const routes: RouteRecord[] = [
         Component: React.lazy(() => import('./pages/Index')),
       },
       {
-        path: "/contact",
+        path: '/contact',
         Component: React.lazy(() => import('./pages/Contact')),
       },
       {
-        path: "/blog",
+        path: '/blog',
         Component: React.lazy(() => import('./pages/BlogEntries')),
       },
       {
-        path: "/blog/:slug",
+        path: '/blog/:slug',
         Component: React.lazy(() => import('./pages/BlogEntry')),
         getStaticPaths: () => Object.keys(pages).map((slug) => (`/blog/${slug}`)),
       },
       {
-        path: "/not-found",
+        path: '/not-found',
         Component: React.lazy(() => import('./pages/NotFound')),
       },
       {
-        path: "*",
+        path: '*',
         Component: React.lazy(() => import('./pages/NotFound')),
       }
     ],
   }
 ]
 
-
 export const createRoot = ViteReactSSG(
   // react-router-dom data routes
-  { routes },
+  { routes }
   // (context: ViteReactSSGContext<true>) => {
   //   const { routes } = context
   //   console.log(routes)
@@ -55,4 +54,4 @@ export const createRoot = ViteReactSSG(
   //     })
   //   });
   // },
-);
+)
