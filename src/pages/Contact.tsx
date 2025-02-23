@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import { t } from '../translations.ts';
+import { useTranslation } from "react-i18next";
 import { Head } from "vite-react-ssg";
 import { JsonLd } from "react-schemaorg";
 import { ContactPage as ContactPageSchema } from 'schema-dts';
 import { useCalendlyEventListener, InlineWidget } from "react-calendly";
 
 function Contact() {
+  const { t } = useTranslation();
     useCalendlyEventListener({
       //onProfilePageViewed: () => console.log("onProfilePageViewed"),
       //onDateAndTimeSelected: () => console.log("onDateAndTimeSelected"),
@@ -42,8 +43,8 @@ function Contact() {
                 item={{
                     "@context": "https://schema.org",
                     "@type": "ContactPage",
-                    "name": t('contactTitle'),
-                    "description": t('contactDescription'),
+                    "name": t('¿Listo para llevar tu negocio al siguiente nivel?'),
+                    "description": t('Déjanos tus datos y te contactaremos para explicarte cómo oQuanta puede ayudarte a mejorar la experiencia de tus clientes y potenciar tu negocio.'),
                     "url": "https://www.oquanta.com/contact",
                     "mainEntity": {
                         "@type": "Organization",
@@ -67,10 +68,10 @@ function Contact() {
                 <section className="py-16 px-4 snap-center" id="contact-form">
                     <div className="container mx-auto max-w-2xl">
                         <h2 className="text-4xl font-bold text-center text-black mb-4">
-                            {t('contactTitle')}
+                            {t('¿Listo para llevar tu negocio al siguiente nivel?')}
                         </h2>
                         <p className="text-center text-black-60 mb-8">
-                            {t('contactDescription')}
+                            {t('Déjanos tus datos y te contactaremos para explicarte cómo oQuanta puede ayudarte a mejorar la experiencia de tus clientes y potenciar tu negocio.')}
                         </p>
                         <InlineWidget url="https://calendly.com/hola-oquanta/como-me-puede-ayudar-oquanta-a-mejorar-mi-negocio" styles={{
                             height: height,

@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import { imagetools } from 'vite-imagetools'
 import { VitePluginRadar } from 'vite-plugin-radar'
 import { compression } from 'vite-plugin-compression2'
+import Pages from 'vite-plugin-pages'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,8 +16,10 @@ export default defineConfig({
       analytics: {
         id: 'G-M83JCQ17QK',
       },
-    })
+    }),
+    Pages(),
   ],
+  assetsInclude: ['**/*.mp4', '**/*.webm'],
   define: {
       global: {},
     },
@@ -36,5 +39,8 @@ export default defineConfig({
         global: 'globalThis'
       }
     }
+  },
+  build: {
+    minify: true
   }
 });

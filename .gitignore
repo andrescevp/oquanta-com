@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+src/pages_content/*
+!src/pages_content/.gitkeep
+.env.local
