@@ -2,6 +2,8 @@ import { Dialog, Transition } from '@headlessui/react'
 import { X } from 'lucide-react'
 import React, { Fragment } from 'react'
 
+import { useSmoothScroll } from '../hooks/useSmoothScroll'
+
 interface SidebarProps {
   isOpen: boolean
   onClose: () => void
@@ -16,6 +18,15 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, menuItems }) => {
+  const { scrollToElement } = useSmoothScroll()
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (e.currentTarget.href.includes('#')) {
+      scrollToElement(e)
+    }
+    onClose()
+  }
+
   return (
     <Transition show={isOpen} as={Fragment}>
       <Dialog as="div" className="fixed inset-0 z-50 overflow-hidden md:hidden" onClose={onClose}>
@@ -73,7 +84,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, menuItems }) => {
                             key={index}
                             href={item.href}
                             className="block w-full px-4 py-2 text-left text-base font-medium text-gray-900 hover:bg-gray-100 rounded-lg"
-                            onClick={onClose}
+                            onClick={handleClick}
+                            target={item.target}
+                            rel={item.rel}
                           >
                             {item.name}
                           </a>
@@ -92,7 +105,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, menuItems }) => {
                             key={index}
                             href={item.href}
                             className="block w-full px-4 py-2 text-left text-base font-medium text-gray-900 hover:bg-gray-100 rounded-lg"
-                            onClick={onClose}
+                            onClick={handleClick}
+                            target={item.target}
+                            rel={item.rel}
                           >
                             {item.name}
                           </a>

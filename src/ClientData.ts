@@ -349,6 +349,11 @@ export const clientData = {
   }
 }
 
-export const images = { 'tora-asian-street-food': tora_asian_street_food_logo, 'cum-laude': cum_laude_logo, 'alma-matter': alma_matter_logo, 'maky-poke': maky_poke_logo, }
+export const images = {
+  'tora-asian-street-food': tora_asian_street_food_logo,
+  'cum-laude': cum_laude_logo,
+  'alma-matter': alma_matter_logo,
+  'maky-poke': maky_poke_logo
+}
 
 export default clientData

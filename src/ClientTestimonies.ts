@@ -35,7 +35,8 @@ export const clientTestimonies = {
       locale: 'en-US'
     },
     fields: {
-      testimony: '> Descubrimos que el 60% de nuestros clientes nos encontró en redes sociales. Gracias a esto, mejoramos nuestra estrategia de Instagram.\n*Carmen, dueña de Alma Mater*',
+      testimony:
+        '> Descubrimos que el 60% de nuestros clientes nos encontró en redes sociales. Gracias a esto, mejoramos nuestra estrategia de Instagram.\n*Carmen, dueña de Alma Mater*',
       slug: 'testimony-1'
     }
   }

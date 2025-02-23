@@ -38,7 +38,8 @@ export const pressPosts = {
     },
     fields: {
       title: 'El proyecto ganador del Programa Impulsa Startup de la Cámara de Comercio de Burgos',
-      description: 'oQuanta resultó ser el proyecto ganador del Programa Impulsa Startup de la Cámara de Comercio de Burgos. Se trata de una plataforma digital que conecta marcas y negocios locales con sus consumidores.',
+      description:
+        'oQuanta resultó ser el proyecto ganador del Programa Impulsa Startup de la Cámara de Comercio de Burgos. Se trata de una plataforma digital que conecta marcas y negocios locales con sus consumidores.',
       image: {
         metadata: {
           tags: [],
@@ -68,7 +69,8 @@ export const pressPosts = {
           locale: 'en-US'
         },
         fields: {
-          title: 'el-proyecto-ganador-del-programa-impulsa-startup-de-la-camara-de-comercio-de-burgos',
+          title:
+            'el-proyecto-ganador-del-programa-impulsa-startup-de-la-camara-de-comercio-de-burgos',
           description: '',
           file: {
             url: '//images.ctfassets.net/088vvx9ymri5/4gSGn2QNxClv92cfahSkrx/615e3ead7d1741da1ddb14f1173cfdf5/crop.jpeg',
@@ -87,10 +89,14 @@ export const pressPosts = {
       url: 'https://www.burgosconecta.es/economia/empresas/proyecto-ganador-programa-impulsa-startup-camara-comercio-20241219203112-nt.html',
       slug: 'el-proyecto-ganador-del-programa-impulsa-startup-de-la-camara-de-comercio-de-burgos'
     },
-    image: './../images/pressPosts/el-proyecto-ganador-del-programa-impulsa-startup-de-la-camara-de-comercio-de-burgos/el-proyecto-ganador-del-programa-impulsa-startup-de-la-camara-de-comercio-de-burgos.jpeg'
+    image:
+      './../images/pressPosts/el-proyecto-ganador-del-programa-impulsa-startup-de-la-camara-de-comercio-de-burgos/el-proyecto-ganador-del-programa-impulsa-startup-de-la-camara-de-comercio-de-burgos.jpeg'
   }
 }
 
-export const images = { 'el-proyecto-ganador-del-programa-impulsa-startup-de-la-camara-de-comercio-de-burgos': el_proyecto_ganador_del_programa_impulsa_startup_de_la_camara_de_comercio_de_burgos_image, }
+export const images = {
+  'el-proyecto-ganador-del-programa-impulsa-startup-de-la-camara-de-comercio-de-burgos':
+    el_proyecto_ganador_del_programa_impulsa_startup_de_la_camara_de_comercio_de_burgos_image
+}
 
 export default pressPosts

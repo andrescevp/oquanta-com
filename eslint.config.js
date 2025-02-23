@@ -3,6 +3,7 @@ import prettierPlugin from 'eslint-plugin-prettier'
 import reactPlugin from 'eslint-plugin-react'
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import reactRefreshPlugin from 'eslint-plugin-react-refresh'
+import unusedImports from 'eslint-plugin-unused-imports'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
@@ -14,7 +15,8 @@ export default [
       'react-hooks': reactHooksPlugin,
       'react-refresh': reactRefreshPlugin,
       import: importPlugin,
-      prettier: prettierPlugin
+      prettier: prettierPlugin,
+      'unused-imports': unusedImports
     },
     languageOptions: {
       parser: tseslint.parser,
@@ -83,6 +85,18 @@ export default [
             order: 'asc',
             caseInsensitive: true
           }
+        }
+      ],
+
+      // Unused imports
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_'
         }
       ]
     }

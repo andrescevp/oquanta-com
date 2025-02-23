@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next'
 import LazyLoad from 'react-lazy-load'
 
 import Sidebar from '../components/Sidebar'
-import { useMenu } from '../context/MenuContext'
+import { MenuItem, useMenu } from '../context/MenuContext'
+import { useSmoothScroll } from '../hooks/useSmoothScroll'
 
 import headerImage from './../../images/oquanta-logo-transparent.png?h=80&format=png'
 
@@ -67,6 +68,21 @@ const Navbar: React.FC = () => {
     }
   ])
 
+  const { scrollToElement } = useSmoothScroll()
+
+  const renderMenuItem = (item: MenuItem, index: number) => (
+    <a
+      key={index}
+      href={item.href}
+      className={item.className}
+      target={item.target}
+      rel={item.rel}
+      onClick={item.href.includes('#') ? scrollToElement : undefined}
+    >
+      {item.icon ? item.icon : item.name}
+    </a>
+  )
+
   return (
     <header className="bg-pure-white shadow-sm fixed w-full z-50">
       <div className="container mx-auto py-4 flex justify-between items-center h-32 max-w-6xl space-x-4">
@@ -82,50 +98,20 @@ const Navbar: React.FC = () => {
           <div className="hidden md:flex md:items-center md:space-x-2 md:justify-center flex-grow">
             {menuItems
               .filter(item => !item.allwaysVisible && item.position === 'left')
-              .map((item, index) => (
-                <a
-                  key={index}
-                  href={item.href}
-                  className={item.className}
-                  target={item.target}
-                  rel={item.rel}
-                >
-                  {item.icon ? item.icon : item.name}
-                </a>
-              ))}
+              .map((item, index) => renderMenuItem(item, index))}
           </div>
 
           <div className="flex justify-center space-x-2 items-center">
             <div className="hidden md:flex md:items-center md:space-x-2">
               {menuItems
                 .filter(item => !item.allwaysVisible && item.position === 'right')
-                .map((item, index) => (
-                  <a
-                    key={index}
-                    href={item.href}
-                    className={item.className}
-                    target={item.target}
-                    rel={item.rel}
-                  >
-                    {item.icon ? item.icon : item.name}
-                  </a>
-                ))}
+                .map((item, index) => renderMenuItem(item, index))}
             </div>
 
             {/* Enlaces siempre visibles */}
             {menuItems
               .filter(item => item.allwaysVisible && item.position === 'right')
-              .map((item, index) => (
-                <a
-                  key={index}
-                  href={item.href}
-                  className={item.className}
-                  target={item.target}
-                  rel={item.rel}
-                >
-                  {item.icon ? item.icon : item.name}
-                </a>
-              ))}
+              .map((item, index) => renderMenuItem(item, index))}
           </div>
 
           {/* Botón del menú móvil */}

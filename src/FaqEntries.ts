@@ -45,7 +45,8 @@ export const faqEntries = {
               {
                 data: {},
                 marks: [],
-                value: 'oQuanta está diseñado principalmente para bares, restaurantes, cafeterías y cualquier negocio de hostelería, pero su uso no se limita solo a este sector. También puede ser útil para hoteles, peluquerías, gimnasios, tiendas y cualquier negocio que quiera recoger opiniones verificadas de sus clientes para mejorar su servicio y tomar mejores decisiones. ',
+                value:
+                  'oQuanta está diseñado principalmente para bares, restaurantes, cafeterías y cualquier negocio de hostelería, pero su uso no se limita solo a este sector. También puede ser útil para hoteles, peluquerías, gimnasios, tiendas y cualquier negocio que quiera recoger opiniones verificadas de sus clientes para mejorar su servicio y tomar mejores decisiones. ',
                 nodeType: 'text'
               }
             ],

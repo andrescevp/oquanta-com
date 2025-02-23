@@ -1,6 +1,9 @@
 import como_oquanta_ayuda_a_tu_restaurante_a_mejorar_y_aumentar_sus_ventas_featured_image from './../images/blogEntries/como-oquanta-ayuda-a-tu-restaurante-a-mejorar-y-aumentar-sus-ventas/grafico proceso retro alimentacion del cliente de oquanta.png?h=50&format=webp'
 
-export const images = { 'como-oquanta-ayuda-a-tu-restaurante-a-mejorar-y-aumentar-sus-ventas': como_oquanta_ayuda_a_tu_restaurante_a_mejorar_y_aumentar_sus_ventas_featured_image, }
+export const images = {
+  'como-oquanta-ayuda-a-tu-restaurante-a-mejorar-y-aumentar-sus-ventas':
+    como_oquanta_ayuda_a_tu_restaurante_a_mejorar_y_aumentar_sus_ventas_featured_image
+}
 
 export const pages = {
   'como-oquanta-ayuda-a-tu-restaurante-a-mejorar-y-aumentar-sus-ventas': {
@@ -49,7 +52,8 @@ export const pages = {
               {
                 data: {},
                 marks: [],
-                value: 'En el competitivo mundo de la restauración, conocer la opinión de tus clientes es clave para mejorar la experiencia y fidelizar a quienes ya te visitan. Pero, ¿cómo puedes obtener opiniones reales, verificadas y accionables sin depender de Google o Tripadvisor? En este artículo, te contamos por qué oQuanta es la solución que tu restaurante necesita.',
+                value:
+                  'En el competitivo mundo de la restauración, conocer la opinión de tus clientes es clave para mejorar la experiencia y fidelizar a quienes ya te visitan. Pero, ¿cómo puedes obtener opiniones reales, verificadas y accionables sin depender de Google o Tripadvisor? En este artículo, te contamos por qué oQuanta es la solución que tu restaurante necesita.',
                 nodeType: 'text'
               }
             ],
@@ -73,7 +77,8 @@ export const pages = {
               {
                 data: {},
                 marks: [],
-                value: 'Seguramente ya recibes opiniones en estas plataformas, pero presentan problemas comunes:',
+                value:
+                  'Seguramente ya recibes opiniones en estas plataformas, pero presentan problemas comunes:',
                 nodeType: 'text'
               }
             ],
@@ -101,7 +106,8 @@ export const pages = {
                       {
                         data: {},
                         marks: [],
-                        value: ': Cualquiera puede dejar una reseña, incluso sin haber visitado tu local.',
+                        value:
+                          ': Cualquiera puede dejar una reseña, incluso sin haber visitado tu local.',
                         nodeType: 'text'
                       }
                     ],
@@ -157,7 +163,8 @@ export const pages = {
                       {
                         data: {},
                         marks: [],
-                        value: ': Responder y analizar comentarios manualmente lleva tiempo y no siempre aporta mejoras concretas.',
+                        value:
+                          ': Responder y analizar comentarios manualmente lleva tiempo y no siempre aporta mejoras concretas.',
                         nodeType: 'text'
                       }
                     ],
@@ -175,7 +182,8 @@ export const pages = {
               {
                 data: {},
                 marks: [],
-                value: 'Con oQuanta, recoges opiniones directamente de tus clientes, de forma estructurada y en tiempo real, lo que te permite tomar mejores decisiones para tu negocio.',
+                value:
+                  'Con oQuanta, recoges opiniones directamente de tus clientes, de forma estructurada y en tiempo real, lo que te permite tomar mejores decisiones para tu negocio.',
                 nodeType: 'text'
               }
             ],
@@ -227,7 +235,8 @@ export const pages = {
                       {
                         data: {},
                         marks: [],
-                        value: ': Puedes elegir entre plantillas predefinidas o personalizar las preguntas según tus necesidades.',
+                        value:
+                          ': Puedes elegir entre plantillas predefinidas o personalizar las preguntas según tus necesidades.',
                         nodeType: 'text'
                       }
                     ],
@@ -255,7 +264,8 @@ export const pages = {
                       {
                         data: {},
                         marks: [],
-                        value: ': oQuanta te proporciona materiales promocionales para que tus clientes accedan fácilmente a la encuesta.',
+                        value:
+                          ': oQuanta te proporciona materiales promocionales para que tus clientes accedan fácilmente a la encuesta.',
                         nodeType: 'text'
                       }
                     ],
@@ -283,7 +293,8 @@ export const pages = {
                       {
                         data: {},
                         marks: [],
-                        value: ': Accede a los resultados en tiempo real para actuar rápidamente y mejorar la experiencia de tus clientes.',
+                        value:
+                          ': Accede a los resultados en tiempo real para actuar rápidamente y mejorar la experiencia de tus clientes.',
                         nodeType: 'text'
                       }
                     ],
@@ -313,7 +324,8 @@ export const pages = {
               {
                 data: {},
                 marks: [],
-                value: 'El valor de oQuanta radica en la información detallada que te proporciona. Algunas preguntas clave que puedes incluir son:',
+                value:
+                  'El valor de oQuanta radica en la información detallada que te proporciona. Algunas preguntas clave que puedes incluir son:',
                 nodeType: 'text'
               }
             ],
@@ -477,7 +489,8 @@ export const pages = {
                       {
                         data: {},
                         marks: [],
-                        value: ': Premia a los clientes que dejan su opinión con descuentos o promociones.',
+                        value:
+                          ': Premia a los clientes que dejan su opinión con descuentos o promociones.',
                         nodeType: 'text'
                       }
                     ],
@@ -505,7 +518,8 @@ export const pages = {
                       {
                         data: {},
                         marks: [],
-                        value: ': Gracias a la comunidad de oQuanta, más clientes potenciales conocerán tu negocio.',
+                        value:
+                          ': Gracias a la comunidad de oQuanta, más clientes potenciales conocerán tu negocio.',
                         nodeType: 'text'
                       }
                     ],
@@ -533,7 +547,8 @@ export const pages = {
                       {
                         data: {},
                         marks: [],
-                        value: ': Con información real, puedes mejorar tus servicios con estrategias concretas.',
+                        value:
+                          ': Con información real, puedes mejorar tus servicios con estrategias concretas.',
                         nodeType: 'text'
                       }
                     ],
@@ -563,7 +578,8 @@ export const pages = {
               {
                 data: {},
                 marks: [],
-                value: 'oQuanta ofrece diferentes planes según las necesidades de cada restaurante. Puedes probarlo gratis y sin compromiso. Además, no hay permanencia obligatoria, por lo que puedes cancelar en cualquier momento si no cumple con tus expectativas.',
+                value:
+                  'oQuanta ofrece diferentes planes según las necesidades de cada restaurante. Puedes probarlo gratis y sin compromiso. Además, no hay permanencia obligatoria, por lo que puedes cancelar en cualquier momento si no cumple con tus expectativas.',
                 nodeType: 'text'
               }
             ],
@@ -587,7 +603,8 @@ export const pages = {
               {
                 data: {},
                 marks: [],
-                value: 'Si quieres mejorar la gestión de tu restaurante con opiniones verificadas y datos accionables, prueba oQuanta hoy mismo. Solo necesitas registrarte, configurar tu primera encuesta y empezar a recibir feedback real de tus clientes.',
+                value:
+                  'Si quieres mejorar la gestión de tu restaurante con opiniones verificadas y datos accionables, prueba oQuanta hoy mismo. Solo necesitas registrarte, configurar tu primera encuesta y empezar a recibir feedback real de tus clientes.',
                 nodeType: 'text'
               }
             ],
@@ -616,7 +633,8 @@ export const pages = {
               {
                 data: {},
                 marks: [],
-                value: 'Con esta herramienta, transformarás las opiniones de tus clientes en mejoras reales para tu restaurante. ¡Dale a tu negocio la ventaja que necesita para crecer!',
+                value:
+                  'Con esta herramienta, transformarás las opiniones de tus clientes en mejoras reales para tu restaurante. ¡Dale a tu negocio la ventaja que necesita para crecer!',
                 nodeType: 'text'
               }
             ],
@@ -626,7 +644,8 @@ export const pages = {
         nodeType: 'document'
       },
       slug: 'como-oquanta-ayuda-a-tu-restaurante-a-mejorar-y-aumentar-sus-ventas',
-      description: 'Mejora tu restaurante con opiniones verificadas y datos en tiempo real. Usa oQuanta para obtener feedback útil y fidelizar clientes sin depender de Google o Tripadvisor.',
+      description:
+        'Mejora tu restaurante con opiniones verificadas y datos en tiempo real. Usa oQuanta para obtener feedback útil y fidelizar clientes sin depender de Google o Tripadvisor.',
       featuredImage: {
         metadata: {
           tags: [],
@@ -673,7 +692,8 @@ export const pages = {
         }
       }
     },
-    featuredImage: './../images/blogEntries/como-oquanta-ayuda-a-tu-restaurante-a-mejorar-y-aumentar-sus-ventas/grafico proceso retro alimentacion del cliente de oquanta.png'
+    featuredImage:
+      './../images/blogEntries/como-oquanta-ayuda-a-tu-restaurante-a-mejorar-y-aumentar-sus-ventas/grafico proceso retro alimentacion del cliente de oquanta.png'
   }
 }
 

@@ -15,30 +15,30 @@ export const routes: RouteRecord[] = [
     children: [
       {
         index: true,
-        Component: React.lazy(() => import('./pages/Index')),
+        Component: React.lazy(() => import('./pages/Index'))
       },
       {
         path: '/contact',
-        Component: React.lazy(() => import('./pages/Contact')),
+        Component: React.lazy(() => import('./pages/Contact'))
       },
       {
         path: '/blog',
-        Component: React.lazy(() => import('./pages/BlogEntries')),
+        Component: React.lazy(() => import('./pages/BlogEntries'))
       },
       {
         path: '/blog/:slug',
         Component: React.lazy(() => import('./pages/BlogEntry')),
-        getStaticPaths: () => Object.keys(pages).map((slug) => (`/blog/${slug}`)),
+        getStaticPaths: () => Object.keys(pages).map(slug => `/blog/${slug}`)
       },
       {
         path: '/not-found',
-        Component: React.lazy(() => import('./pages/NotFound')),
+        Component: React.lazy(() => import('./pages/NotFound'))
       },
       {
         path: '*',
-        Component: React.lazy(() => import('./pages/NotFound')),
+        Component: React.lazy(() => import('./pages/NotFound'))
       }
-    ],
+    ]
   }
 ]
 
