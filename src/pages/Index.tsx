@@ -1,12 +1,14 @@
-import { BarChart2, CheckCircle2, ClipboardEdit, QrCode as QrCodeIcon } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import { BarChart2, CheckCircle2, ClipboardEdit, Instagram, QrCode as QrCodeIcon } from 'lucide-react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import LazyLoad from 'react-lazy-load'
 import { JsonLd } from 'react-schemaorg'
 import {
   WebSite as WebSiteSchema,
   WebPage as WebPageSchema,
-  Service as ServiceSchema
+  Service as ServiceSchema,
+  Menu,
+  MenuItem
 } from 'schema-dts'
 
 import whyOquantaVideo from '../../videos/how-works.mp4?h=450&format=webm'
@@ -23,6 +25,8 @@ import { pressPosts as pressPostsLoaded, images as pressPostsImages } from '../P
 
 import secondImage from './../../images/Banner-Web-B2B-1-1024x1024.png?h=450&format=webp'
 import firstImage from './../../images/Banner-Web-B2B-1024x1024.png?h=450&format=webp'
+import { MenuItemCTA, MenuItemSimpleClassName, MenuItemSpecial } from '../layout/Navbar.tsx'
+import { useMenu } from '../context/MenuContext.tsx'
 
 function Index() {
   const { updateHead } = useHead()
@@ -30,6 +34,57 @@ function Index() {
   const [pressPosts, setPressPosts] = useState<PressCarouselProps['posts']>()
   const [testimonies, setTestimonies] = useState<string[]>()
   const { t } = useTranslation()
+
+  const menuItems = useMemo(() => [
+    {
+      children: t('Beneficios'),
+      href: '/#beneficios',
+      className: MenuItemSpecial,
+      position: 'left'
+    },
+    {
+      children: t('Cómo Funciona?'),
+      href: '/#como-funciona',
+      className: MenuItemSpecial,
+      position: 'left'
+    },
+    {
+      children: t('Testimonios'),
+      href: '/#testimonios',
+      className: MenuItemSpecial,
+      position: 'left'
+    },
+    {
+      children: t('Noticias'),
+      href: '/#noticias',
+      className: MenuItemSpecial,
+      position: 'left'
+    },
+    {
+      children: t('Blog'),
+      href: '/blog',
+      className: MenuItemSpecial,
+      position: 'right'
+    },
+    {
+      children: t('Prueba Gratis'),
+      href: '/contact',
+      className: MenuItemCTA,
+      allwaysVisible: true,
+      position: 'right'
+    },
+    {
+      children: <><span className="sr-only">{t('Instagram')}</span><Instagram className="w-5 h-5" /></>,
+      href: 'https://instagram.com/oquanta_es',
+      className: MenuItemSimpleClassName,
+      target: '_blank',
+      rel: 'noopener noreferrer',
+      allwaysVisible: true,
+      position: 'right'
+    }
+  ], [t])
+
+  useMenu(menuItems as never[])
 
   updateHead({
     title: `oQuanta - ${t('Inteligencia de negocio para hostelería')}`,
@@ -138,7 +193,7 @@ function Index() {
               <h1 className="text-5xl font-bold text-pumpkin-orange mb-4">
                 {t('Conoce qué piensan tus clientes sobre tu negocio')}
               </h1>
-              <p className="text-xl text-[#6B46FF] font-medium mb-8">
+              <p className="text-md text-iris-purple font-semibold mb-8">
                 {t('Mejora tu bar o restaurante con datos reales')}
               </p>
               <div className="space-y-4 mb-8">
@@ -166,7 +221,7 @@ function Index() {
               <div className="flex items-center justify-start">
                 <a
                   href="/contact"
-                  className="inline-block bg-pumpkin-orange text-white px-8 py-3 rounded-full font-medium hover:bg-pumpkin-orange-60 transition-colors"
+                  className={MenuItemCTA}
                 >
                   {t('Prueba Gratis')}
                 </a>
@@ -200,7 +255,7 @@ function Index() {
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12">
             <div>
-              <h2 className="text-[#6B46FF] font-bold mb-4">
+              <h2 className="text-iris-purple font-bold mb-4 text-md">
                 {t('Toda información que necesitas sobre tu negocio y clientes')}
               </h2>
               <h3 className="text-4xl font-bold text-pumpkin-orange mb-6">
@@ -234,7 +289,7 @@ function Index() {
               <div className="flex items-center justify-start">
                 <a
                   href="/contact"
-                  className="inline-block bg-pumpkin-orange text-white px-8 py-3 rounded-full font-medium hover:bg-pumpkin-orange-60 transition-colors"
+                  className={MenuItemCTA}
                 >
                   {t('Quiero probarlo gratis')}
                 </a>
@@ -257,17 +312,17 @@ function Index() {
 
       <section className="py-16 px-4 bg-pure-white" id="como-funciona">
         <div className="container mx-auto max-w-6xl text-center">
-          <h2 className="text-4xl font-bold text-[#6B46FF] mb-16">
+          <h2 className="text-4xl font-bold text-iris-purple mb-16">
             {t('¿Cómo funciona oQuanta en tu local?')}
           </h2>
           <div className="grid md:grid-cols-3 gap-12">
             <div>
               <div className="text-center mb-6">
                 <div className="inline-flex flex-col items-center">
-                  <span className="inline-block w-16 h-16 rounded-full bg-[#6B46FF] text-white font-bold flex items-center justify-center mb-2">
+                  <span className="inline-block w-16 h-16 rounded-full bg-iris-purple text-white font-bold flex items-center justify-center mb-2">
                     <ClipboardEdit className="w-8 h-8" />
                   </span>
-                  <span className="inline-block w-8 h-8 rounded-full bg-[#6B46FF] text-white font-bold flex items-center justify-center">
+                  <span className="inline-block w-8 h-8 rounded-full bg-iris-purple text-white font-bold flex items-center justify-center">
                     1
                   </span>
                 </div>
@@ -280,10 +335,10 @@ function Index() {
             <div>
               <div className="text-center mb-6">
                 <div className="inline-flex flex-col items-center">
-                  <span className="inline-block w-16 h-16 rounded-full bg-[#6B46FF] text-white font-bold flex items-center justify-center mb-2">
+                  <span className="inline-block w-16 h-16 rounded-full bg-iris-purple text-white font-bold flex items-center justify-center mb-2">
                     <QrCodeIcon className="w-8 h-8" />
                   </span>
-                  <span className="inline-block w-8 h-8 rounded-full bg-[#6B46FF] text-white font-bold flex items-center justify-center">
+                  <span className="inline-block w-8 h-8 rounded-full bg-iris-purple text-white font-bold flex items-center justify-center">
                     2
                   </span>
                 </div>
@@ -296,10 +351,10 @@ function Index() {
             <div>
               <div className="text-center mb-6">
                 <div className="inline-flex flex-col items-center">
-                  <span className="inline-block w-16 h-16 rounded-full bg-[#6B46FF] text-white font-bold flex items-center justify-center mb-2">
+                  <span className="inline-block w-16 h-16 rounded-full bg-iris-purple text-white font-bold flex items-center justify-center mb-2">
                     <BarChart2 className="w-8 h-8" />
                   </span>
-                  <span className="inline-block w-8 h-8 rounded-full bg-[#6B46FF] text-white font-bold flex items-center justify-center">
+                  <span className="inline-block w-8 h-8 rounded-full bg-iris-purple text-white font-bold flex items-center justify-center">
                     3
                   </span>
                 </div>

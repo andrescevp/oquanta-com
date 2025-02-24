@@ -9,65 +9,15 @@ import { useSmoothScroll } from '../hooks/useSmoothScroll'
 
 import headerImage from './../../images/oquanta-logo-transparent.png?h=80&format=png'
 
-const MenuItemSimpleClassName = 'text-black hover:text-pumpkin-orange'
-const MenuItemCTA =
+export const MenuItemSimpleClassName = 'text-black hover:text-pumpkin-orange'
+export const MenuItemCTA =
   'text-center shadow-md bg-pumpkin-orange text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-pumpkin-orange-60 hover:text-iris-purple font-semibold w-fit'
-const MenuItemSpecial =
+export const MenuItemSpecial =
   'text-center shadow-md bg-pure-white px-4 py-2 rounded-full border border-pumpkin-orange hover:pumpkin-orangepumpkin-orange text-sm font-medium text-pumpkin-orange hover:bg-pumpkin-orange-30 hover:text-iris-purple font-semibold'
 
 const Navbar: React.FC = () => {
-  const { t } = useTranslation()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const { menuItems } = useMenu([
-    {
-      name: t('Beneficios'),
-      href: '/#beneficios',
-      className: MenuItemSpecial,
-      position: 'left'
-    },
-    {
-      name: t('Cómo Funciona?'),
-      href: '/#como-funciona',
-      className: MenuItemSpecial,
-      position: 'left'
-    },
-    {
-      name: t('Testimonios'),
-      href: '/#testimonios',
-      className: MenuItemSpecial,
-      position: 'left'
-    },
-    {
-      name: t('Noticias'),
-      href: '/#noticias',
-      className: MenuItemSpecial,
-      position: 'left'
-    },
-    {
-      name: t('Blog'),
-      href: '/blog',
-      className: MenuItemSpecial,
-      position: 'right'
-    },
-    {
-      name: t('Prueba Gratis'),
-      href: '/contact',
-      className: MenuItemCTA,
-      allwaysVisible: true,
-      position: 'right'
-    },
-    {
-      name: t('Instagram de oQuanta'),
-      href: 'https://instagram.com/oquanta_es',
-      className: MenuItemSimpleClassName,
-      icon: <Instagram className="w-5 h-5" />,
-      target: '_blank',
-      rel: 'noopener noreferrer',
-      allwaysVisible: true,
-      position: 'right'
-    }
-  ])
-
+  const { menuItems } = useMenu()
   const { scrollToElement } = useSmoothScroll()
 
   const renderMenuItem = (item: MenuItem, index: number) => (
@@ -79,7 +29,7 @@ const Navbar: React.FC = () => {
       rel={item.rel}
       onClick={item.href.includes('#') ? scrollToElement : undefined}
     >
-      {item.icon ? item.icon : item.name}
+      {item.icon ? item.icon : item.children}
     </a>
   )
 

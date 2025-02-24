@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useState, useCallback } from 'react'
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react'
 
 export interface MenuItem {
-  name: string
+  children: React.ReactNode
   href: string
   className?: string
   target?: '_blank' | '_self' | '_parent' | '_top'
@@ -67,12 +67,12 @@ export const useMenu = (initialItems?: MenuItem[]) => {
     throw new Error('useMenu debe usarse dentro de un MenuProvider')
   }
 
-  // Inicializar menú si se proporcionan items iniciales y no hay items existentes
-  React.useEffect(() => {
-    if (initialItems && context.menuItems.length === 0) {
+  // Actualizar menú cuando cambie la ruta o los items iniciales
+  useEffect(() => {
+    if (initialItems) {
       context.setMenuItems(initialItems)
     }
-  }, [initialItems, context])
+  }, [initialItems, context.setMenuItems])
 
   return context
 }

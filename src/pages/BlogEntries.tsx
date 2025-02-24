@@ -1,21 +1,32 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { JsonLd } from 'react-schemaorg'
 import { Blog as BlogSchema } from 'schema-dts'
 
 import pages from '../BlogEntries.ts'
-
-import PagesHead from './PagesHead.tsx'
+import { useMenu } from '../context/MenuContext.tsx'
+import { MenuItemCTA } from '../layout/Navbar.tsx'
 
 function BlogEntries() {
   const { t } = useTranslation()
+
+  const menuItems = useMemo(
+    () => [
+      {
+        children: t('oQuanta'),
+        href: '/',
+        className: MenuItemCTA,
+        allwaysVisible: true,
+        position: 'right'
+      }
+    ],
+    [t]
+  )
+
+  useMenu(menuItems as never[])
+
   return (
     <>
-      <PagesHead
-        title={t('Blog de oQuanta')}
-        description={t('Artículos de ayuda para restauradores y hosteleros')}
-        cannonicalLink="http://www.oquanta.com/blog"
-      />
       <JsonLd<BlogSchema>
         item={{
           '@context': 'https://schema.org',
