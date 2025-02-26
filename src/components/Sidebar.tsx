@@ -8,12 +8,13 @@ interface SidebarProps {
   isOpen: boolean
   onClose: () => void
   menuItems: Array<{
-    name: string
     href: string
     className?: string
     target?: string
     rel?: string
     position?: 'left' | 'right'
+    children?: React.ReactNode
+    icon?: React.ReactNode
   }>
 }
 
@@ -88,7 +89,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, menuItems }) => {
                             target={item.target}
                             rel={item.rel}
                           >
-                            {item.name}
+                            {item.icon ? item.icon : item.children}
                           </a>
                         ))}
                     </div>
@@ -109,7 +110,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, menuItems }) => {
                             target={item.target}
                             rel={item.rel}
                           >
-                            {item.name}
+                            {item.icon ? item.icon : item.children}
                           </a>
                         ))}
                     </div>
