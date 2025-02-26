@@ -31,7 +31,8 @@ jobs:
 
       - name: Configure HTTP Basic Auth
         run: |
-          echo "AuthType Basic" > public/.htaccess
+          echo "" >> public/.htaccess
+          echo "AuthType Basic" >> public/.htaccess
           echo "AuthName \"Restricted Access\"" >> public/.htaccess
           echo "AuthUserFile ${{ secrets.IONOS_HOSTING_ROOT }}/.my_etc/.htpasswd" >> public/.htaccess
           echo "Require valid-user" >> public/.htaccess
