@@ -19,6 +19,25 @@ interface Satellite {
   lastColorSwitch: number // Nueva propiedad
 }
 
+// Modificar la interfaz Wave
+interface Wave {
+  x: number
+  y: number
+  z: number
+  radius: number
+  maxRadius: number
+  startTime: number
+  duration: number
+  color: string
+  sourceX: number // Nueva propiedad para el origen del rayo
+  sourceY: number
+  sourceZ: number
+  progress: number // Nueva propiedad para la animación
+  targetX: number // Nueva propiedad para el destino
+  targetY: number
+  targetZ: number
+}
+
 interface DataBackgroundProps {
   isContentLoaded: boolean
 }
@@ -29,6 +48,7 @@ const DataBackground: React.FC<DataBackgroundProps> = ({ isContentLoaded }) => {
   const pointsRef = useRef<Point[]>([])
   const rotationRef = useRef({ y: 0 })
   const satellitesRef = useRef<Satellite[]>([])
+  const wavesRef = useRef<Wave[]>([])
 
   const AXIS_TILT = 23.5
   const ROTATION_SPEED = -0.2
@@ -127,6 +147,40 @@ const DataBackground: React.FC<DataBackgroundProps> = ({ isContentLoaded }) => {
     []
   )
 
+  // Reemplazar la función drawRay por drawGlowingSphere
+  const drawGlowingSphere = useCallback(
+    (
+      ctx: CanvasRenderingContext2D,
+      x: number,
+      y: number,
+      radius: number,
+      color: string,
+      alpha: number
+    ) => {
+      // Crear gradiente radial para el efecto de brillo
+      const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius)
+      gradient.addColorStop(0, `${color}`)
+      gradient.addColorStop(0.4, `${color}88`) // 88 es para 50% de transparencia
+      gradient.addColorStop(1, `${color}00`) // 00 es para transparencia total
+
+      ctx.save()
+      ctx.globalAlpha = alpha
+
+      // Efecto de resplandor
+      ctx.shadowColor = color
+      ctx.shadowBlur = radius * 0.5
+
+      // Dibujar esfera brillante
+      ctx.beginPath()
+      ctx.arc(x, y, radius, 0, Math.PI * 2)
+      ctx.fillStyle = gradient
+      ctx.fill()
+
+      ctx.restore()
+    },
+    []
+  )
+
   const draw = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -136,6 +190,7 @@ const DataBackground: React.FC<DataBackgroundProps> = ({ isContentLoaded }) => {
 
     const width = window.innerWidth
     const height = window.innerHeight
+    const now = performance.now()
 
     // Ajustar el canvas al DPI del dispositivo
     const dpr = window.devicePixelRatio || 1
@@ -150,7 +205,7 @@ const DataBackground: React.FC<DataBackgroundProps> = ({ isContentLoaded }) => {
 
     // Crear un array con todos los elementos renderizables
     const renderableElements: Array<{
-      type: 'point' | 'satellite'
+      type: 'point' | 'satellite' | 'wave'
       z: number
       render: () => void
     }> = []
@@ -183,16 +238,47 @@ const DataBackground: React.FC<DataBackgroundProps> = ({ isContentLoaded }) => {
       })
     })
 
-    // Agregar satélites al array de renderizado
+    // Modificar en la sección donde se manejan los satélites
     satellitesRef.current.forEach(satellite => {
       const now = performance.now()
-      // Cambiar colores cada 2 segundos
-      const randTime = Math.random() * 2000 + 1000
+      const randTime = Math.random() * 2000 + Math.random() * 2000 + 1000
+
       if (now - satellite.lastColorSwitch > randTime) {
         satellite.colorSwitch = !satellite.colorSwitch
         satellite.lastColorSwitch = now
-      }
 
+        // Calcular posición del satélite considerando la rotación
+        const orbitAngle = now * satellite.orbitSpeed
+        const satX = satellite.x * Math.cos(orbitAngle) + satellite.z * Math.sin(orbitAngle)
+        const satZ = -satellite.x * Math.sin(orbitAngle) + satellite.z * Math.cos(orbitAngle)
+
+        // Calcular punto de impacto en la esfera
+        const radius = Math.sqrt(satX * satX + satellite.y * satellite.y + satZ * satZ)
+        const scale = 0.5 // Factor de escala para el punto de impacto
+        const impactX = (satX * scale) / radius
+        const impactY = (satellite.y * scale) / radius
+        const impactZ = (satZ * scale) / radius
+
+        // Crear una nueva onda en el punto de impacto
+        wavesRef.current.push({
+          x: impactX * satellite.orbitRadius,
+          y: impactY * satellite.orbitRadius,
+          z: impactZ * satellite.orbitRadius,
+          radius: 0,
+          maxRadius: 100,
+          startTime: now,
+          duration: 3000,
+          color: '#fd5304',
+          progress: 0,
+          sourceX: satX,
+          sourceY: satellite.y,
+          sourceZ: satZ,
+          targetX: impactX * satellite.orbitRadius,
+          targetY: impactY * satellite.orbitRadius,
+          targetZ: impactZ * satellite.orbitRadius
+        })
+      }
+      // ... resto del código existente
       const orbitAngle = now * satellite.orbitSpeed
       const x = satellite.x * Math.cos(orbitAngle) + satellite.z * Math.sin(orbitAngle)
       const z = -satellite.x * Math.sin(orbitAngle) + satellite.z * Math.cos(orbitAngle)
@@ -213,6 +299,79 @@ const DataBackground: React.FC<DataBackgroundProps> = ({ isContentLoaded }) => {
       })
     })
 
+    // Procesar y eliminar ondas antiguas
+    wavesRef.current = wavesRef.current.filter(wave => {
+      const elapsed = now - wave.startTime
+      return elapsed < wave.duration
+    })
+
+    // Modificar en la sección de renderizado de ondas
+    wavesRef.current.forEach(wave => {
+      const progress = Math.max(0, Math.min(1, (now - wave.startTime) / wave.duration))
+      wave.progress = progress // Actualizar el progreso
+      const currentRadius = Math.max(0, wave.radius + wave.maxRadius * progress)
+
+      renderableElements.push({
+        type: 'wave',
+        z: wave.z,
+        render: () => {
+          // Calcular posición en pantalla del punto de impacto
+          const screenX = width / 2 + wave.x * Math.cos(angle) + wave.z * Math.sin(angle)
+          const screenY = height / 2 + wave.y
+
+          // Solo dibujar si el radio es positivo
+          if (currentRadius > 0) {
+            // Dibujar la onda
+            ctx.beginPath()
+            ctx.arc(screenX, screenY, currentRadius, 0, Math.PI * 2)
+            ctx.strokeStyle = wave.color
+            ctx.lineWidth = 2 * (1 - progress)
+            ctx.globalAlpha = 0.5 * (1 - progress)
+            ctx.stroke()
+
+            // Animar esferas brillantes
+            if (progress < 0.2) {
+              // Calcular posición en pantalla del satélite fuente
+              const sourceScreenX =
+                width / 2 + wave.sourceX * Math.cos(angle) + wave.sourceZ * Math.sin(angle)
+              const sourceScreenY = height / 2 + wave.sourceY
+
+              // Interpolar posición de la esfera brillante
+              const sphereProgress = progress * 5 // Multiplicar por 5 para que la animación sea más rápida
+              const sphereX = sourceScreenX + (screenX - sourceScreenX) * sphereProgress
+              const sphereY = sourceScreenY + (screenY - sourceScreenY) * sphereProgress
+
+              // Dibujar esfera brillante principal
+              drawGlowingSphere(
+                ctx,
+                sphereX,
+                sphereY,
+                20 * (1 - sphereProgress * 0.5), // Reducir tamaño gradualmente
+                wave.color,
+                1.0
+              )
+
+              // Estela de la esfera (efecto trail)
+              for (let i = 0; i < 3; i++) {
+                const trailProgress = Math.max(0, sphereProgress - i * 0.1)
+                const trailX = sourceScreenX + (screenX - sourceScreenX) * trailProgress
+                const trailY = sourceScreenY + (screenY - sourceScreenY) * trailProgress
+
+                drawGlowingSphere(
+                  ctx,
+                  trailX,
+                  trailY,
+                  15 * (1 - trailProgress * 0.5),
+                  wave.color,
+                  0.3 - i * 0.1
+                )
+              }
+            }
+          }
+        }
+      })
+    })
+
     // Ordenar todos los elementos por Z y renderizar
     renderableElements
       .sort((a, b) => b.z - a.z)
@@ -224,7 +383,7 @@ const DataBackground: React.FC<DataBackgroundProps> = ({ isContentLoaded }) => {
     // Actualizar rotación
     rotationRef.current.y -= ROTATION_SPEED
     animationRef.current = requestAnimationFrame(draw)
-  }, [drawSmartphone])
+  }, [drawSmartphone, drawGlowingSphere])
 
   useEffect(() => {
     if (!isContentLoaded || !canvasRef.current) return

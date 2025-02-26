@@ -17,7 +17,6 @@ import ColorGrid from '../components/ColorGrid/index.tsx'
 import FaqSection from '../components/FaqSection'
 import LazyVideoPlayer from '../components/LazyVideoPlayer'
 import PressCarousel, { PressCarouselProps } from '../components/PressCarousel'
-import ProgressReveal from '../components/ProgressReveal/index.tsx'
 import SlideShow from '../components/SlideShow/index.tsx'
 import Slide from '../components/SlideShow/Slide.tsx'
 import TestimonialsCarousel from '../components/TestimonialsCarousel'
@@ -226,41 +225,38 @@ function Index() {
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-4 flex flex-col justify-center">
-              <ProgressReveal>
-                <h1 className="text-5xl font-bold text-pumpkin-orange mb-4">
-                  <span className="bg-white">
-                    {t('Conoce qué piensan tus clientes sobre tu negocio')}
-                  </span>
-                </h1>
-                <p className="text-md text-iris-purple font-semibold mb-8">
-                  <span className="bg-white">
-                    {t('Mejora tu bar o restaurante con datos reales')}
-                  </span>
-                </p>
-              </ProgressReveal>
+              <h1 className="text-5xl font-bold text-pumpkin-orange mb-4">
+                <span className="bg-white">
+                  {t('Conoce qué piensan tus clientes sobre tu negocio')}
+                </span>
+              </h1>
+              <p className="text-md text-iris-purple font-semibold mb-8">
+                <span className="bg-white">
+                  {t('Mejora tu bar o restaurante con datos reales')}
+                </span>
+              </p>
+
               <div className="space-y-4 mb-8">
-                <ProgressReveal>
-                  <div className="flex items-start gap-3">
-                    <span className="bg-white">
-                      {t('✅ Toma decisiones basadas en las opiniones de tus clientes.')}
-                    </span>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="bg-white">
-                      {t('✅ Impulsa la lealtad mediante recompensas.')}
-                    </span>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="bg-white">
-                      {t(
-                        '✅ Haz que tus promociones lleguen a más gente gracias a nuestra comunidad.'
-                      )}
-                    </span>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="bg-white">{t('✅ Acceso inmediato a datos clave.')}</span>
-                  </div>
-                </ProgressReveal>
+                <div className="flex items-start gap-3">
+                  <span className="bg-white">
+                    {t('✅ Toma decisiones basadas en las opiniones de tus clientes.')}
+                  </span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="bg-white">
+                    {t('✅ Impulsa la lealtad mediante recompensas.')}
+                  </span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="bg-white">
+                    {t(
+                      '✅ Haz que tus promociones lleguen a más gente gracias a nuestra comunidad.'
+                    )}
+                  </span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="bg-white">{t('✅ Acceso inmediato a datos clave.')}</span>
+                </div>
               </div>
               <div className="flex items-center justify-start mt-4">
                 <a href="/#demo-schedule" className={MenuItemCTA}>
@@ -313,41 +309,39 @@ function Index() {
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12">
             <div>
-              <ProgressReveal>
-                <h2 className="text-iris-purple font-bold mb-4 text-md">
-                  {t('Toda información que necesitas sobre tu negocio y clientes')}
-                </h2>
-                <h3 className="text-4xl font-bold text-pumpkin-orange mb-6">
-                  {t('Beneficios para tu bar o restaurante')}
-                </h3>
-              </ProgressReveal>
-              <ProgressReveal>
-                <p className=" mb-2">
-                  {t(
-                    '✅ Opiniones verificadas y reales. Solo clientes que han visitado tu local pueden opinar.'
-                  )}
-                </p>
-                <p className=" mb-2">
-                  {t(
-                    '✅ Datos que realmente importan. Descubre información clave sobre tu negocio, clientes y servicio.'
-                  )}
-                </p>
-                <p className=" mb-2">
-                  {t(
-                    '✅ Mejora lo que necesites. Identifica qué está funcionando y qué podrías mejorar.'
-                  )}
-                </p>
-                <p className=" mb-2">
-                  {t(
-                    '✅ Decisiones basadas en datos. Olvídate de intuiciones: actúa con información clara y útil.'
-                  )}
-                </p>
-                <p className=" mb-8">
-                  {t(
-                    '✅ Fácil, rápido y sin complicaciones. Sin instalaciones complejas ni pérdida de tiempo.'
-                  )}
-                </p>
-              </ProgressReveal>
+              <h2 className="text-iris-purple font-bold mb-4 text-md">
+                {t('Toda información que necesitas sobre tu negocio y clientes')}
+              </h2>
+              <h3 className="text-4xl font-bold text-pumpkin-orange mb-6">
+                {t('Beneficios para tu bar o restaurante')}
+              </h3>
+
+              <p className=" mb-2">
+                {t(
+                  '✅ Opiniones verificadas y reales. Solo clientes que han visitado tu local pueden opinar.'
+                )}
+              </p>
+              <p className=" mb-2">
+                {t(
+                  '✅ Datos que realmente importan. Descubre información clave sobre tu negocio, clientes y servicio.'
+                )}
+              </p>
+              <p className=" mb-2">
+                {t(
+                  '✅ Mejora lo que necesites. Identifica qué está funcionando y qué podrías mejorar.'
+                )}
+              </p>
+              <p className=" mb-2">
+                {t(
+                  '✅ Decisiones basadas en datos. Olvídate de intuiciones: actúa con información clara y útil.'
+                )}
+              </p>
+              <p className=" mb-8">
+                {t(
+                  '✅ Fácil, rápido y sin complicaciones. Sin instalaciones complejas ni pérdida de tiempo.'
+                )}
+              </p>
+
               <div className="flex items-center justify-start">
                 <a href="/#demo-schedule" className={MenuItemCTA}>
                   {t('Quiero probarlo gratis')}
@@ -466,38 +460,35 @@ function Index() {
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-4 flex flex-col justify-center">
-              <ProgressReveal>
-                <h2 className="text-5xl font-bold text-iris-purple mb-4">
-                  {t('Empieza a obtener datos de tu local hoy mismo')}
-                </h2>
-                <div className="flex items-start">
-                  <p className="">
-                    <span className="font-bold mr-1">{t('Solicita tu demo gratis.')}</span>
-                    <span>
-                      {t(
-                        'Durante la reunión te presentaremos cómo podemos ayudar a tu negocio a diferenciarse y generar más resultados.'
-                      )}
-                    </span>
-                  </p>
-                </div>
-              </ProgressReveal>
-              <ProgressReveal>
-                <div className="flex items-start gap-3">
-                  <p className="">{t('✅ Datos')}</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <p className="">{t('✅ Reseñas')}</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <p className="">{t('✅ Feedback')}</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <p className="">{t('✅ Recurrencia')}</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <p className="">{t('✅ Nuevos clientes')}</p>
-                </div>
-              </ProgressReveal>
+              <h2 className="text-5xl font-bold text-iris-purple mb-4">
+                {t('Empieza a obtener datos de tu local hoy mismo')}
+              </h2>
+              <div className="flex items-start">
+                <p className="">
+                  <span className="font-bold mr-1">{t('Solicita tu demo gratis.')}</span>
+                  <span>
+                    {t(
+                      'Durante la reunión te presentaremos cómo podemos ayudar a tu negocio a diferenciarse y generar más resultados.'
+                    )}
+                  </span>
+                </p>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <p className="">{t('✅ Datos')}</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <p className="">{t('✅ Reseñas')}</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <p className="">{t('✅ Feedback')}</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <p className="">{t('✅ Recurrencia')}</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <p className="">{t('✅ Nuevos clientes')}</p>
+              </div>
             </div>
             <div className="relative">
               <CalendlyInline />
@@ -530,32 +521,30 @@ function Index() {
           </h2>
           <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-4 flex flex-col justify-center">
-              <ProgressReveal>
-                <div className="flex flex-col space-y-3">
-                  <p className="">
-                    <span>
-                      {t(
-                        'Descubre en detalle cómo oQuanta puede ayudarte a mejorar tu negocio con datos reales y opiniones verificadas.'
-                      )}
-                    </span>
-                  </p>
-                  <p className="">
-                    <span>{t('Descarga nuestro dossier gratuito y entérate de todo:')}</span>
-                  </p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <p className="">{t('✅ Cómo funciona paso a paso.')}</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <p className="">{t('✅ Qué datos puedes obtener.')}</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <p className="">{t('✅ Beneficios específicos para tu negocio.')}</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <p className="">{t('✅ Casos de éxito de otros hosteleros.')}</p>
-                </div>
-              </ProgressReveal>
+              <div className="flex flex-col space-y-3">
+                <p className="">
+                  <span>
+                    {t(
+                      'Descubre en detalle cómo oQuanta puede ayudarte a mejorar tu negocio con datos reales y opiniones verificadas.'
+                    )}
+                  </span>
+                </p>
+                <p className="">
+                  <span>{t('Descarga nuestro dossier gratuito y entérate de todo:')}</span>
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <p className="">{t('✅ Cómo funciona paso a paso.')}</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <p className="">{t('✅ Qué datos puedes obtener.')}</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <p className="">{t('✅ Beneficios específicos para tu negocio.')}</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <p className="">{t('✅ Casos de éxito de otros hosteleros.')}</p>
+              </div>
             </div>
             <div className="relative">
               <div className="aspect-[4/3] bg-black-30 rounded-lg">
