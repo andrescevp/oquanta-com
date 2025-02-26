@@ -1,5 +1,16 @@
-import * as d3 from 'd3'
 import React, { useEffect, useRef, useCallback } from 'react'
+
+interface Point {
+  x: number
+  y: number
+  z: number
+  size: number
+  color: string
+}
+
+interface DataBackgroundProps {
+  isContentLoaded: boolean
+}
 
 const qrCodeIcon = `<svg version="1.1" id="Capa_1" height="24px" width="24px" viewBox="0 0 330 330">
 <g>
@@ -37,244 +48,129 @@ const qrCodeIcon = `<svg version="1.1" id="Capa_1" height="24px" width="24px" vi
 </g>
 </svg>`
 
-interface DataBackgroundProps {
-  isContentLoaded: boolean
-}
-
 const DataBackground: React.FC<DataBackgroundProps> = ({ isContentLoaded }) => {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number>()
-  const rotationRef = useRef({ x: 0, y: 0, z: 0 })
+  const pointsRef = useRef<Point[]>([])
+  const rotationRef = useRef({ y: 0 })
 
-  const AXIS_TILT = 23.5 // Inclinación del eje terrestre en grados
-  const ROTATION_SPEED = -0.2 // Velocidad de rotación negativa para girar de derecha a izquierda
+  const AXIS_TILT = 23.5
+  const ROTATION_SPEED = -0.2
 
-  // Función para actualizar el tamaño y posición
-  const updateDimensions = useCallback(() => {
-    if (!containerRef.current) return
+  const generatePoints = useCallback((size: number) => {
+    const points: Point[] = []
+    const numPoints = 3000
+    const phi = Math.PI * (3 - Math.sqrt(5))
 
-    const container = d3.select(containerRef.current)
-    const width = window.innerWidth
-    const height = window.innerHeight
-    const minSize = 500 // Diámetro mínimo
-    const maxSize = Math.min(width, height) * 0.6 // 60% de la dimensión más pequeña
-    const size = Math.max(minSize, maxSize)
+    const colorPalette = [
+      ['#1d1d1b', '#5b5a57', '#b8b6b2'],
+      ['#5a33ee', '#876AEF', '#CBBDF1'],
+      ['#fd5304', '#fc8146', '#fbc6ab'],
+      ['#c0f03e', '#D0F270', '#E9F5BD']
+    ]
 
-    // Actualizar tamaño del SVG
-    const svg = container.select('svg').attr('width', width).attr('height', height)
+    for (let i = 0; i < numPoints; i++) {
+      const y = 1 - (i / (numPoints - 1)) * 2
+      const radius = Math.sqrt(1 - y * y)
+      const theta = phi * i
 
-    // Actualizar posición del grupo central
-    const centerGroup = svg.select('g').attr('transform', `translate(${width / 2},${height / 2})`)
+      const x = Math.cos(theta) * radius
+      const z = Math.sin(theta) * radius
 
-    // Actualizar escala de la esfera
-    const sphereGroup = centerGroup.select('g')
-    const scale = size / maxSize
-    sphereGroup.attr('transform', `scale(${scale})`)
+      const randomGroup = colorPalette[Math.floor(Math.random() * colorPalette.length)]
+      const color = randomGroup[Math.floor(Math.random() * randomGroup.length)]
+
+      points.push({
+        x: x * (size / 2),
+        y: y * (size / 2),
+        z: z * (size / 2),
+        size: Math.random() * 2 + 1,
+        color
+      })
+    }
+
+    return points
   }, [])
 
-  // Efecto para manejar el redimensionamiento
-  useEffect(() => {
-    const handleResize = debounce(() => {
-      updateDimensions()
-    }, 250)
+  const draw = useCallback(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
 
-    window.addEventListener('resize', handleResize)
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const width = window.innerWidth
+    const height = window.innerHeight
+
+    // Ajustar el canvas al DPI del dispositivo
+    const dpr = window.devicePixelRatio || 1
+    canvas.width = width * dpr
+    canvas.height = height * dpr
+    ctx.scale(dpr, dpr)
+
+    ctx.clearRect(0, 0, width, height)
+
+    const angle = ((rotationRef.current.y % 360) * Math.PI) / 180
+    const tiltAngle = (AXIS_TILT * Math.PI) / 180
+
+    // Ordenar puntos por Z para correcto rendering 3D
+    const sortedPoints = [...pointsRef.current].sort((a, b) => b.z - a.z)
+
+    sortedPoints.forEach(point => {
+      // Aplicar rotaciones
+      const x = point.x
+      const y = point.y * Math.cos(tiltAngle) - point.z * Math.sin(tiltAngle)
+      const z = point.y * Math.sin(tiltAngle) + point.z * Math.cos(tiltAngle)
+
+      const newX = x * Math.cos(angle) + z * Math.sin(angle)
+      const newZ = -x * Math.sin(angle) + z * Math.cos(angle)
+
+      // Calcular posición en pantalla
+      const screenX = width / 2 + newX
+      const screenY = height / 2 + y
+
+      // Calcular opacidad y tamaño basado en Z
+      const opacity = 0.15 + (1 - Math.abs(newZ) / (height / 2)) * 0.85
+      const size = point.size * (1 + newZ / (height * 1.5))
+
+      // Dibujar punto
+      ctx.beginPath()
+      ctx.arc(screenX, screenY, size, 0, Math.PI * 2)
+      ctx.fillStyle = point.color
+      ctx.globalAlpha = opacity
+      ctx.fill()
+    })
+
+    // Actualizar rotación
+    rotationRef.current.y -= ROTATION_SPEED
+    animationRef.current = requestAnimationFrame(draw)
+  }, [])
+
+  useEffect(() => {
+    if (!isContentLoaded || !canvasRef.current) return
+
+    const width = window.innerWidth
+    const height = window.innerHeight
+    const size = Math.max(500, Math.min(width, height) * 0.6)
+
+    pointsRef.current = generatePoints(size)
+    draw()
+
     return () => {
-      window.removeEventListener('resize', handleResize)
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
     }
-  }, [updateDimensions])
-
-  useEffect(() => {
-    if (!isContentLoaded || !containerRef.current) return
-
-    try {
-      const container = d3.select(containerRef.current)
-      const width = window.innerWidth
-      const height = window.innerHeight
-      const minSize = 500 // Minimum diameter
-      const maxSize = Math.min(width, height) * 0.6 // 60% of smallest screen dimension
-      const size = Math.max(minSize, maxSize) // Use larger of min size or max size
-
-      container.selectAll('svg').remove()
-
-      const svg = container
-        .append('svg')
-        .attr('width', width)
-        .attr('height', height)
-        .style('position', 'fixed')
-        .style('top', 0)
-        .style('left', 0)
-        .style('z-index', -1)
-
-      const centerGroup = svg.append('g').attr('transform', `translate(${width / 2},${height / 2})`)
-
-      // Generar puntos distribuidos uniformemente en la esfera
-      const points = []
-      const numPoints = 3000 // Aumentamos la cantidad de puntos de 500 a 1000
-      const phi = Math.PI * (3 - Math.sqrt(5)) // ángulo áureo
-
-      for (let i = 0; i < numPoints; i++) {
-        const y = 1 - (i / (numPoints - 1)) * 2
-        const radius = Math.sqrt(1 - y * y)
-        const theta = phi * i
-
-        const x = Math.cos(theta) * radius
-        const z = Math.sin(theta) * radius
-
-        points.push({
-          x: x * (size / 2),
-          y: y * (size / 2),
-          z: z * (size / 2),
-          size: Math.random() * 2 + 1
-        })
-      }
-
-      const sphereGroup = centerGroup.append('g')
-
-      // Función para calcular la opacidad basada en la profundidad Z
-      const calculateOpacity = (z: number) => {
-        return 0.15 + (1 - Math.abs(z) / (size / 2)) * 0.85
-      }
-
-      // Definir paleta de colores
-      const colorPalette = [
-        ['#1d1d1b', '#5b5a57', '#b8b6b2'], // black
-        ['#5a33ee', '#876AEF', '#CBBDF1'], // iris-purple
-        ['#fd5304', '#fc8146', '#fbc6ab'], // pumpkin-orange
-        ['#c0f03e', '#D0F270', '#E9F5BD'] // lime-green
-      ]
-
-      // Añadir puntos con efecto de profundidad y colores aleatorios de la paleta
-      points.forEach(point => {
-        const randomGroup = colorPalette[Math.floor(Math.random() * colorPalette.length)]
-        const fillColor = randomGroup[Math.floor(Math.random() * randomGroup.length)]
-
-        sphereGroup
-          .append('circle')
-          .attr('cx', point.x)
-          .attr('cy', point.y)
-          .attr('r', point.size)
-          .attr('fill', fillColor)
-          .style('opacity', calculateOpacity(point.z))
-      })
-
-      // Añadir órbitas de QR
-      const numOrbits = 4
-      const qrPerOrbit = 7
-      const orbitAnimations: number[] = [] // Array para guardar las referencias de animación
-
-      for (let orbit = 0; orbit < numOrbits; orbit++) {
-        const orbitRadius = (size / 2) * (1.2 + orbit * 0.3)
-        const orbitGroup = centerGroup.append('g')
-
-        // Crear QRs en la órbita
-        for (let i = 0; i < qrPerOrbit; i++) {
-          const angle = (i / qrPerOrbit) * Math.PI * 2
-          const x = Math.cos(angle) * orbitRadius
-          const y = Math.sin(angle) * orbitRadius
-
-          const qrGroup = orbitGroup.append('g').attr('transform', `translate(${x},${y})`)
-
-          qrGroup
-            .append('g')
-            .html(qrCodeIcon)
-            .attr('fill', colorPalette[orbit][0])
-            .style('opacity', 0.8)
-        }
-
-        // Función mejorada para la animación de la órbita
-        const rotationSpeed = 0.2 - orbit * 0.05 // Velocidad más suave
-        let rotation = 90
-
-        function updateOrbitRotation() {
-          rotation += rotationSpeed
-          orbitGroup.attr('transform', `rotate(${rotation})`)
-          orbitAnimations[orbit] = requestAnimationFrame(updateOrbitRotation)
-        }
-
-        updateOrbitRotation()
-      }
-
-      function updateRotation() {
-        // Decrementar el ángulo de rotación para girar de derecha a izquierda
-        rotationRef.current.y -= ROTATION_SPEED
-
-        // Aplicar rotación con inclinación del eje y rotación sobre sí misma
-        sphereGroup.attr(
-          'transform',
-          `rotate(${AXIS_TILT}, 1, 0) rotate(${rotationRef.current.y}, 0, 1)`
-        )
-
-        // Actualizar cada punto para el efecto 3D
-        sphereGroup.selectAll('circle').each(function (d: any, i: number) {
-          const point = points[i]
-
-          // Convertir ángulo a radianes
-          const angle = ((rotationRef.current.y % 360) * Math.PI) / 180
-          const tiltAngle = (AXIS_TILT * Math.PI) / 180
-
-          // Calcular nueva posición Z con inclinación
-          const x = point.x
-          const y = point.y * Math.cos(tiltAngle) - point.z * Math.sin(tiltAngle)
-          const z = point.y * Math.sin(tiltAngle) + point.z * Math.cos(tiltAngle)
-
-          // Rotar alrededor del eje Y
-          const newX = x * Math.cos(angle) + z * Math.sin(angle)
-          const newZ = -x * Math.sin(angle) + z * Math.cos(angle)
-
-          // Aplicar efecto 3D con profundidad mejorada
-          d3.select(this)
-            .style('opacity', calculateOpacity(newZ))
-            .attr('r', point.size * (1 + newZ / (size * 1.5)))
-        })
-
-        animationRef.current = requestAnimationFrame(updateRotation)
-      }
-
-      updateRotation()
-
-      // Añadir listener para redimensionamiento
-      window.addEventListener('resize', updateDimensions)
-
-      return () => {
-        if (animationRef.current) {
-          cancelAnimationFrame(animationRef.current)
-        }
-        // Cancelar las animaciones de las órbitas
-        orbitAnimations.forEach(animationId => {
-          cancelAnimationFrame(animationId)
-        })
-        // Detener todas las animaciones de D3
-        d3.selectAll('*').interrupt()
-        container.selectAll('svg').remove()
-        window.removeEventListener('resize', updateDimensions)
-      }
-    } catch (error) {
-      console.error('Error al renderizar el fondo:', error)
-      return () => {}
-    }
-  }, [isContentLoaded, updateDimensions])
-
-  // Función de utilidad para debounce
-  function debounce(fn: Function, ms: number) {
-    let timer: NodeJS.Timeout
-    return (...args: any[]) => {
-      clearTimeout(timer)
-      timer = setTimeout(() => fn.apply(this, args), ms)
-    }
-  }
+  }, [isContentLoaded, generatePoints, draw])
 
   return (
-    <div
-      ref={containerRef}
+    <canvas
+      ref={canvasRef}
       className="fixed inset-0 overflow-hidden pointer-events-none"
       style={{
         zIndex: -1,
-        perspective: '1000px',
-        perspectiveOrigin: 'center',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
+        width: '100%',
+        height: '100%'
       }}
       aria-hidden="true"
     />
