@@ -15,7 +15,8 @@ export const routes: RouteRecord[] = [
     children: [
       {
         index: true,
-        Component: React.lazy(() => import('./pages/Index'))
+        Component: React.lazy(() => import('./pages/Index')),
+        getStaticPaths: () => ['/', '/#beneficios']
       },
       {
         path: '/contact',
@@ -44,14 +45,9 @@ export const routes: RouteRecord[] = [
 
 export const createRoot = ViteReactSSG(
   // react-router-dom data routes
-  { routes }
-  // (context: ViteReactSSGContext<true>) => {
-  //   const { routes } = context
-  //   console.log(routes)
-  //   routes.forEach((route) => {
-  //     route.children?.forEach((child) => {
-  //       console.log(child)
-  //     })
-  //   });
-  // },
+  { routes },
+  // function to have custom setups
+  ({ router, routes, isClient, initialState, routerType, routePath }) => {
+    console.log(router, routes, isClient, initialState, routerType, routePath)
+  }
 )

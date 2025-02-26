@@ -1,4 +1,4 @@
-import { BarChart2, CheckCircle2, ClipboardEdit, Instagram, QrCode as QrCodeIcon } from 'lucide-react'
+import { BarChart2, ClipboardEdit, Instagram, QrCode as QrCodeIcon } from 'lucide-react'
 import React, { useEffect, useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import LazyLoad from 'react-lazy-load'
@@ -6,27 +6,36 @@ import { JsonLd } from 'react-schemaorg'
 import {
   WebSite as WebSiteSchema,
   WebPage as WebPageSchema,
-  Service as ServiceSchema,
-  Menu,
-  MenuItem
+  Service as ServiceSchema
 } from 'schema-dts'
 
 import whyOquantaVideo from '../../videos/how-works.mp4?h=450&format=webm'
 import clientData, { images as clientImages } from '../ClientData.ts'
 import clientTestimonies from '../ClientTestimonies.ts'
 import CalendlyInline from '../components/CalendlyInline'
+import ColorGrid from '../components/ColorGrid/index.tsx'
 import FaqSection from '../components/FaqSection'
 import LazyVideoPlayer from '../components/LazyVideoPlayer'
 import PressCarousel, { PressCarouselProps } from '../components/PressCarousel'
+import ProgressReveal from '../components/ProgressReveal/index.tsx'
+import SlideShow from '../components/SlideShow/index.tsx'
+import Slide from '../components/SlideShow/Slide.tsx'
 import TestimonialsCarousel from '../components/TestimonialsCarousel'
 import TrustCarousel, { TrustCarouselProps } from '../components/TrustCarousel.tsx'
+import WaveBackground from '../components/WaveBackground/index.tsx'
 import { useHead } from '../context/HeadContext.tsx'
+import { useMenu } from '../context/MenuContext.tsx'
+import { MenuItemCTA, MenuItemSimpleClassName, MenuItemSpecial } from '../layout/Navbar.tsx'
 import { pressPosts as pressPostsLoaded, images as pressPostsImages } from '../PressPosts'
 
 import secondImage from './../../images/Banner-Web-B2B-1-1024x1024.png?h=450&format=webp'
 import firstImage from './../../images/Banner-Web-B2B-1024x1024.png?h=450&format=webp'
-import { MenuItemCTA, MenuItemSimpleClassName, MenuItemSpecial } from '../layout/Navbar.tsx'
-import { useMenu } from '../context/MenuContext.tsx'
+import reportPhone1 from './../../images/report-phone-1.png?h=450&format=webp'
+import reportPhone2 from './../../images/report-phone-2.png?h=450&format=webp'
+import surveyPhone1 from './../../images/survey-phone-1.png?h=450&format=webp'
+import surveyPhone2 from './../../images/survey-phone-2.png?h=450&format=webp'
+
+const DataBackground = React.lazy(() => import('../components/DataBackground.tsx'))
 
 function Index() {
   const { updateHead } = useHead()
@@ -34,55 +43,64 @@ function Index() {
   const [pressPosts, setPressPosts] = useState<PressCarouselProps['posts']>()
   const [testimonies, setTestimonies] = useState<string[]>()
   const { t } = useTranslation()
+  const [isContentLoaded, setIsContentLoaded] = useState(false)
 
-  const menuItems = useMemo(() => [
-    {
-      children: t('Beneficios'),
-      href: '/#beneficios',
-      className: MenuItemSpecial,
-      position: 'left'
-    },
-    {
-      children: t('Cómo Funciona?'),
-      href: '/#como-funciona',
-      className: MenuItemSpecial,
-      position: 'left'
-    },
-    {
-      children: t('Testimonios'),
-      href: '/#testimonios',
-      className: MenuItemSpecial,
-      position: 'left'
-    },
-    {
-      children: t('Noticias'),
-      href: '/#noticias',
-      className: MenuItemSpecial,
-      position: 'left'
-    },
-    {
-      children: t('Blog'),
-      href: '/blog',
-      className: MenuItemSpecial,
-      position: 'right'
-    },
-    {
-      children: t('Prueba Gratis'),
-      href: '/contact',
-      className: MenuItemCTA,
-      allwaysVisible: true,
-      position: 'right'
-    },
-    {
-      children: <><span className="sr-only">{t('Instagram')}</span><Instagram className="w-5 h-5" /></>,
-      href: 'https://instagram.com/oquanta_es',
-      className: MenuItemSimpleClassName,
-      target: '_blank',
-      rel: 'noopener noreferrer',
-      allwaysVisible: true,
-      position: 'right'
-    }
-  ], [t])
+  const menuItems = useMemo(
+    () => [
+      {
+        children: t('Beneficios'),
+        href: '/#beneficios',
+        className: MenuItemSpecial,
+        position: 'left'
+      },
+      {
+        children: t('Cómo Funciona?'),
+        href: '/#como-funciona',
+        className: MenuItemSpecial,
+        position: 'left'
+      },
+      {
+        children: t('Testimonios'),
+        href: '/#testimonios',
+        className: MenuItemSpecial,
+        position: 'left'
+      },
+      {
+        children: t('Noticias'),
+        href: '/#noticias',
+        className: MenuItemSpecial,
+        position: 'left'
+      },
+      {
+        children: t('Blog'),
+        href: '/blog',
+        className: MenuItemSpecial,
+        position: 'right'
+      },
+      {
+        children: t('Prueba Gratis'),
+        href: '/#demo-schedule',
+        className: MenuItemCTA,
+        allwaysVisible: true,
+        position: 'right'
+      },
+      {
+        children: (
+          <>
+            <span className="sr-only">{t('Instagram')}</span>
+            <Instagram className="w-5 h-5" />
+          </>
+        ),
+        href: 'https://instagram.com/oquanta_es',
+        className: MenuItemSimpleClassName,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        allwaysVisible: true,
+        position: 'right'
+      }
+    ],
+    [t]
+  )
 
   useMenu(menuItems as never[])
 
@@ -93,6 +111,20 @@ function Index() {
     ),
     canonicalLink: 'https://www.oquanta.com/'
   })
+
+  useEffect(() => {
+    // Detectar cuando el contenido principal está cargado
+    const handleLoad = () => {
+      setIsContentLoaded(true)
+    }
+
+    if (document.readyState === 'complete') {
+      handleLoad()
+    } else {
+      window.addEventListener('load', handleLoad)
+      return () => window.removeEventListener('load', handleLoad)
+    }
+  }, [])
 
   useEffect(() => {
     if (!logos) {
@@ -186,63 +218,89 @@ function Index() {
         }}
       />
 
-      <section className="pt-4 pb-16 px-4 " id="why-oquanta">
+      <React.Suspense fallback={<div className="min-h-[50vh]" />}>
+        <DataBackground isContentLoaded={isContentLoaded} />
+      </React.Suspense>
+
+      <section className="pt-4 pb-16 px-4 bg-white/80" id="why-oquanta">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12">
-            <div>
-              <h1 className="text-5xl font-bold text-pumpkin-orange mb-4">
-                {t('Conoce qué piensan tus clientes sobre tu negocio')}
-              </h1>
-              <p className="text-md text-iris-purple font-semibold mb-8">
-                {t('Mejora tu bar o restaurante con datos reales')}
-              </p>
+            <div className="space-y-4 flex flex-col justify-center">
+              <ProgressReveal>
+                <h1 className="text-5xl font-bold text-pumpkin-orange mb-4">
+                  <span className="bg-white">
+                    {t('Conoce qué piensan tus clientes sobre tu negocio')}
+                  </span>
+                </h1>
+                <p className="text-md text-iris-purple font-semibold mb-8">
+                  <span className="bg-white">
+                    {t('Mejora tu bar o restaurante con datos reales')}
+                  </span>
+                </p>
+              </ProgressReveal>
               <div className="space-y-4 mb-8">
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-lime-green mt-1 flex-shrink-0" />
-                  <p className="text-black-60">
-                    {t('Toma decisiones basadas en las opiniones de tus clientes.')}
-                  </p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-lime-green mt-1 flex-shrink-0" />
-                  <p className="text-black-60">{t('Impulsa la lealtad mediante recompensas.')}</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-lime-green mt-1 flex-shrink-0" />
-                  <p className="text-black-60">
-                    {t('Haz que tus promociones lleguen a más gente gracias a nuestra comunidad.')}
-                  </p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-lime-green mt-1 flex-shrink-0" />
-                  <p className="text-black-60">{t('Acceso inmediato a datos clave.')}</p>
-                </div>
+                <ProgressReveal>
+                  <div className="flex items-start gap-3">
+                    <span className="bg-white">
+                      {t('✅ Toma decisiones basadas en las opiniones de tus clientes.')}
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="bg-white">
+                      {t('✅ Impulsa la lealtad mediante recompensas.')}
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="bg-white">
+                      {t(
+                        '✅ Haz que tus promociones lleguen a más gente gracias a nuestra comunidad.'
+                      )}
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="bg-white">{t('✅ Acceso inmediato a datos clave.')}</span>
+                  </div>
+                </ProgressReveal>
               </div>
-              <div className="flex items-center justify-start">
-                <a
-                  href="/contact"
-                  className={MenuItemCTA}
-                >
+              <div className="flex items-center justify-start mt-4">
+                <a href="/#demo-schedule" className={MenuItemCTA}>
                   {t('Prueba Gratis')}
                 </a>
               </div>
             </div>
             <div className="relative">
-              <div className="aspect-[4/3] bg-black-30 rounded-lg">
-                <LazyLoad height="450px">
-                  <img
-                    src={secondImage}
-                    alt={t('Imagen de una encuesta de un bar en un dispositivo movil')}
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                </LazyLoad>
-              </div>
+              <WaveBackground width="auto" height="450px" className="rounded-lg">
+                <SlideShow width="auto" height="450px" className="rounded-lg">
+                  <Slide direction="up" duration={800}>
+                    <div className="aspect-[4/3] rounded-lg">
+                      <LazyLoad height="450px">
+                        <img
+                          src={surveyPhone1}
+                          alt={t('Imagen de una encuesta de un bar en un dispositivo movil')}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      </LazyLoad>
+                    </div>
+                  </Slide>
+                  <Slide direction="up" duration={1000}>
+                    <div className="aspect-[4/3] rounded-lg">
+                      <LazyLoad height="450px">
+                        <img
+                          src={surveyPhone2}
+                          alt={t('Imagen de una encuesta de un bar en un dispositivo movil')}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      </LazyLoad>
+                    </div>
+                  </Slide>
+                </SlideShow>
+              </WaveBackground>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-pure-white" id="our-clients">
+      <section className="py-16 px-4 bg-pure-white/70" id="our-clients">
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-4xl font-bold text-center text-pumpkin-orange mb-12">
             {t('Confían en nosotros')}
@@ -251,66 +309,84 @@ function Index() {
         </div>
       </section>
 
-      <section className="py-16 px-4" id="beneficios">
+      <section className="py-16 px-4 bg-white/80" id="beneficios">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12">
             <div>
-              <h2 className="text-iris-purple font-bold mb-4 text-md">
-                {t('Toda información que necesitas sobre tu negocio y clientes')}
-              </h2>
-              <h3 className="text-4xl font-bold text-pumpkin-orange mb-6">
-                {t('Beneficios para tu bar o restaurante')}
-              </h3>
-              <p className="text-black-60 mb-2">
-                {t(
-                  '✅ Opiniones verificadas y reales. Solo clientes que han visitado tu local pueden opinar.'
-                )}
-              </p>
-              <p className="text-black-60 mb-2">
-                {t(
-                  '✅ Datos que realmente importan. Descubre información clave sobre tu negocio, clientes y servicio.'
-                )}
-              </p>
-              <p className="text-black-60 mb-2">
-                {t(
-                  '✅ Mejora lo que necesites. Identifica qué está funcionando y qué podrías mejorar.'
-                )}
-              </p>
-              <p className="text-black-60 mb-2">
-                {t(
-                  '✅ Decisiones basadas en datos. Olvídate de intuiciones: actúa con información clara y útil.'
-                )}
-              </p>
-              <p className="text-black-60 mb-8">
-                {t(
-                  '✅ Fácil, rápido y sin complicaciones. Sin instalaciones complejas ni pérdida de tiempo.'
-                )}
-              </p>
+              <ProgressReveal>
+                <h2 className="text-iris-purple font-bold mb-4 text-md">
+                  {t('Toda información que necesitas sobre tu negocio y clientes')}
+                </h2>
+                <h3 className="text-4xl font-bold text-pumpkin-orange mb-6">
+                  {t('Beneficios para tu bar o restaurante')}
+                </h3>
+              </ProgressReveal>
+              <ProgressReveal>
+                <p className=" mb-2">
+                  {t(
+                    '✅ Opiniones verificadas y reales. Solo clientes que han visitado tu local pueden opinar.'
+                  )}
+                </p>
+                <p className=" mb-2">
+                  {t(
+                    '✅ Datos que realmente importan. Descubre información clave sobre tu negocio, clientes y servicio.'
+                  )}
+                </p>
+                <p className=" mb-2">
+                  {t(
+                    '✅ Mejora lo que necesites. Identifica qué está funcionando y qué podrías mejorar.'
+                  )}
+                </p>
+                <p className=" mb-2">
+                  {t(
+                    '✅ Decisiones basadas en datos. Olvídate de intuiciones: actúa con información clara y útil.'
+                  )}
+                </p>
+                <p className=" mb-8">
+                  {t(
+                    '✅ Fácil, rápido y sin complicaciones. Sin instalaciones complejas ni pérdida de tiempo.'
+                  )}
+                </p>
+              </ProgressReveal>
               <div className="flex items-center justify-start">
-                <a
-                  href="/contact"
-                  className={MenuItemCTA}
-                >
+                <a href="/#demo-schedule" className={MenuItemCTA}>
                   {t('Quiero probarlo gratis')}
                 </a>
               </div>
             </div>
-            <div className="relative">
-              <div className="aspect-[4/3] bg-black-30 rounded-lg">
-                <LazyLoad height="450px">
-                  <img
-                    src={firstImage}
-                    alt={t('Imagen de un reporte estadístico en un dispositivo movil')}
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                </LazyLoad>
-              </div>
+            <div className="relative flex items-center justify-center">
+              <ColorGrid width="100%" height="450px" className="rounded-lg">
+                <SlideShow width="auto" height="450px" className="rounded-lg">
+                  <Slide direction="up" duration={800}>
+                    <div className="aspect-[4/3] rounded-lg">
+                      <LazyLoad height="450px">
+                        <img
+                          src={reportPhone1}
+                          alt={t('Imagen de un reporte de un bar en un dispositivo movil')}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      </LazyLoad>
+                    </div>
+                  </Slide>
+                  <Slide direction="up" duration={1000}>
+                    <div className="aspect-[4/3] rounded-lg">
+                      <LazyLoad height="450px">
+                        <img
+                          src={reportPhone2}
+                          alt={t('Imagen de un reporte de un bar en un dispositivo movil')}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      </LazyLoad>
+                    </div>
+                  </Slide>
+                </SlideShow>
+              </ColorGrid>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-pure-white" id="como-funciona">
+      <section className="py-16 px-4 bg-pure-white/70" id="como-funciona">
         <div className="container mx-auto max-w-6xl text-center">
           <h2 className="text-4xl font-bold text-iris-purple mb-16">
             {t('¿Cómo funciona oQuanta en tu local?')}
@@ -328,7 +404,7 @@ function Index() {
                 </div>
               </div>
               <h3 className="font-bold mb-2 text-black">{t('Configura tu encuesta')}</h3>
-              <p className="text-black-60">
+              <p className="">
                 {t('Elige entre encuestas tipo o personalizadas que se adapten a tus necesidades.')}
               </p>
             </div>
@@ -344,7 +420,7 @@ function Index() {
                 </div>
               </div>
               <h3 className="font-bold mb-2 text-black">{t('Distribuye el QR en tu local')}</h3>
-              <p className="text-black-60">
+              <p className="">
                 {t('Nuestros materiales promocionales facilitan que tus clientes participen.')}
               </p>
             </div>
@@ -360,15 +436,13 @@ function Index() {
                 </div>
               </div>
               <h3 className="font-bold mb-2 text-black">{t('Recibe y analiza los datos')}</h3>
-              <p className="text-black-60">
-                {t('Accede a resultados en tiempo real y actúa de inmediato.')}
-              </p>
+              <p className="">{t('Accede a resultados en tiempo real y actúa de inmediato.')}</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-white" id="testimonios">
+      <section className="py-16 px-4 bg-white/80" id="testimonios">
         <div className="container mx-auto max-w-6xl text-center">
           <h2 className="text-4xl font-bold text-pumpkin-orange mb-16">
             {t('Testimonios reales de hosteleros')}
@@ -377,7 +451,7 @@ function Index() {
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-pure-white" id="noticias">
+      <section className="py-16 px-4 bg-pure-white/70" id="noticias">
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-4xl font-bold text-pumpkin-orange mb-16 text-center">
             {t('Últimas noticias en medios')}
@@ -388,16 +462,16 @@ function Index() {
 
       <FaqSection />
 
-      <section className="pt-4 pb-16 px-4 bg-pure-white " id="demo-schedule">
+      <section className="pt-4 pb-16 px-4 bg-pure-white/70" id="demo-schedule">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-4 flex flex-col justify-center">
-              <h1 className="text-5xl font-bold text-iris-purple mb-4">
-                {t('Empieza a obtener datos de tu local hoy mismo')}
-              </h1>
-              <div className="space-y-4 mb-8">
-                <div className="flex items-start gap-3">
-                  <p className="text-black-60">
+              <ProgressReveal>
+                <h2 className="text-5xl font-bold text-iris-purple mb-4">
+                  {t('Empieza a obtener datos de tu local hoy mismo')}
+                </h2>
+                <div className="flex items-start">
+                  <p className="">
                     <span className="font-bold mr-1">{t('Solicita tu demo gratis.')}</span>
                     <span>
                       {t(
@@ -406,22 +480,24 @@ function Index() {
                     </span>
                   </p>
                 </div>
+              </ProgressReveal>
+              <ProgressReveal>
                 <div className="flex items-start gap-3">
-                  <p className="text-black-60">{t('✅ Datos')}</p>
+                  <p className="">{t('✅ Datos')}</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <p className="text-black-60">{t('✅ Reseñas')}</p>
+                  <p className="">{t('✅ Reseñas')}</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <p className="text-black-60">{t('✅ Feedback')}</p>
+                  <p className="">{t('✅ Feedback')}</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <p className="text-black-60">{t('✅ Recurrencia')}</p>
+                  <p className="">{t('✅ Recurrencia')}</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <p className="text-black-60">{t('✅ Nuevos clientes')}</p>
+                  <p className="">{t('✅ Nuevos clientes')}</p>
                 </div>
-              </div>
+              </ProgressReveal>
             </div>
             <div className="relative">
               <CalendlyInline />
@@ -430,7 +506,7 @@ function Index() {
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-white" id="why-born">
+      <section className="py-16 px-4 bg-white/80" id="why-born">
         <div className="container mx-auto max-w-6xl text-center">
           <h2 className="text-4xl font-bold text-pumpkin-orange mb-16">
             {t('¿Por qué nació oQuanta?')}
@@ -447,43 +523,39 @@ function Index() {
         </div>
       </section>
 
-      <section className="pt-4 pb-16 px-4 bg-pure-white " id="know-more">
+      <section className="pt-4 pb-16 px-4 bg-pure-white/70" id="know-more">
         <div className="container mx-auto max-w-6xl">
-          <h1 className="text-4xl font-bold text-iris-purple mb-8 mx-auto text-center">
+          <h2 className="text-4xl font-bold text-iris-purple mb-8 mx-auto text-center">
             {t('¿Quieres saber más?')}
-          </h1>
+          </h2>
           <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-4 flex flex-col justify-center">
-              <div className="space-y-4 mb-8">
+              <ProgressReveal>
                 <div className="flex flex-col space-y-3">
-                  <p className="text-black-60">
+                  <p className="">
                     <span>
                       {t(
                         'Descubre en detalle cómo oQuanta puede ayudarte a mejorar tu negocio con datos reales y opiniones verificadas.'
                       )}
                     </span>
                   </p>
-                  <p className="text-black-60">
+                  <p className="">
                     <span>{t('Descarga nuestro dossier gratuito y entérate de todo:')}</span>
                   </p>
                 </div>
-                <div className="ml-4">
-                  <div className="flex items-start gap-3">
-                    <p className="text-black-60">{t('✅ Cómo funciona paso a paso.')}</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <p className="text-black-60">{t('✅ Qué datos puedes obtener.')}</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <p className="text-black-60">
-                      {t('✅ Beneficios específicos para tu negocio.')}
-                    </p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <p className="text-black-60">{t('✅ Casos de éxito de otros hosteleros.')}</p>
-                  </div>
+                <div className="flex items-start gap-3">
+                  <p className="">{t('✅ Cómo funciona paso a paso.')}</p>
                 </div>
-              </div>
+                <div className="flex items-start gap-3">
+                  <p className="">{t('✅ Qué datos puedes obtener.')}</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <p className="">{t('✅ Beneficios específicos para tu negocio.')}</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <p className="">{t('✅ Casos de éxito de otros hosteleros.')}</p>
+                </div>
+              </ProgressReveal>
             </div>
             <div className="relative">
               <div className="aspect-[4/3] bg-black-30 rounded-lg">

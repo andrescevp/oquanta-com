@@ -1,7 +1,7 @@
-import { Instagram, MenuIcon } from 'lucide-react'
+import { MenuIcon } from 'lucide-react'
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import LazyLoad from 'react-lazy-load'
+import { Link } from 'react-router-dom'
 
 import Sidebar from '../components/Sidebar'
 import { MenuItem, useMenu } from '../context/MenuContext'
@@ -21,16 +21,16 @@ const Navbar: React.FC = () => {
   const { scrollToElement } = useSmoothScroll()
 
   const renderMenuItem = (item: MenuItem, index: number) => (
-    <a
+    <Link
       key={index}
-      href={item.href}
+      to={item.href}
       className={item.className}
       target={item.target}
       rel={item.rel}
       onClick={item.href.includes('#') ? scrollToElement : undefined}
     >
       {item.icon ? item.icon : item.children}
-    </a>
+    </Link>
   )
 
   return (

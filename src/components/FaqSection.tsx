@@ -8,10 +8,14 @@ import faqEntries from '../FaqEntries'
 
 import FaqItem from './FaqItem'
 
-const FaqSection: React.FC = () => {
+interface FaqSectionProps {
+  className?: string
+}
+
+const FaqSection: React.FC<FaqSectionProps> = ({ className = 'py-16 px-4 bg-white/50' }) => {
   const { t } = useTranslation()
   return (
-    <section className="py-16 px-4 bg-white" id="faq">
+    <section className={className} id="faq">
       <JsonLd<FAQPage>
         item={{
           '@context': 'https://schema.org',

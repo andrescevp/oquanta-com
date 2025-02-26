@@ -29,25 +29,24 @@ const Layout = () => {
   return (
     <HeadProvider>
       <MenuProvider>
-        <div className="min-h-screen bg-white snap-y">
+        <div className="min-h-screen snap-y">
           <PagesHead />
           <Navbar />
-          <main className="pt-32">
+          <main className="pt-32 relative z-10">
             <Suspense>
               <Outlet />
             </Suspense>
           </main>
-          <footer className="bg-white py-12 px-4">
+          <footer className="relative py-12 px-4 bg-pure-white z-50">
             <div className="container mx-auto max-w-6xl">
               <div className="flex flex-col items-center mb-8">
-                <div className="text-2xl font-bold text-pumpkin-orange">oQuanta.</div>
-                <div className="text-xs text-black-60 uppercase tracking-wider">
+                <div className="text-2xl font-bold text-pumpkin-orange bg-pure-white">oQuanta.</div>
+                <div className="text-xs uppercase tracking-wider bg-pumpkin-orange text-white">
                   {t('Speak up. Shape the future')}
                 </div>
               </div>
               <div className="text-center">
-                <h3 className="font-bold text-black mb-4">{t('Contacto:')}</h3>
-                <div className="text-black-60 space-y-2">
+                <div className="space-y-2">
                   <p>
                     <a href={encodeURI(`mailto:${t('hola@oquanta.com')}`)} target="blank">
                       {t('hola@oquanta.com')}

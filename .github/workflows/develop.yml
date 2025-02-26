@@ -2,7 +2,7 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [ develop ]
 
 jobs:
   build:
@@ -26,7 +26,7 @@ jobs:
       - name: Install Node packages
         run: yarn pull-contentful-data 
 
-      - name: Install Node packages
+      - name: Get Contentful data
         run: yarn
 
       - name: Build assets
@@ -35,7 +35,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: oquanta-com
+          name: oquanta-com-preview
           include-hidden-files: true
           path: |
             dist
@@ -45,9 +45,9 @@ jobs:
     needs: build
     env:
       SSH_ARGS: -o StrictHostKeyChecking=no -v
-      DEPLOY_FOLDER: ${{ secrets.IONOS_HOSTING_ROOT }}/deploy/oquanta-com
-      DEPLOY_PATH: ${{ secrets.IONOS_HOSTING_ROOT }}/deploy/oquanta-com/${{ github.run_id }}/
-      APP_PATH: ${{ secrets.IONOS_HOSTING_ROOT }}/oquanta-com
+      DEPLOY_FOLDER: ${{ secrets.IONOS_HOSTING_ROOT }}/deploy/oquanta-com-preview
+      DEPLOY_PATH: ${{ secrets.IONOS_HOSTING_ROOT }}/deploy/oquanta-com-preview/${{ github.run_id }}/
+      APP_PATH: ${{ secrets.IONOS_HOSTING_ROOT }}/oquanta-com-preview
       DEPLOYMENTS_TO_KEEP: 3
     steps:
       - uses: actions/checkout@v4
@@ -59,7 +59,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: oquanta-com
+          name: oquanta-com-preview
           path: ${{ github.workspace }}/artifact
 
       - name: Prepare deployment folder
@@ -82,26 +82,26 @@ jobs:
       - name: Set permissions to folders
         run: |
           ssh $SSH_ARGS ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-          "find ./deploy/oquanta-com/${{ github.run_id }} -type d -exec chmod 0755 {} + && find ./deploy/oquanta-com/${{ github.run_id }} -type f -exec chmod 0644 {} +"
+          "find ./deploy/oquanta-com-preview/${{ github.run_id }} -type d -exec chmod 0755 {} + && find ./deploy/oquanta-com-preview/${{ github.run_id }} -type f -exec chmod 0644 {} +"
 
       - name: Set permissions to files
         run: |
           ssh $SSH_ARGS ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-          "find ./deploy/oquanta-com/${{ github.run_id }} -type f -exec chmod 0644 {} +"
+          "find ./deploy/oquanta-com-preview/${{ github.run_id }} -type f -exec chmod 0644 {} +"
 
       - name: Create symlink to real path
         run: |
           ssh $SSH_ARGS ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-          "ln -sfn ./deploy/oquanta-com/${{ github.run_id }} ./oquanta-com"
+          "ln -sfn ./deploy/oquanta-com-preview/${{ github.run_id }} ./oquanta-com-preview"
 
-      # list all folders in ./deploy/oquanta-com/ remove all but last $DEPLOYMENTS_TO_KEEP created
+      # list all folders in ./deploy/oquanta-com-preview/ remove all but last $DEPLOYMENTS_TO_KEEP created
       - name: Remove old deployments
         run: |
           ssh $SSH_ARGS ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-          "cd ./deploy/oquanta-com && ls -t | tail -n +$((DEPLOYMENTS_TO_KEEP+1)) | xargs rm -rf"
+          "cd ./deploy/oquanta-com-preview && ls -t | tail -n +$((DEPLOYMENTS_TO_KEEP+1)) | xargs rm -rf"
 
-      # zip each folder in ./deploy/oquanta-com but ${{ github.run_id }}
+      # zip each folder in ./deploy/oquanta-com-preview but ${{ github.run_id }}
       - name: Archive old deployments
         run: |
           ssh $SSH_ARGS ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-          "cd ./deploy/oquanta-com && ls -t | tail -n +$((DEPLOYMENTS_TO_KEEP+1)) | xargs -I {} tar -czf {}.tar.gz {}"
+          "cd ./deploy/oquanta-com-preview && ls -t | tail -n +$((DEPLOYMENTS_TO_KEEP+1)) | xargs -I {} tar -czf {}.tar.gz {}"

@@ -52,12 +52,12 @@ const TrustCarousel: React.FC<TrustCarouselProps> = ({ images }) => {
                                   : 'opacity-0 translate-x-full'
                             }`}
           >
-            <div className="mx-auto max-w-4xl bg-pure-white">
+            <div className="mx-auto max-w-4xl ">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 {images?.slice(slideIndex * 4, (slideIndex + 1) * 4).map((logo, index) => (
                   <div
                     key={index}
-                    className="aspect-[3/2] rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow flex items-center justify-center p-4"
+                    className="bg-pure-white aspect-[3/2] rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow flex items-center justify-center p-4"
                   >
                     <LazyLoad className="w-full h-full">
                       <img

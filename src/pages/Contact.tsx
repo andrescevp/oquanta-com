@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import { Instagram } from 'lucide-react'
+import React, { useMemo, useState } from 'react'
 import { useCalendlyEventListener, InlineWidget } from 'react-calendly'
 import { useTranslation } from 'react-i18next'
 import { JsonLd } from 'react-schemaorg'
 import { ContactPage as ContactPageSchema } from 'schema-dts'
 
 import { useHead } from '../context/HeadContext'
+import { useMenu } from '../context/MenuContext'
+import { MenuItemCTA, MenuItemSimpleClassName, MenuItemSpecial } from '../layout/Navbar'
 
 function Contact() {
   const { t } = useTranslation()
@@ -27,6 +30,65 @@ function Contact() {
 
   const minHeight = '598px'
   const [height, setHeight] = useState(minHeight)
+
+  const menuItems = useMemo(
+    () => [
+      {
+        children: t('Beneficios'),
+        href: '/#beneficios',
+        className: MenuItemSpecial,
+        position: 'left'
+      },
+      {
+        children: t('Cómo Funciona?'),
+        href: '/#como-funciona',
+        className: MenuItemSpecial,
+        position: 'left'
+      },
+      {
+        children: t('Testimonios'),
+        href: '/#testimonios',
+        className: MenuItemSpecial,
+        position: 'left'
+      },
+      {
+        children: t('Noticias'),
+        href: '/#noticias',
+        className: MenuItemSpecial,
+        position: 'left'
+      },
+      {
+        children: t('Blog'),
+        href: '/blog',
+        className: MenuItemSpecial,
+        position: 'right'
+      },
+      {
+        children: t('Prueba Gratis'),
+        href: '/contact',
+        className: MenuItemCTA,
+        allwaysVisible: true,
+        position: 'right'
+      },
+      {
+        children: (
+          <>
+            <span className="sr-only">{t('Instagram')}</span>
+            <Instagram className="w-5 h-5" />
+          </>
+        ),
+        href: 'https://instagram.com/oquanta_es',
+        className: MenuItemSimpleClassName,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        allwaysVisible: true,
+        position: 'right'
+      }
+    ],
+    [t]
+  )
+
+  useMenu(menuItems as never[])
 
   updateHead({
     title: t('¿Listo para llevar tu negocio al siguiente nivel?') + ' - oQuanta',
