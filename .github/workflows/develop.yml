@@ -23,11 +23,20 @@ jobs:
           node-version: '20'
           cache: 'yarn'
 
+      - name: Get Contentful data
+        run: yarn
+
       - name: Install Node packages
         run: yarn pull-contentful-data 
 
-      - name: Get Contentful data
-        run: yarn
+      - name: Configure HTTP Basic Auth
+        run: |
+          echo "AuthType Basic" > public/.htaccess
+          echo "AuthName \"Restricted Access\"" >> public/.htaccess
+          echo "AuthUserFile \${DOCUMENT_ROOT}/.htpasswd" >> public/.htaccess
+          echo "Require valid-user" >> public/.htaccess
+          echo "${{ secrets.PREVIEW_AUTH_USER }}:\$apr1\$$(openssl passwd -apr1 '${{ secrets.PREVIEW_AUTH_USER_PASSWORD }}')" > public/.htpasswd
+  
 
       - name: Build assets
         run: yarn build

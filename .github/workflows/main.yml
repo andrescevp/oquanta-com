@@ -24,10 +24,10 @@ jobs:
           cache: 'yarn'
 
       - name: Install Node packages
-        run: yarn pull-contentful-data 
+        run: yarn
 
       - name: Install Node packages
-        run: yarn
+        run: yarn pull-contentful-data 
 
       - name: Build assets
         run: yarn build
