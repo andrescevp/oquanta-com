@@ -8,58 +8,35 @@ interface Point {
   color: string
 }
 
+interface Satellite {
+  x: number
+  y: number
+  z: number
+  rotation: number
+  orbitRadius: number
+  orbitSpeed: number
+  colorSwitch: boolean // Nueva propiedad
+  lastColorSwitch: number // Nueva propiedad
+}
+
 interface DataBackgroundProps {
   isContentLoaded: boolean
 }
-
-const qrCodeIcon = `<svg version="1.1" id="Capa_1" height="24px" width="24px" viewBox="0 0 330 330">
-<g>
-	<g>
-		<rect x="105.084" y="38.271" width="5" height="20"/>
-	</g>
-	<g>
-		<path d="M311.596,190.189c-7.441-9.347-18.403-16.206-32.743-20.522V30c0-16.542-13.458-30-30-30H125.084
-			c-16.542,0-30,13.458-30,30v120.143h-8.296c-16.542,0-30,13.458-30,30v1.333c0,5.854,1.691,11.317,4.603,15.939
-			c-7.34,5.474-12.103,14.221-12.103,24.061v1.333c0,9.84,4.763,18.587,12.103,24.062c-2.911,4.621-4.603,10.085-4.603,15.938v1.333
-			c0,16.542,13.458,30,30,30h8.324c0.427,11.631,7.503,21.587,17.534,26.177c0.931,10.503,4.084,30.187,14.768,45.537
-			c1.943,2.792,5.054,4.288,8.216,4.288c1.972,0,3.963-0.582,5.704-1.793c4.533-3.155,5.65-9.388,2.495-13.921
-			c-6.798-9.767-9.602-22.608-10.76-31.4h82.685c0.272,0.414,0.545,0.818,0.815,1.21c3.142,4.541,9.372,5.679,13.913,2.534
-			c4.542-3.142,5.677-9.371,2.535-13.913c-11.919-17.229-8.787-35.884,9.581-57.012c3.067-2.652,12.307-11.732,11.217-24.033
-			c-0.828-9.343-7.109-17.194-18.669-23.337c-0.344-0.183-0.698-0.345-1.061-0.486c-0.466-0.182-11.403-4.579-9.741-15.706
-			c1.007-6.737,14.768-8.273,23.766-7.666c23.156,1.569,39.698,7.803,47.836,18.026c5.752,7.225,7.607,16.623,5.673,28.733
-			c-0.413,2.585-0.824,5.241-1.245,7.959c-5.756,37.194-12.919,83.483-49.87,114.661c-4.221,3.561-4.756,9.87-1.194,14.092
-			c1.979,2.344,4.803,3.551,7.648,3.551c2.277,0,4.567-0.773,6.444-2.358c42.672-36.005,50.802-88.533,56.737-126.888
-			c0.415-2.684,0.821-5.309,1.229-7.863C324.202,216.813,320.913,201.893,311.596,190.189z M79.288,232.809c-5.514,0-10-4.486-10-10
-			v-1.333c0-5.514,4.486-10,10-10h7.5h7.5v21.333h-7.5H79.288z M76.788,180.143c0-5.514,4.486-10,10-10h7.5v21.333h-7.5
-			c-5.514,0-10-4.486-10-10V180.143z M94.288,274.142h-7.5c-5.514,0-10-4.486-10-10v-1.333c0-5.514,4.486-10,10-10h7.5V274.142z
-			 M125.084,303.029c-5.514,0-10-4.486-10-10v-8.271h91.457c-0.851,6.668-0.437,12.787,0.731,18.271H125.084z M204.566,189.331
-			c-3.124,20.906,12.427,33.184,21.625,37.04c5.441,2.968,7.551,5.647,7.701,7.188c0.21,2.15-2.553,5.684-4.477,7.251
-			c-0.482,0.378-0.929,0.8-1.335,1.261c-6.987,7.936-11.982,15.52-15.432,22.688h-97.564V30c0-5.514,4.486-10,10-10h123.769
-			c5.514,0,10,4.486,10,10v135.579c-3.032-0.381-6.15-0.694-9.389-0.914C224.305,162.971,207.094,172.413,204.566,189.331z"/>
-		<path d="M179.129,83.167h-24.06c-2.761,0-5,2.238-5,5v24.061c0,2.762,2.239,5,5,5h24.06c2.761,0,5-2.238,5-5V88.167
-			C184.129,85.405,181.89,83.167,179.129,83.167z"/>
-		<path d="M172.629,142.86h-12.56V130.8c0-2.762-2.239-5-5-5c-2.761,0-5,2.238-5,5v17.061c0,2.762,2.239,5,5,5h17.56
-			c2.761,0,5-2.238,5-5C177.629,145.099,175.39,142.86,172.629,142.86z"/>
-		<path d="M216.568,83.167h-24.06c-2.761,0-5,2.238-5,5v24.061c0,2.762,2.239,5,5,5h24.06c2.761,0,5-2.238,5-5V88.167
-			C221.568,85.405,219.33,83.167,216.568,83.167z M211.568,107.228h-14.06V93.167h14.06V107.228z"/>
-		<path d="M211.669,125.936H197.41c-2.761,0-5,2.238-5,5v14.257c0,2.762,2.239,5,5,5h14.259c2.761,0,5-2.238,5-5v-14.257
-			C216.669,128.174,214.43,125.936,211.669,125.936z"/>
-	</g>
-</g>
-</svg>`
 
 const DataBackground: React.FC<DataBackgroundProps> = ({ isContentLoaded }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef<number>()
   const pointsRef = useRef<Point[]>([])
   const rotationRef = useRef({ y: 0 })
+  const satellitesRef = useRef<Satellite[]>([])
 
   const AXIS_TILT = 23.5
   const ROTATION_SPEED = -0.2
+  const NUM_SATELLITES = 10
 
   const generatePoints = useCallback((size: number) => {
     const points: Point[] = []
-    const numPoints = 3000
+    const numPoints = 10000
     const phi = Math.PI * (3 - Math.sqrt(5))
 
     const colorPalette = [
@@ -92,6 +69,64 @@ const DataBackground: React.FC<DataBackgroundProps> = ({ isContentLoaded }) => {
     return points
   }, [])
 
+  const generateSatellites = useCallback((size: number) => {
+    const satellites: Satellite[] = []
+    const baseOrbitRadius = size * 0.8 // Radio de órbita base
+
+    for (let i = 0; i < NUM_SATELLITES; i++) {
+      const angle = (i / NUM_SATELLITES) * Math.PI * 2
+      satellites.push({
+        x: Math.cos(angle) * baseOrbitRadius,
+        y: Math.sin(angle) * baseOrbitRadius * 0.4, // Órbita elíptica
+        z: Math.sin(angle) * baseOrbitRadius,
+        rotation: Math.random() * Math.PI * 2,
+        orbitRadius: baseOrbitRadius,
+        orbitSpeed: 0.0002 + Math.random() * 0.000000001,
+        colorSwitch: false,
+        lastColorSwitch: performance.now()
+      })
+    }
+    return satellites
+  }, [])
+
+  const drawSmartphone = useCallback(
+    (
+      ctx: CanvasRenderingContext2D,
+      x: number,
+      y: number,
+      rotation: number,
+      scale: number,
+      colorSwitch: boolean
+    ) => {
+      ctx.save()
+      ctx.translate(x, y)
+      ctx.rotate(rotation)
+      ctx.scale(scale, scale)
+
+      // Dibujar el smartphone
+      ctx.beginPath()
+      ctx.roundRect(-15, -25, 30, 50, 5)
+      ctx.fillStyle = '#333'
+      ctx.fill()
+
+      // Pantalla
+      ctx.beginPath()
+      ctx.roundRect(-13, -23, 26, 46, 3)
+      ctx.fillStyle = colorSwitch ? '#fd5304' : '#fff'
+      ctx.fill()
+
+      // Q mayúscula
+      ctx.font = 'bold 18px sans-serif'
+      ctx.fillStyle = colorSwitch ? '#fff' : '#fd5304'
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillText('Q', 0, 0)
+
+      ctx.restore()
+    },
+    []
+  )
+
   const draw = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -113,11 +148,15 @@ const DataBackground: React.FC<DataBackgroundProps> = ({ isContentLoaded }) => {
     const angle = ((rotationRef.current.y % 360) * Math.PI) / 180
     const tiltAngle = (AXIS_TILT * Math.PI) / 180
 
-    // Ordenar puntos por Z para correcto rendering 3D
-    const sortedPoints = [...pointsRef.current].sort((a, b) => b.z - a.z)
+    // Crear un array con todos los elementos renderizables
+    const renderableElements: Array<{
+      type: 'point' | 'satellite'
+      z: number
+      render: () => void
+    }> = []
 
-    sortedPoints.forEach(point => {
-      // Aplicar rotaciones
+    // Agregar puntos al array de renderizado
+    pointsRef.current.forEach(point => {
       const x = point.x
       const y = point.y * Math.cos(tiltAngle) - point.z * Math.sin(tiltAngle)
       const z = point.y * Math.sin(tiltAngle) + point.z * Math.cos(tiltAngle)
@@ -125,26 +164,67 @@ const DataBackground: React.FC<DataBackgroundProps> = ({ isContentLoaded }) => {
       const newX = x * Math.cos(angle) + z * Math.sin(angle)
       const newZ = -x * Math.sin(angle) + z * Math.cos(angle)
 
-      // Calcular posición en pantalla
-      const screenX = width / 2 + newX
-      const screenY = height / 2 + y
+      renderableElements.push({
+        type: 'point',
+        z: newZ,
+        render: () => {
+          const screenX = width / 2 + newX
+          const screenY = height / 2 + y
 
-      // Calcular opacidad y tamaño basado en Z
-      const opacity = 0.15 + (1 - Math.abs(newZ) / (height / 2)) * 0.85
-      const size = point.size * (1 + newZ / (height * 1.5))
+          const opacity = 0.15 + (1 - Math.abs(newZ) / (height / 2)) * 0.85
+          const size = point.size * (1 + newZ / (height * 1.5))
 
-      // Dibujar punto
-      ctx.beginPath()
-      ctx.arc(screenX, screenY, size, 0, Math.PI * 2)
-      ctx.fillStyle = point.color
-      ctx.globalAlpha = opacity
-      ctx.fill()
+          ctx.beginPath()
+          ctx.arc(screenX, screenY, size, 0, Math.PI * 2)
+          ctx.fillStyle = point.color
+          ctx.globalAlpha = opacity
+          ctx.fill()
+        }
+      })
     })
+
+    // Agregar satélites al array de renderizado
+    satellitesRef.current.forEach(satellite => {
+      const now = performance.now()
+      // Cambiar colores cada 2 segundos
+      const randTime = Math.random() * 2000 + 1000
+      if (now - satellite.lastColorSwitch > randTime) {
+        satellite.colorSwitch = !satellite.colorSwitch
+        satellite.lastColorSwitch = now
+      }
+
+      const orbitAngle = now * satellite.orbitSpeed
+      const x = satellite.x * Math.cos(orbitAngle) + satellite.z * Math.sin(orbitAngle)
+      const z = -satellite.x * Math.sin(orbitAngle) + satellite.z * Math.cos(orbitAngle)
+
+      const finalZ = -x * Math.sin(angle) + z * Math.cos(angle)
+
+      renderableElements.push({
+        type: 'satellite',
+        z: finalZ,
+        render: () => {
+          const screenX = width / 2 + x * Math.cos(angle) + z * Math.sin(angle)
+          const screenY = height / 2 + satellite.y
+          const scale = 0.8 + (1 - Math.abs(finalZ) / (height * 1.5))
+
+          satellite.rotation += 0.01
+          drawSmartphone(ctx, screenX, screenY, satellite.rotation, scale, satellite.colorSwitch)
+        }
+      })
+    })
+
+    // Ordenar todos los elementos por Z y renderizar
+    renderableElements
+      .sort((a, b) => b.z - a.z)
+      .forEach(element => {
+        ctx.globalAlpha = 1
+        element.render()
+      })
 
     // Actualizar rotación
     rotationRef.current.y -= ROTATION_SPEED
     animationRef.current = requestAnimationFrame(draw)
-  }, [])
+  }, [drawSmartphone])
 
   useEffect(() => {
     if (!isContentLoaded || !canvasRef.current) return
@@ -154,6 +234,7 @@ const DataBackground: React.FC<DataBackgroundProps> = ({ isContentLoaded }) => {
     const size = Math.max(500, Math.min(width, height) * 0.6)
 
     pointsRef.current = generatePoints(size)
+    satellitesRef.current = generateSatellites(size)
     draw()
 
     return () => {
@@ -161,7 +242,7 @@ const DataBackground: React.FC<DataBackgroundProps> = ({ isContentLoaded }) => {
         cancelAnimationFrame(animationRef.current)
       }
     }
-  }, [isContentLoaded, generatePoints, draw])
+  }, [isContentLoaded, generatePoints, generateSatellites, draw])
 
   return (
     <canvas
