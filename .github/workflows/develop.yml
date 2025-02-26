@@ -23,10 +23,10 @@ jobs:
           node-version: '20'
           cache: 'yarn'
 
-      - name: Get Contentful data
-        run: yarn
-
       - name: Install Node packages
+        run: yarn 
+
+      - name: Get Contentful data
         run: yarn pull-contentful-data 
 
       - name: Configure HTTP Basic Auth
