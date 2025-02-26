@@ -33,9 +33,8 @@ jobs:
         run: |
           echo "AuthType Basic" > public/.htaccess
           echo "AuthName \"Restricted Access\"" >> public/.htaccess
-          echo "AuthUserFile \${DOCUMENT_ROOT}/.htpasswd" >> public/.htaccess
+          echo "AuthUserFile ${{ secrets.IONOS_HOSTING_ROOT }}/.my_etc/.htpasswd" >> public/.htaccess
           echo "Require valid-user" >> public/.htaccess
-          echo "${{ secrets.PREVIEW_AUTH_USER }}:\$apr1\$$(openssl passwd -apr1 '${{ secrets.PREVIEW_AUTH_USER_PASSWORD }}')" > public/.htpasswd
   
 
       - name: Build assets
