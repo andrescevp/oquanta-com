@@ -6,6 +6,7 @@ on:
 
 jobs:
   build:
+    environment: oquanta-prod
     runs-on: ubuntu-latest
     env:
       COMPOSER_NO_DEV: 1
