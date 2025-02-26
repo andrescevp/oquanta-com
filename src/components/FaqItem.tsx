@@ -11,7 +11,7 @@ const FaqItem: React.FC<FaqItemProps> = ({ question, answer }) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <div className="border-b border-gray-200 last:border-0">
+    <div className="border-b border-gray-200 last:border-0 bg-white">
       <button
         className="w-full py-4 px-6 flex justify-between items-center hover:bg-gray-50 transition-colors"
         onClick={() => setIsExpanded(!isExpanded)}

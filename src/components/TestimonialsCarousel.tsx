@@ -65,7 +65,7 @@ const TestimonialsCarousel: React.FC<TestimonialsCarouselProps> = ({ testimonial
                 }
               }}
             /> */}
-            <div className="rounded-lg shadow-lg p-4 mx-auto max-w-xl bg-pure-white">
+            <div className="rounded-lg shadow-lg p-4 mx-auto max-w-xl bg-white">
               <svg
                 className="w-8 h-8 text-gray-400 mb-4"
                 fill="currentColor"

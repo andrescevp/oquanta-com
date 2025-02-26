@@ -38,10 +38,10 @@ const FaqSection: React.FC<FaqSectionProps> = ({ className = 'py-16 px-4 bg-whit
       />
       <div className="container mx-auto max-w-3xl">
         <h2 className="text-4xl font-bold text-center text-pumpkin-orange mb-12">
-          {t('Preguntas frecuentes')}
+          <span className="bg-white">{t('Preguntas frecuentes')}</span>
         </h2>
 
-        <div className="bg-white rounded-lg shadow-lg divide-y divide-gray-200">
+        <div className="bg-pure-white rounded-lg shadow-lg divide-y divide-gray-200">
           {Object.values(faqEntries).map(entry => (
             <FaqItem
               key={entry.sys.id}
