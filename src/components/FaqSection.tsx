@@ -12,7 +12,7 @@ interface FaqSectionProps {
   className?: string
 }
 
-const FaqSection: React.FC<FaqSectionProps> = ({ className = 'py-16 px-4 bg-white/50' }) => {
+const FaqSection: React.FC<FaqSectionProps> = ({ className = 'py-16 px-4 bg-white/70' }) => {
   const { t } = useTranslation()
   return (
     <section className={className} id="faq">
@@ -38,7 +38,7 @@ const FaqSection: React.FC<FaqSectionProps> = ({ className = 'py-16 px-4 bg-whit
       />
       <div className="container mx-auto max-w-3xl">
         <h2 className="text-4xl font-bold text-center text-pumpkin-orange mb-12">
-          <span className="bg-white">{t('Preguntas frecuentes')}</span>
+          <span>{t('Preguntas frecuentes')}</span>
         </h2>
 
         <div className="bg-pure-white rounded-lg shadow-lg divide-y divide-gray-200">

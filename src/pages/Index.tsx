@@ -224,11 +224,9 @@ function Index() {
       <section className="pt-4 pb-16 px-4 bg-white/80" id="why-oquanta">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12">
-            <div className="space-y-4 flex flex-col justify-center">
+            <div className="space-y-4 flex flex-col justify-center ">
               <h1 className="text-5xl font-bold text-pumpkin-orange mb-4">
-                <span className="bg-white">
-                  {t('Conoce qué piensan tus clientes sobre tu negocio')}
-                </span>
+                <span>{t('Conoce qué piensan tus clientes sobre tu negocio')}</span>
               </h1>
               <p className="text-md text-iris-purple font-semibold mb-8">
                 <span className="bg-white">
@@ -236,7 +234,7 @@ function Index() {
                 </span>
               </p>
 
-              <div className="space-y-4 mb-8">
+              <div className="space-y-4 mb-8 bg-white p-2 rounded shadow">
                 <div className="flex items-start gap-3">
                   <span className="bg-white">
                     {t('✅ Toma decisiones basadas en las opiniones de tus clientes.')}
@@ -299,7 +297,7 @@ function Index() {
       <section className="py-16 px-4 bg-pure-white/70" id="our-clients">
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-4xl font-bold text-center text-pumpkin-orange mb-12">
-            <span className="bg-pure-white">{t('Confían en nosotros')}</span>
+            <span>{t('Confían en nosotros')}</span>
           </h2>
           {logos && <TrustCarousel images={logos} />}
         </div>
@@ -308,41 +306,41 @@ function Index() {
       <section className="py-16 px-4 bg-white/80" id="beneficios">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-12">
-            <div>
-              <h2 className="text-iris-purple font-bold mb-4 text-md">
-                <span className="bg-white">
-                  {t('Toda información que necesitas sobre tu negocio y clientes')}
-                </span>
+            <div className="space-y-4 flex flex-col justify-center">
+              <h2 className="text-iris-purple font-bold text-md">
+                <span>{t('Toda información que necesitas sobre tu negocio y clientes')}</span>
               </h2>
-              <h3 className="text-4xl font-bold text-pumpkin-orange mb-6">
-                <span className="bg-white">{t('Beneficios para tu bar o restaurante')}</span>
+              <h3 className="text-4xl font-bold text-pumpkin-orange">
+                <span>{t('Beneficios para tu bar o restaurante')}</span>
               </h3>
 
-              <p className="bg-white mb-2">
-                {t(
-                  '✅ Opiniones verificadas y reales. Solo clientes que han visitado tu local pueden opinar.'
-                )}
-              </p>
-              <p className="bg-white mb-2">
-                {t(
-                  '✅ Datos que realmente importan. Descubre información clave sobre tu negocio, clientes y servicio.'
-                )}
-              </p>
-              <p className="bg-white mb-2">
-                {t(
-                  '✅ Mejora lo que necesites. Identifica qué está funcionando y qué podrías mejorar.'
-                )}
-              </p>
-              <p className="bg-white mb-2">
-                {t(
-                  '✅ Decisiones basadas en datos. Olvídate de intuiciones: actúa con información clara y útil.'
-                )}
-              </p>
-              <p className="bg-white mb-8">
-                {t(
-                  '✅ Fácil, rápido y sin complicaciones. Sin instalaciones complejas ni pérdida de tiempo.'
-                )}
-              </p>
+              <div className="bg-white p-2 rounded shadow ">
+                <p className="bg-white mb-2">
+                  {t(
+                    '✅ Opiniones verificadas y reales. Solo clientes que han visitado tu local pueden opinar.'
+                  )}
+                </p>
+                <p className="bg-white mb-2">
+                  {t(
+                    '✅ Datos que realmente importan. Descubre información clave sobre tu negocio, clientes y servicio.'
+                  )}
+                </p>
+                <p className="bg-white mb-2">
+                  {t(
+                    '✅ Mejora lo que necesites. Identifica qué está funcionando y qué podrías mejorar.'
+                  )}
+                </p>
+                <p className="bg-white mb-2">
+                  {t(
+                    '✅ Decisiones basadas en datos. Olvídate de intuiciones: actúa con información clara y útil.'
+                  )}
+                </p>
+                <p className="bg-white mb-8">
+                  {t(
+                    '✅ Fácil, rápido y sin complicaciones. Sin instalaciones complejas ni pérdida de tiempo.'
+                  )}
+                </p>
+              </div>
 
               <div className="flex items-center justify-start">
                 <a href="/#demo-schedule" className={MenuItemCTA}>
@@ -385,10 +383,10 @@ function Index() {
       <section className="py-16 px-4 bg-pure-white/70" id="como-funciona">
         <div className="container mx-auto max-w-6xl text-center">
           <h2 className="text-4xl font-bold text-iris-purple mb-16">
-            <span className="bg-white">{t('¿Cómo funciona oQuanta en tu local?')}</span>
+            <span>{t('¿Cómo funciona oQuanta en tu local?')}</span>
           </h2>
           <div className="grid md:grid-cols-3 gap-12">
-            <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="bg-pure-white rounded-lg shadow-lg p-6">
               <div className="text-center mb-6">
                 <div className="inline-flex flex-col items-center">
                   <span className="inline-block w-16 h-16 rounded-full bg-iris-purple text-white font-bold flex items-center justify-center mb-2">
@@ -404,7 +402,7 @@ function Index() {
                 {t('Elige entre encuestas tipo o personalizadas que se adapten a tus necesidades.')}
               </p>
             </div>
-            <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="bg-pure-white rounded-lg shadow-lg p-6">
               <div className="text-center mb-6">
                 <div className="inline-flex flex-col items-center">
                   <span className="inline-block w-16 h-16 rounded-full bg-iris-purple text-white font-bold flex items-center justify-center mb-2">
@@ -420,7 +418,7 @@ function Index() {
                 {t('Nuestros materiales promocionales facilitan que tus clientes participen.')}
               </p>
             </div>
-            <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="bg-pure-white rounded-lg shadow-lg p-6">
               <div className="text-center mb-6">
                 <div className="inline-flex flex-col items-center">
                   <span className="inline-block w-16 h-16 rounded-full bg-iris-purple text-white font-bold flex items-center justify-center mb-2">
@@ -441,7 +439,7 @@ function Index() {
       <section className="py-16 px-4 bg-white/80" id="testimonios">
         <div className="container mx-auto max-w-6xl text-center">
           <h2 className="text-4xl font-bold text-pumpkin-orange mb-16">
-            <span className="bg-white">{t('Testimonios reales de hosteleros')}</span>
+            <span>{t('Testimonios reales de hosteleros')}</span>
           </h2>
           {testimonies && <TestimonialsCarousel testimonials={testimonies} />}
         </div>
@@ -450,7 +448,7 @@ function Index() {
       <section className="py-16 px-4 bg-pure-white/70" id="noticias">
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-4xl font-bold text-pumpkin-orange mb-16 text-center">
-            <span className="bg-white">{t('Últimas noticias en medios')}</span>
+            <span>{t('Últimas noticias en medios')}</span>
           </h2>
           {pressPosts && <PressCarousel posts={pressPosts} />}
         </div>
@@ -463,35 +461,35 @@ function Index() {
           <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-4 flex flex-col justify-center">
               <h2 className="text-4xl font-bold text-iris-purple mb-4">
-                <span className="bg-pure-white">
-                  {t('Empieza a obtener datos de tu local hoy mismo')}
-                </span>
+                <span>{t('Empieza a obtener datos de tu local hoy mismo')}</span>
               </h2>
-              <div className="flex items-start">
-                <p className="bg-pure-white">
-                  <span className="font-bold mr-1">{t('Solicita tu demo gratis.')}</span>
-                  <span>
-                    {t(
-                      'Durante la reunión te presentaremos cómo podemos ayudar a tu negocio a diferenciarse y generar más resultados.'
-                    )}
-                  </span>
-                </p>
-              </div>
+              <div className="space-y-4 flex flex-col justify-center bg-pure-white p-2 rounded shadow">
+                <div className="flex items-start">
+                  <p>
+                    <span className="font-bold mr-1">{t('Solicita tu demo gratis.')}</span>
+                    <span>
+                      {t(
+                        'Durante la reunión te presentaremos cómo podemos ayudar a tu negocio a diferenciarse y generar más resultados.'
+                      )}
+                    </span>
+                  </p>
+                </div>
 
-              <div className="flex items-start gap-3">
-                <p className="bg-pure-white">{t('✅ Datos')}</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <p className="bg-pure-white">{t('✅ Reseñas')}</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <p className="bg-pure-white">{t('✅ Feedback')}</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <p className="bg-pure-white">{t('✅ Recurrencia')}</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <p className="bg-pure-white">{t('✅ Nuevos clientes')}</p>
+                <div className="flex items-start gap-3">
+                  <p className="bg-pure-white">{t('✅ Datos')}</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <p className="bg-pure-white">{t('✅ Reseñas')}</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <p className="bg-pure-white">{t('✅ Feedback')}</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <p className="bg-pure-white">{t('✅ Recurrencia')}</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <p className="bg-pure-white">{t('✅ Nuevos clientes')}</p>
+                </div>
               </div>
             </div>
             <div className="relative">
@@ -504,7 +502,7 @@ function Index() {
       <section className="py-16 px-4 bg-white/80" id="why-born">
         <div className="container mx-auto max-w-6xl text-center">
           <h2 className="text-4xl font-bold text-pumpkin-orange mb-16">
-            <span className="bg-white">{t('¿Por qué nació oQuanta?')}</span>
+            <span>{t('¿Por qué nació oQuanta?')}</span>
           </h2>
           <div className="h-fit-content mx-auto">
             <LazyVideoPlayer
@@ -521,33 +519,35 @@ function Index() {
       <section className="pt-4 pb-16 px-4 bg-pure-white/70" id="know-more">
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-4xl font-bold text-iris-purple mb-8 mx-auto text-center">
-            <span className="bg-pure-white">{t('¿Quieres saber más?')}</span>
+            <span>{t('¿Quieres saber más?')}</span>
           </h2>
           <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-4 flex flex-col justify-center">
-              <div className="flex flex-col space-y-3">
-                <p className="bg-pure-white">
-                  <span>
-                    {t(
-                      'Descubre en detalle cómo oQuanta puede ayudarte a mejorar tu negocio con datos reales y opiniones verificadas.'
-                    )}
-                  </span>
-                </p>
-                <p className="bg-pure-white">
-                  <span>{t('Descarga nuestro dossier gratuito y entérate de todo:')}</span>
-                </p>
-              </div>
-              <div className="flex items-start gap-3">
-                <p className="bg-pure-white">{t('✅ Cómo funciona paso a paso.')}</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <p className="bg-pure-white">{t('✅ Qué datos puedes obtener.')}</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <p className="bg-pure-white">{t('✅ Beneficios específicos para tu negocio.')}</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <p className="bg-pure-white">{t('✅ Casos de éxito de otros hosteleros.')}</p>
+              <div className="bg-pure-white p-2 rounded shadow h-auto">
+                <div className="flex flex-col space-y-3 ">
+                  <p className="bg-pure-white">
+                    <span>
+                      {t(
+                        'Descubre en detalle cómo oQuanta puede ayudarte a mejorar tu negocio con datos reales y opiniones verificadas.'
+                      )}
+                    </span>
+                  </p>
+                  <p className="bg-pure-white">
+                    <span>{t('Descarga nuestro dossier gratuito y entérate de todo:')}</span>
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <p className="bg-pure-white">{t('✅ Cómo funciona paso a paso.')}</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <p className="bg-pure-white">{t('✅ Qué datos puedes obtener.')}</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <p className="bg-pure-white">{t('✅ Beneficios específicos para tu negocio.')}</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <p className="bg-pure-white">{t('✅ Casos de éxito de otros hosteleros.')}</p>
+                </div>
               </div>
             </div>
             <div className="relative">
