@@ -232,9 +232,9 @@ function Index() {
         }}
       />
 
-      <React.Suspense fallback={<div className="min-h-[50vh]" />}>
+      {/* <React.Suspense fallback={<div className="min-h-[50vh]" />}>
         <DataBackground isContentLoaded={isContentLoaded} />
-      </React.Suspense>
+      </React.Suspense> */}
 
       {/* Hero Section */}
       <section
