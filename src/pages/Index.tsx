@@ -1,4 +1,5 @@
-import { BarChart2, ClipboardEdit, Instagram, QrCode as QrCodeIcon } from 'lucide-react'
+import { clsx } from 'clsx'
+import { BarChart2, ClipboardEdit, Instagram, QrCode as QrCodeIcon, ArrowRight } from 'lucide-react'
 import React, { useEffect, useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import LazyLoad from 'react-lazy-load'
@@ -36,6 +37,26 @@ import surveyPhone2 from './../../images/survey-phone-2.png?h=450&format=webp'
 
 const DataBackground = React.lazy(() => import('../components/DataBackground.tsx'))
 
+// Reusable style classes
+const glassCard =
+  'backdrop-blur-sm bg-white/60 dark:bg-gray-800/40 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-xl bg-gradient-to-br from-white/60 to-white/30 dark:from-gray-700/30 dark:to-gray-800/20 transition-all duration-200 ease-in-out'
+
+const modernButton =
+  'bg-gradient-to-r from-pumpkin-orange to-pumpkin-orange/80 text-white py-3 px-4 rounded-xl shadow-lg shadow-pumpkin-orange/20 hover:translate-y-[-2px] transition-all duration-200 ease-in-out flex items-center gap-2 font-medium'
+
+// Decorative blur element component
+const DecorativeBlur = ({ color, className }) => {
+  return (
+    <div
+      className={clsx(
+        'absolute rounded-full opacity-40 blur-3xl mix-blend-multiply dark:mix-blend-soft-light animate-pulse',
+        className
+      )}
+      style={{ backgroundColor: color }}
+    />
+  )
+}
+
 function Index() {
   const { updateHead } = useHead()
   const [logos, setLogos] = useState<TrustCarouselProps['images']>()
@@ -43,6 +64,7 @@ function Index() {
   const [testimonies, setTestimonies] = useState<string[]>()
   const { t } = useTranslation()
   const [isContentLoaded, setIsContentLoaded] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
 
   const menuItems = useMemo(
     () => [
@@ -204,13 +226,6 @@ function Index() {
             '@type': 'Audience',
             audienceType: 'Negocios de hostelería'
           },
-          // "offers": {
-          //     "@type": "Offer",
-          //     "availability": "https://schema.org/InStock",
-          //     "price": "0",
-          //     "priceCurrency": "EUR",
-          //     "description": "Prueba gratuita del sistema de encuestas oQuanta"
-          // },
           serviceType: 'Plataforma de encuestas y análisis',
           termsOfService: 'https://oquanta.com/terms',
           category: ['Software', 'Business Intelligence', 'Customer Feedback']
@@ -221,50 +236,75 @@ function Index() {
         <DataBackground isContentLoaded={isContentLoaded} />
       </React.Suspense>
 
-      <section className="pt-4 pb-16 px-4 bg-white/80" id="why-oquanta">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="space-y-4 flex flex-col justify-center ">
-              <h1 className="text-5xl font-bold text-pumpkin-orange mb-4">
-                <span>{t('Conoce qué piensan tus clientes sobre tu negocio')}</span>
-              </h1>
-              <p className="text-md text-iris-purple font-semibold mb-8">
-                <span className="bg-white">
-                  {t('Mejora tu bar o restaurante con datos reales')}
+      {/* Hero Section */}
+      <section
+        className="min-h-screen pt-28 pb-16 px-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 overflow-hidden relative"
+        id="why-oquanta"
+      >
+        {/* Decorative elements */}
+        <DecorativeBlur color="#fd5304" className="w-96 h-96 -top-40 -left-40" />
+        <DecorativeBlur
+          color="#5a33ee"
+          className="w-96 h-96 top-1/3 right-0 transform translate-x-1/2"
+        />
+        <DecorativeBlur color="#c0f03e" className="w-64 h-64 bottom-20 left-1/4" />
+
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <div className="grid md:grid-cols-2 gap-16">
+            <div className="space-y-6 flex flex-col justify-center">
+              <div className="inline-block mb-2">
+                <span className="bg-iris-purple/10 text-iris-purple px-4 py-1.5 rounded-full text-sm font-medium">
+                  oQuanta 2025
                 </span>
+              </div>
+              <h1 className="text-5xl sm:text-6xl font-bold text-pumpkin-orange">
+                {t('Conoce qué piensan tus clientes')}
+              </h1>
+              <p className="text-lg text-iris-purple font-semibold">
+                {t('Mejora tu bar o restaurante con datos reales')}
               </p>
 
-              <div className="space-y-4 mb-8 bg-white p-2 rounded shadow">
+              <div className={glassCard + ' p-6 space-y-4'}>
                 <div className="flex items-start gap-3">
-                  <span className="bg-white">
-                    {t('✅ Toma decisiones basadas en las opiniones de tus clientes.')}
+                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                  <span>{t('Toma decisiones basadas en las opiniones de tus clientes.')}</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                  <span>{t('Impulsa la lealtad mediante recompensas personalizadas.')}</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                  <span>
+                    {t('Haz que tus promociones lleguen a más gente gracias a nuestra comunidad.')}
                   </span>
                 </div>
                 <div className="flex items-start gap-3">
-                  <span className="bg-white">
-                    {t('✅ Impulsa la lealtad mediante recompensas.')}
-                  </span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="bg-white">
-                    {t(
-                      '✅ Haz que tus promociones lleguen a más gente gracias a nuestra comunidad.'
-                    )}
-                  </span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="bg-white">{t('✅ Acceso inmediato a datos clave.')}</span>
+                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                  <span>{t('Acceso inmediato a datos clave de tu negocio.')}</span>
                 </div>
               </div>
-              <div className="flex items-center justify-start mt-4">
-                <a href="/#demo-schedule" className={MenuItemCTA}>
+
+              <div className="flex items-center justify-start mt-4 gap-4">
+                <a
+                  href="/#demo-schedule"
+                  className={modernButton}
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                >
                   {t('Prueba Gratis')}
+                </a>
+                <a
+                  href="#como-funciona"
+                  className="text-iris-purple hover:text-iris-purple/80 font-medium transition-all duration-200"
+                >
+                  {t('Cómo funciona')} →
                 </a>
               </div>
             </div>
-            <div className="relative">
-              <WaveBackground width="auto" height="450px" className="rounded-lg">
-                <SlideShow width="auto" height="450px" className="rounded-lg">
+            <div className="relative items-center justify-center">
+              <WaveBackground width="auto" height="450px" className="rounded-2xl shadow-2xl">
+                <SlideShow width="auto" height="450px" className="rounded-2xl">
                   <Slide direction="up" duration={800}>
                     <div className="aspect-[4/3] rounded-lg">
                       <LazyLoad height="450px">
@@ -294,81 +334,111 @@ function Index() {
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-pure-white/70" id="our-clients">
-        <div className="container mx-auto max-w-6xl">
-          <h2 className="text-4xl font-bold text-center text-pumpkin-orange mb-12">
-            <span>{t('Confían en nosotros')}</span>
+      {/* Clients Section */}
+      <section
+        className="py-16 px-4 bg-gradient-to-br from-white/90 to-gray-50/80 dark:from-gray-800/90 dark:to-gray-900/80 relative overflow-hidden"
+        id="our-clients"
+      >
+        <DecorativeBlur color="#c0f03e" className="w-80 h-80 -bottom-40 -right-20" />
+
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <h2 className="text-2xl sm:text-3xl font-semibold text-center text-pumpkin-orange mb-12">
+            {t('Confían en nosotros')}
           </h2>
           {logos && <TrustCarousel images={logos} />}
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-white/80" id="beneficios">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="space-y-4 flex flex-col justify-center">
-              <h2 className="text-iris-purple font-bold text-md">
-                <span>{t('Toda información que necesitas sobre tu negocio y clientes')}</span>
-              </h2>
-              <h3 className="text-4xl font-bold text-pumpkin-orange">
-                <span>{t('Beneficios para tu bar o restaurante')}</span>
-              </h3>
+      {/* Benefits Section */}
+      <section
+        className="py-16 px-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden"
+        id="beneficios"
+      >
+        <DecorativeBlur color="#fd5304" className="w-96 h-96 -top-20 -right-40" />
+        <DecorativeBlur color="#5a33ee" className="w-64 h-64 bottom-20 left-20" />
 
-              <div className="bg-white p-2 rounded shadow ">
-                <p className="bg-white mb-2">
-                  {t(
-                    '✅ Opiniones verificadas y reales. Solo clientes que han visitado tu local pueden opinar.'
-                  )}
-                </p>
-                <p className="bg-white mb-2">
-                  {t(
-                    '✅ Datos que realmente importan. Descubre información clave sobre tu negocio, clientes y servicio.'
-                  )}
-                </p>
-                <p className="bg-white mb-2">
-                  {t(
-                    '✅ Mejora lo que necesites. Identifica qué está funcionando y qué podrías mejorar.'
-                  )}
-                </p>
-                <p className="bg-white mb-2">
-                  {t(
-                    '✅ Decisiones basadas en datos. Olvídate de intuiciones: actúa con información clara y útil.'
-                  )}
-                </p>
-                <p className="bg-white mb-8">
-                  {t(
-                    '✅ Fácil, rápido y sin complicaciones. Sin instalaciones complejas ni pérdida de tiempo.'
-                  )}
-                </p>
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="space-y-6">
+              <span className="text-sm font-medium text-iris-purple">
+                {t('Toda información que necesitas sobre tu negocio y clientes')}
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-semibold text-pumpkin-orange">
+                {t('Beneficios para tu bar o restaurante')}
+              </h2>
+
+              <div className={glassCard + ' p-6 space-y-4'}>
+                <div className="flex items-start gap-3">
+                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                  <p>
+                    {t(
+                      'Opiniones verificadas y reales. Solo clientes que han visitado tu local pueden opinar.'
+                    )}
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                  <p>
+                    {t(
+                      'Datos que realmente importan. Descubre información clave sobre tu negocio, clientes y servicio.'
+                    )}
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                  <p>
+                    {t(
+                      'Mejora lo que necesites. Identifica qué está funcionando y qué podrías mejorar.'
+                    )}
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                  <p>
+                    {t(
+                      'Decisiones basadas en datos. Olvídate de intuiciones: actúa con información clara y útil.'
+                    )}
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                  <p>
+                    {t(
+                      'Fácil, rápido y sin complicaciones. Sin instalaciones complejas ni pérdida de tiempo.'
+                    )}
+                  </p>
+                </div>
               </div>
 
-              <div className="flex items-center justify-start">
-                <a href="/#demo-schedule" className={MenuItemCTA}>
+              <div className="flex items-center justify-start mt-4">
+                <a href="/#demo-schedule" className={modernButton}>
                   {t('Quiero probarlo gratis')}
+                  <ArrowRight className="w-5 h-5" />
                 </a>
               </div>
             </div>
-            <div className="relative flex items-center justify-center">
-              <ColorGrid width="100%" height="450px" className="rounded-lg">
-                <SlideShow width="auto" height="450px" className="rounded-lg">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-iris-purple/20 to-lime-green/20 rounded-2xl blur-xl transform rotate-2"></div>
+              <ColorGrid width="100%" height="auto" className="rounded-2xl shadow-2xl relative">
+                <SlideShow width="auto" height="auto" className="rounded-2xl overflow-hidden">
                   <Slide direction="up" duration={800}>
-                    <div className="aspect-[4/3] rounded-lg">
-                      <LazyLoad height="450px">
+                    <div className="aspect-[4/3] rounded-2xl overflow-hidden">
+                      <LazyLoad height={450}>
                         <img
                           src={reportPhone1}
                           alt={t('Imagen de un reporte de un bar en un dispositivo movil')}
-                          className="w-full h-full object-cover rounded-lg"
+                          className="w-full h-full object-cover"
                         />
                       </LazyLoad>
                     </div>
                   </Slide>
                   <Slide direction="up" duration={1000}>
-                    <div className="aspect-[4/3] rounded-lg">
-                      <LazyLoad height="450px">
+                    <div className="aspect-[4/3] rounded-2xl overflow-hidden">
+                      <LazyLoad height={450}>
                         <img
                           src={reportPhone2}
                           alt={t('Imagen de un reporte de un bar en un dispositivo movil')}
-                          className="w-full h-full object-cover rounded-lg"
+                          className="w-full h-full object-cover"
                         />
                       </LazyLoad>
                     </div>
@@ -380,16 +450,28 @@ function Index() {
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-pure-white/70" id="como-funciona">
-        <div className="container mx-auto max-w-6xl text-center">
-          <h2 className="text-4xl font-bold text-iris-purple mb-16">
-            <span>{t('¿Cómo funciona oQuanta en tu local?')}</span>
+      {/* How it works section */}
+      <section
+        className="py-16 px-4 bg-gradient-to-br from-white/90 to-gray-50/80 dark:from-gray-800/90 dark:to-gray-900/80 relative overflow-hidden"
+        id="como-funciona"
+      >
+        <DecorativeBlur color="#c0f03e" className="w-80 h-80 -bottom-20 -left-20" />
+        <DecorativeBlur color="#fd5304" className="w-64 h-64 top-20 right-40" />
+
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-iris-purple mb-16 text-center">
+            {t('¿Cómo funciona oQuanta en tu local?')}
           </h2>
-          <div className="grid md:grid-cols-3 gap-12">
-            <div className="bg-pure-white rounded-lg shadow-lg p-6">
-              <div className="text-center mb-6">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div
+              className={clsx(
+                glassCard,
+                'p-8 relative hover:translate-y-[-4px] transition-all duration-300'
+              )}
+            >
+              <div className="text-center mb-6 relative">
                 <div className="inline-flex flex-col items-center">
-                  <span className="inline-block w-16 h-16 rounded-full bg-iris-purple text-white font-bold flex items-center justify-center mb-2">
+                  <span className="inline-block w-16 h-16 rounded-full bg-gradient-to-br from-iris-purple to-iris-purple/80 text-white font-bold flex items-center justify-center mb-2 shadow-lg shadow-iris-purple/20">
                     <ClipboardEdit className="w-8 h-8" />
                   </span>
                   <span className="inline-block w-8 h-8 rounded-full bg-iris-purple text-white font-bold flex items-center justify-center">
@@ -397,15 +479,23 @@ function Index() {
                   </span>
                 </div>
               </div>
-              <h3 className="font-bold mb-2 text-black">{t('Configura tu encuesta')}</h3>
-              <p className="">
+              <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white text-center">
+                {t('Configura tu encuesta')}
+              </h3>
+              <p className="text-gray-700 dark:text-gray-300 text-center">
                 {t('Elige entre encuestas tipo o personalizadas que se adapten a tus necesidades.')}
               </p>
             </div>
-            <div className="bg-pure-white rounded-lg shadow-lg p-6">
+
+            <div
+              className={clsx(
+                glassCard,
+                'p-8 relative hover:translate-y-[-4px] transition-all duration-300'
+              )}
+            >
               <div className="text-center mb-6">
                 <div className="inline-flex flex-col items-center">
-                  <span className="inline-block w-16 h-16 rounded-full bg-iris-purple text-white font-bold flex items-center justify-center mb-2">
+                  <span className="inline-block w-16 h-16 rounded-full bg-gradient-to-br from-iris-purple to-iris-purple/80 text-white font-bold flex items-center justify-center mb-2 shadow-lg shadow-iris-purple/20">
                     <QrCodeIcon className="w-8 h-8" />
                   </span>
                   <span className="inline-block w-8 h-8 rounded-full bg-iris-purple text-white font-bold flex items-center justify-center">
@@ -413,15 +503,23 @@ function Index() {
                   </span>
                 </div>
               </div>
-              <h3 className="font-bold mb-2 text-black">{t('Distribuye el QR en tu local')}</h3>
-              <p className="">
+              <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white text-center">
+                {t('Distribuye el QR en tu local')}
+              </h3>
+              <p className="text-gray-700 dark:text-gray-300 text-center">
                 {t('Nuestros materiales promocionales facilitan que tus clientes participen.')}
               </p>
             </div>
-            <div className="bg-pure-white rounded-lg shadow-lg p-6">
+
+            <div
+              className={clsx(
+                glassCard,
+                'p-8 relative hover:translate-y-[-4px] transition-all duration-300'
+              )}
+            >
               <div className="text-center mb-6">
                 <div className="inline-flex flex-col items-center">
-                  <span className="inline-block w-16 h-16 rounded-full bg-iris-purple text-white font-bold flex items-center justify-center mb-2">
+                  <span className="inline-block w-16 h-16 rounded-full bg-gradient-to-br from-iris-purple to-iris-purple/80 text-white font-bold flex items-center justify-center mb-2 shadow-lg shadow-iris-purple/20">
                     <BarChart2 className="w-8 h-8" />
                   </span>
                   <span className="inline-block w-8 h-8 rounded-full bg-iris-purple text-white font-bold flex items-center justify-center">
@@ -429,134 +527,189 @@ function Index() {
                   </span>
                 </div>
               </div>
-              <h3 className="font-bold mb-2 text-black">{t('Recibe y analiza los datos')}</h3>
-              <p className="">{t('Accede a resultados en tiempo real y actúa de inmediato.')}</p>
+              <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white text-center">
+                {t('Recibe y analiza los datos')}
+              </h3>
+              <p className="text-gray-700 dark:text-gray-300 text-center">
+                {t('Accede a resultados en tiempo real y actúa de inmediato.')}
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-white/80" id="testimonios">
-        <div className="container mx-auto max-w-6xl text-center">
-          <h2 className="text-4xl font-bold text-pumpkin-orange mb-16">
-            <span>{t('Testimonios reales de hosteleros')}</span>
+      {/* Testimonials Section */}
+      <section
+        className="py-16 px-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden"
+        id="testimonios"
+      >
+        <DecorativeBlur color="#5a33ee" className="w-96 h-96 -top-40 -right-40" />
+
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-pumpkin-orange mb-16 text-center">
+            {t('Testimonios reales de hosteleros')}
           </h2>
-          {testimonies && <TestimonialsCarousel testimonials={testimonies} />}
+          <div className={glassCard + ' p-6'}>
+            {testimonies && <TestimonialsCarousel testimonials={testimonies} />}
+          </div>
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-pure-white/70" id="noticias">
-        <div className="container mx-auto max-w-6xl">
-          <h2 className="text-4xl font-bold text-pumpkin-orange mb-16 text-center">
-            <span>{t('Últimas noticias en medios')}</span>
+      {/* News Section */}
+      <section
+        className="py-16 px-4 bg-gradient-to-br from-white/90 to-gray-50/80 dark:from-gray-800/90 dark:to-gray-900/80 relative overflow-hidden"
+        id="noticias"
+      >
+        <DecorativeBlur color="#c0f03e" className="w-80 h-80 top-20 -left-20" />
+
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-pumpkin-orange mb-16 text-center">
+            {t('Últimas noticias en medios')}
           </h2>
           {pressPosts && <PressCarousel posts={pressPosts} />}
         </div>
       </section>
 
+      {/* FAQ Section */}
       <FaqSection />
 
-      <section className="pt-4 pb-16 px-4 bg-pure-white/70" id="demo-schedule">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="space-y-4 flex flex-col justify-center">
-              <h2 className="text-4xl font-bold text-iris-purple mb-4">
-                <span>{t('Empieza a obtener datos de tu local hoy mismo')}</span>
+      {/* Demo Schedule Section */}
+      <section
+        className="py-16 px-4 bg-gradient-to-br from-white/90 to-gray-50/80 dark:from-gray-800/90 dark:to-gray-900/80 relative overflow-hidden"
+        id="demo-schedule"
+      >
+        <DecorativeBlur color="#fd5304" className="w-96 h-96 top-20 -left-40" />
+        <DecorativeBlur color="#5a33ee" className="w-80 h-80 bottom-10 right-0" />
+
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <div className="grid md:grid-cols-2 gap-16">
+            <div className="space-y-6">
+              <h2 className="text-3xl sm:text-4xl font-semibold text-iris-purple">
+                {t('Empieza a obtener datos de tu local hoy mismo')}
               </h2>
-              <div className="space-y-4 flex flex-col justify-center bg-pure-white p-2 rounded shadow">
-                <div className="flex items-start">
-                  <p>
-                    <span className="font-bold mr-1">{t('Solicita tu demo gratis.')}</span>
-                    <span>
-                      {t(
-                        'Durante la reunión te presentaremos cómo podemos ayudar a tu negocio a diferenciarse y generar más resultados.'
-                      )}
-                    </span>
+              <div className={glassCard + ' p-6 space-y-4'}>
+                <div className="mb-4">
+                  <p className="font-semibold text-lg mb-2">{t('Solicita tu demo gratis')}</p>
+                  <p className="text-gray-700 dark:text-gray-300">
+                    {t(
+                      'Durante la reunión te presentaremos cómo podemos ayudar a tu negocio a diferenciarse y generar más resultados.'
+                    )}
                   </p>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <p className="bg-pure-white">{t('✅ Datos')}</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <p className="bg-pure-white">{t('✅ Reseñas')}</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <p className="bg-pure-white">{t('✅ Feedback')}</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <p className="bg-pure-white">{t('✅ Recurrencia')}</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <p className="bg-pure-white">{t('✅ Nuevos clientes')}</p>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex items-start gap-2">
+                    <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                    <p>{t('Datos')}</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                    <p>{t('Reseñas')}</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                    <p>{t('Feedback')}</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                    <p>{t('Recurrencia')}</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                    <p>{t('Nuevos clientes')}</p>
+                  </div>
                 </div>
               </div>
             </div>
             <div className="relative">
-              <CalendlyInline />
+              <div className={glassCard + ' h-full overflow-hidden'}>
+                <CalendlyInline />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-white/80" id="why-born">
-        <div className="container mx-auto max-w-6xl text-center">
-          <h2 className="text-4xl font-bold text-pumpkin-orange mb-16">
-            <span>{t('¿Por qué nació oQuanta?')}</span>
+      {/* Why Section */}
+      <section
+        className="py-16 px-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden"
+        id="why-born"
+      >
+        <DecorativeBlur color="#c0f03e" className="w-80 h-80 -bottom-20 right-20" />
+
+        <div className="container mx-auto max-w-6xl text-center relative z-10">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-pumpkin-orange mb-16">
+            {t('¿Por qué nació oQuanta?')}
           </h2>
-          <div className="h-fit-content mx-auto">
+          <div className={clsx(glassCard, 'p-1 max-w-3xl mx-auto overflow-hidden')}>
             <LazyVideoPlayer
               src={whyOquantaVideo}
               poster={firstImage}
               title={t('"Video demostrativo de oQuanta"')}
-              height={250}
-              className="mx-auto"
+              height={350}
+              className="rounded-xl overflow-hidden"
             />
           </div>
         </div>
       </section>
 
-      <section className="pt-4 pb-16 px-4 bg-pure-white/70" id="know-more">
-        <div className="container mx-auto max-w-6xl">
-          <h2 className="text-4xl font-bold text-iris-purple mb-8 mx-auto text-center">
-            <span>{t('¿Quieres saber más?')}</span>
+      {/* Know More Section */}
+      <section
+        className="py-16 px-4 bg-gradient-to-br from-white/90 to-gray-50/80 dark:from-gray-800/90 dark:to-gray-900/80 relative overflow-hidden"
+        id="know-more"
+      >
+        <DecorativeBlur color="#5a33ee" className="w-80 h-80 top-20 left-1/4" />
+
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-iris-purple mb-16 text-center">
+            {t('¿Quieres saber más?')}
           </h2>
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="space-y-4 flex flex-col justify-center">
-              <div className="bg-pure-white p-2 rounded shadow h-auto">
-                <div className="flex flex-col space-y-3 ">
-                  <p className="bg-pure-white">
-                    <span>
-                      {t(
-                        'Descubre en detalle cómo oQuanta puede ayudarte a mejorar tu negocio con datos reales y opiniones verificadas.'
-                      )}
-                    </span>
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="space-y-6">
+              <div className={glassCard + ' p-6 space-y-4'}>
+                <div className="space-y-3">
+                  <p className="text-gray-700 dark:text-gray-300">
+                    {t(
+                      'Descubre en detalle cómo oQuanta puede ayudarte a mejorar tu negocio con datos reales y opiniones verificadas.'
+                    )}
                   </p>
-                  <p className="bg-pure-white">
-                    <span>{t('Descarga nuestro dossier gratuito y entérate de todo:')}</span>
+                  <p className="font-medium">
+                    {t('Descarga nuestro dossier gratuito y entérate de todo:')}
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <p className="bg-pure-white">{t('✅ Cómo funciona paso a paso.')}</p>
+                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                  <p>{t('Cómo funciona paso a paso.')}</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <p className="bg-pure-white">{t('✅ Qué datos puedes obtener.')}</p>
+                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                  <p>{t('Qué datos puedes obtener.')}</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <p className="bg-pure-white">{t('✅ Beneficios específicos para tu negocio.')}</p>
+                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                  <p>{t('Beneficios específicos para tu negocio.')}</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <p className="bg-pure-white">{t('✅ Casos de éxito de otros hosteleros.')}</p>
+                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                  <p>{t('Casos de éxito de otros hosteleros.')}</p>
+                </div>
+
+                <div className="pt-4">
+                  <button className={modernButton + ' w-full justify-center'}>
+                    {t('Descargar dossier')}
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
                 </div>
               </div>
             </div>
             <div className="relative">
-              <div className="aspect-[4/3] bg-black-30 rounded-lg">
-                <LazyLoad height="450px">
+              <div className="absolute inset-0 bg-gradient-to-r from-lime-green/20 to-pumpkin-orange/10 rounded-2xl blur-xl transform -rotate-2"></div>
+              <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl relative">
+                <LazyLoad height={450}>
                   <img
                     src={secondImage}
                     alt={t('heroImageAlt')}
-                    className="w-full h-full object-cover rounded-lg"
+                    className="w-full h-full object-cover rounded-2xl"
                   />
                 </LazyLoad>
               </div>

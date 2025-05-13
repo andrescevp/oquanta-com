@@ -19,6 +19,11 @@ export const routes: RouteRecord[] = [
         getStaticPaths: () => ['/', '/#beneficios']
       },
       {
+        path: '/premios',
+        Component: React.lazy(() => import('./pages/Rewards')),
+        getStaticPaths: () => ['/premios']
+      },
+      {
         path: '/contact',
         Component: React.lazy(() => import('./pages/Contact'))
       },

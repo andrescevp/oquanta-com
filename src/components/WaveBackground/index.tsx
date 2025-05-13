@@ -1,3 +1,4 @@
+import { clsx } from 'clsx'
 import React, { useEffect, useState } from 'react'
 
 import { WaveBackgroundProps } from './types'
@@ -56,7 +57,7 @@ const WaveBackground: React.FC<WaveBackgroundProps> = ({
   className = ''
 }) => {
   return (
-    <div className={`relative overflow-hidden ${className}`} style={{ width, height }}>
+    <div className={clsx(`relative overflow-hidden`, className)} style={{ width, height }}>
       {/* Ondas circulares */}
       <div className="absolute inset-0 z-0">
         {/* Puntos de origen de ondas */}
