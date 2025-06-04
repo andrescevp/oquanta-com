@@ -1,34 +1,84 @@
 import clsx from 'clsx'
 import { Download, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react'
-import { useState } from 'react'
-import { Document, Page, pdfjs } from 'react-pdf'
+import { useState, useEffect } from 'react'
 
-// Import PDF.js worker as a static import
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
-import 'react-pdf/dist/esm/Page/TextLayer.css'
+// Polyfill for Promise.withResolvers
+const ensurePromiseWithResolvers = () => {
+  if (typeof Promise.withResolvers !== 'function') {
+    Promise.withResolvers = function () {
+      let resolve, reject
+      const promise = new Promise((res, rej) => {
+        resolve = res
+        reject = rej
+      })
+      return { promise, resolve, reject }
+    }
+  }
+}
 
-// Configure the worker source to use a local copy instead of CDN
-// This avoids CORS issues in local development
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.js',
-  import.meta.url
-).toString()
-
-export function PDFViewer({ pdfUrl, title }) {
-  const [numPages, setNumPages] = useState(null)
+export function PDFViewer({ pdfUrl, title }: { pdfUrl: string; title?: string }) {
+  const [numPages, setNumPages] = useState<number | null>(null)
   const [pageNumber, setPageNumber] = useState(1)
   const [loading, setLoading] = useState(true)
+  const [Component, setComponent] = useState<React.FC | null>(null)
 
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages)
-    setLoading(false)
-  }
+  // Only import and initialize react-pdf on the client side
+  useEffect(() => {
+    let isMounted = true
 
-  function onDocumentLoadError() {
-    setLoading(false)
-  }
+    const loadPdf = async () => {
+      if (typeof window !== 'undefined') {
+        try {
+          // Add Promise.withResolvers polyfill before importing PDF.js
+          ensurePromiseWithResolvers()
+          // Dynamically import react-pdf components
+          const { Document, Page, pdfjs } = await import('react-pdf')
+
+          // Set the worker source
+          pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.min.js`
+
+          if (isMounted) {
+            // Create a component that uses Document and Page
+            setComponent(() => {
+              const PDFComponent = () => (
+                <Document
+                  file={pdfUrl}
+                  onLoadSuccess={({ numPages }) => {
+                    setNumPages(numPages)
+                    setLoading(false)
+                  }}
+                  onLoadError={() => setLoading(false)}
+                  loading={null}
+                  className="flex justify-center"
+                >
+                  <Page
+                    pageNumber={pageNumber}
+                    renderTextLayer={false}
+                    renderAnnotationLayer={false}
+                    className="shadow-lg"
+                    scale={1}
+                  />
+                </Document>
+              )
+              return PDFComponent
+            })
+          }
+        } catch (error) {
+          console.error('Failed to load PDF viewer:', error)
+          if (isMounted) setLoading(false)
+        }
+      }
+    }
+
+    loadPdf()
+
+    return () => {
+      isMounted = false
+    }
+  }, [pdfUrl, pageNumber])
 
   const nextPage = () => {
+    if (!numPages) return
     if (pageNumber < numPages) {
       setPageNumber(pageNumber + 1)
     }
@@ -87,21 +137,7 @@ export function PDFViewer({ pdfUrl, title }) {
             </div>
           )}
 
-          <Document
-            file={pdfUrl}
-            onLoadSuccess={onDocumentLoadSuccess}
-            onLoadError={onDocumentLoadError}
-            loading={null}
-            className="flex justify-center"
-          >
-            <Page
-              pageNumber={pageNumber}
-              renderTextLayer={false}
-              renderAnnotationLayer={false}
-              className="shadow-lg"
-              scale={1}
-            />
-          </Document>
+          {Component && <Component />}
 
           {!loading && numPages === 0 && (
             <div className="text-center p-6">
@@ -111,7 +147,7 @@ export function PDFViewer({ pdfUrl, title }) {
         </div>
 
         {/* Page Navigation Controls */}
-        {numPages > 1 && (
+        {numPages && numPages > 1 && (
           <div className="flex items-center justify-center mt-4 space-x-4">
             <button
               onClick={previousPage}
