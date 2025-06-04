@@ -32,7 +32,7 @@ const Layout = () => {
         <div className="min-h-screen snap-y">
           <PagesHead />
           <Navbar />
-          <main className="pt-32 relative z-10">
+          <main className="pt-32 relative from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
             <Suspense>
               <Outlet />
             </Suspense>

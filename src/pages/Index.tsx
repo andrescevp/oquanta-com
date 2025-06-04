@@ -3,6 +3,7 @@ import { BarChart2, ClipboardEdit, Instagram, QrCode as QrCodeIcon, ArrowRight }
 import React, { useEffect, useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import LazyLoad from 'react-lazy-load'
+import { pdfjs } from 'react-pdf'
 import { JsonLd } from 'react-schemaorg'
 import {
   WebSite as WebSiteSchema,
@@ -14,9 +15,9 @@ import whyOquantaVideo from '../../videos/how-works.mp4?h=450&format=webm'
 import clientData, { images as clientImages } from '../ClientData.ts'
 import clientTestimonies from '../ClientTestimonies.ts'
 import CalendlyInline from '../components/CalendlyInline'
-import ColorGrid from '../components/ColorGrid/index.tsx'
 import FaqSection from '../components/FaqSection'
 import LazyVideoPlayer from '../components/LazyVideoPlayer'
+import { PDFViewer } from '../components/PDFViewer.tsx'
 import PressCarousel, { PressCarouselProps } from '../components/PressCarousel'
 import SlideShow from '../components/SlideShow/index.tsx'
 import Slide from '../components/SlideShow/Slide.tsx'
@@ -28,14 +29,11 @@ import { useMenu } from '../context/MenuContext.tsx'
 import { MenuItemCTA, MenuItemSimpleClassName, MenuItemSpecial } from '../layout/Navbar.tsx'
 import { pressPosts as pressPostsLoaded, images as pressPostsImages } from '../PressPosts'
 
-import secondImage from './../../images/Banner-Web-B2B-1-1024x1024.png?h=450&format=webp'
 import firstImage from './../../images/Banner-Web-B2B-1024x1024.png?h=450&format=webp'
-import reportPhone1 from './../../images/report-phone-1.png?h=450&format=webp'
-import reportPhone2 from './../../images/report-phone-2.png?h=450&format=webp'
 import surveyPhone1 from './../../images/survey-phone-1.png?h=450&format=webp'
 import surveyPhone2 from './../../images/survey-phone-2.png?h=450&format=webp'
 
-const DataBackground = React.lazy(() => import('../components/DataBackground.tsx'))
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`
 
 // Reusable style classes
 const glassCard =
@@ -49,7 +47,7 @@ const DecorativeBlur = ({ color, className }) => {
   return (
     <div
       className={clsx(
-        'absolute rounded-full opacity-40 blur-3xl mix-blend-multiply dark:mix-blend-soft-light animate-pulse',
+        'fixed rounded-full opacity-40 blur-3xl mix-blend-multiply dark:mix-blend-soft-light animate-pulse z-[1]',
         className
       )}
       style={{ backgroundColor: color }}
@@ -235,19 +233,23 @@ function Index() {
       {/* <React.Suspense fallback={<div className="min-h-[50vh]" />}>
         <DataBackground isContentLoaded={isContentLoaded} />
       </React.Suspense> */}
+      <DecorativeBlur color="#5a33ee" className="w-96 h-96 top-50 left-10" />
+      {/* <DecorativeBlur color="#fd5304" className="w-96 h-96 top-50 left-10" /> */}
+      <DecorativeBlur color="#fd5304" className="w-96 h-96 top-[80vh] right-[50vw]" />
+      <DecorativeBlur color="#c0f03e" className="w-96 h-96 top-[10vh] right-40" />
 
       {/* Hero Section */}
       <section
-        className="min-h-screen pt-28 pb-16 px-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 overflow-hidden relative"
+        className="min-h-screen pt-28 pb-16 px-4 bg-gradient-to-br  overflow-hidden relative"
         id="why-oquanta"
       >
         {/* Decorative elements */}
-        <DecorativeBlur color="#fd5304" className="w-96 h-96 -top-40 -left-40" />
+        {/* <DecorativeBlur color="#fd5304" className="w-96 h-96 -top-40 -left-40" />
         <DecorativeBlur
           color="#5a33ee"
           className="w-96 h-96 top-1/3 right-0 transform translate-x-1/2"
         />
-        <DecorativeBlur color="#c0f03e" className="w-64 h-64 bottom-20 left-1/4" />
+        <DecorativeBlur color="#c0f03e" className="w-64 h-64 bottom-20 left-1/4" /> */}
 
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="grid md:grid-cols-2 gap-16">
@@ -302,7 +304,7 @@ function Index() {
                 </a>
               </div>
             </div>
-            <div className="relative items-center justify-center">
+            <div className="relative items-center justify-center my-auto">
               <WaveBackground width="auto" height="450px" className="rounded-2xl shadow-2xl">
                 <SlideShow width="auto" height="450px" className="rounded-2xl">
                   <Slide direction="up" duration={800}>
@@ -339,7 +341,7 @@ function Index() {
         className="py-16 px-4 bg-gradient-to-br from-white/90 to-gray-50/80 dark:from-gray-800/90 dark:to-gray-900/80 relative overflow-hidden"
         id="our-clients"
       >
-        <DecorativeBlur color="#c0f03e" className="w-80 h-80 -bottom-40 -right-20" />
+        {/* <DecorativeBlur color="#c0f03e" className="w-80 h-80 -bottom-40 -right-20" /> */}
 
         <div className="container mx-auto max-w-6xl relative z-10">
           <h2 className="text-2xl sm:text-3xl font-semibold text-center text-pumpkin-orange mb-12">
@@ -350,101 +352,67 @@ function Index() {
       </section>
 
       {/* Benefits Section */}
-      <section
-        className="py-16 px-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden"
-        id="beneficios"
-      >
-        <DecorativeBlur color="#fd5304" className="w-96 h-96 -top-20 -right-40" />
-        <DecorativeBlur color="#5a33ee" className="w-64 h-64 bottom-20 left-20" />
+      <section className="py-16 px-4 bg-gradient-to-br  relative overflow-hidden" id="beneficios">
+        {/* <DecorativeBlur color="#fd5304" className="w-96 h-96 -top-20 -right-40" />
+        <DecorativeBlur color="#5a33ee" className="w-64 h-64 bottom-20 left-20" /> */}
 
         <div className="container mx-auto max-w-6xl relative z-10">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="space-y-6">
-              <span className="text-sm font-medium text-iris-purple">
-                {t('Toda información que necesitas sobre tu negocio y clientes')}
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-semibold text-pumpkin-orange">
-                {t('Beneficios para tu bar o restaurante')}
-              </h2>
+          <div className="space-y-6">
+            <span className="text-sm font-medium text-iris-purple">
+              {t('Toda información que necesitas sobre tu negocio y clientes')}
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-semibold text-pumpkin-orange">
+              {t('Beneficios para tu bar o restaurante')}
+            </h2>
 
-              <div className={glassCard + ' p-6 space-y-4'}>
-                <div className="flex items-start gap-3">
-                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
-                  <p>
-                    {t(
-                      'Opiniones verificadas y reales. Solo clientes que han visitado tu local pueden opinar.'
-                    )}
-                  </p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
-                  <p>
-                    {t(
-                      'Datos que realmente importan. Descubre información clave sobre tu negocio, clientes y servicio.'
-                    )}
-                  </p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
-                  <p>
-                    {t(
-                      'Mejora lo que necesites. Identifica qué está funcionando y qué podrías mejorar.'
-                    )}
-                  </p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
-                  <p>
-                    {t(
-                      'Decisiones basadas en datos. Olvídate de intuiciones: actúa con información clara y útil.'
-                    )}
-                  </p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
-                  <p>
-                    {t(
-                      'Fácil, rápido y sin complicaciones. Sin instalaciones complejas ni pérdida de tiempo.'
-                    )}
-                  </p>
-                </div>
+            <div className={glassCard + ' p-6 space-y-4'}>
+              <div className="flex items-start gap-3">
+                <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                <p>
+                  {t(
+                    'Opiniones verificadas y reales. Solo clientes que han visitado tu local pueden opinar.'
+                  )}
+                </p>
               </div>
-
-              <div className="flex items-center justify-start mt-4">
-                <a href="/#demo-schedule" className={modernButton}>
-                  {t('Quiero probarlo gratis')}
-                  <ArrowRight className="w-5 h-5" />
-                </a>
+              <div className="flex items-start gap-3">
+                <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                <p>
+                  {t(
+                    'Datos que realmente importan. Descubre información clave sobre tu negocio, clientes y servicio.'
+                  )}
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                <p>
+                  {t(
+                    'Mejora lo que necesites. Identifica qué está funcionando y qué podrías mejorar.'
+                  )}
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                <p>
+                  {t(
+                    'Decisiones basadas en datos. Olvídate de intuiciones: actúa con información clara y útil.'
+                  )}
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
+                <p>
+                  {t(
+                    'Fácil, rápido y sin complicaciones. Sin instalaciones complejas ni pérdida de tiempo.'
+                  )}
+                </p>
               </div>
             </div>
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-iris-purple/20 to-lime-green/20 rounded-2xl blur-xl transform rotate-2"></div>
-              <ColorGrid width="100%" height="auto" className="rounded-2xl shadow-2xl relative">
-                <SlideShow width="auto" height="auto" className="rounded-2xl overflow-hidden">
-                  <Slide direction="up" duration={800}>
-                    <div className="aspect-[4/3] rounded-2xl overflow-hidden">
-                      <LazyLoad height={450}>
-                        <img
-                          src={reportPhone1}
-                          alt={t('Imagen de un reporte de un bar en un dispositivo movil')}
-                          className="w-full h-full object-cover"
-                        />
-                      </LazyLoad>
-                    </div>
-                  </Slide>
-                  <Slide direction="up" duration={1000}>
-                    <div className="aspect-[4/3] rounded-2xl overflow-hidden">
-                      <LazyLoad height={450}>
-                        <img
-                          src={reportPhone2}
-                          alt={t('Imagen de un reporte de un bar en un dispositivo movil')}
-                          className="w-full h-full object-cover"
-                        />
-                      </LazyLoad>
-                    </div>
-                  </Slide>
-                </SlideShow>
-              </ColorGrid>
+
+            <div className="flex items-center justify-start mt-4">
+              <a href="/#demo-schedule" className={modernButton}>
+                {t('Quiero probarlo gratis')}
+                <ArrowRight className="w-5 h-5" />
+              </a>
             </div>
           </div>
         </div>
@@ -455,8 +423,8 @@ function Index() {
         className="py-16 px-4 bg-gradient-to-br from-white/90 to-gray-50/80 dark:from-gray-800/90 dark:to-gray-900/80 relative overflow-hidden"
         id="como-funciona"
       >
-        <DecorativeBlur color="#c0f03e" className="w-80 h-80 -bottom-20 -left-20" />
-        <DecorativeBlur color="#fd5304" className="w-64 h-64 top-20 right-40" />
+        {/* <DecorativeBlur color="#c0f03e" className="w-80 h-80 -bottom-20 -left-20" />
+        <DecorativeBlur color="#fd5304" className="w-64 h-64 top-20 right-40" /> */}
 
         <div className="container mx-auto max-w-6xl relative z-10">
           <h2 className="text-3xl sm:text-4xl font-semibold text-iris-purple mb-16 text-center">
@@ -539,11 +507,8 @@ function Index() {
       </section>
 
       {/* Testimonials Section */}
-      <section
-        className="py-16 px-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden"
-        id="testimonios"
-      >
-        <DecorativeBlur color="#5a33ee" className="w-96 h-96 -top-40 -right-40" />
+      <section className="py-16 px-4 bg-gradient-to-br  relative overflow-hidden" id="testimonios">
+        {/* <DecorativeBlur color="#5a33ee" className="w-96 h-96 -top-40 -right-40" /> */}
 
         <div className="container mx-auto max-w-6xl relative z-10">
           <h2 className="text-3xl sm:text-4xl font-semibold text-pumpkin-orange mb-16 text-center">
@@ -560,7 +525,7 @@ function Index() {
         className="py-16 px-4 bg-gradient-to-br from-white/90 to-gray-50/80 dark:from-gray-800/90 dark:to-gray-900/80 relative overflow-hidden"
         id="noticias"
       >
-        <DecorativeBlur color="#c0f03e" className="w-80 h-80 top-20 -left-20" />
+        {/* <DecorativeBlur color="#c0f03e" className="w-80 h-80 top-20 -left-20" /> */}
 
         <div className="container mx-auto max-w-6xl relative z-10">
           <h2 className="text-3xl sm:text-4xl font-semibold text-pumpkin-orange mb-16 text-center">
@@ -578,8 +543,8 @@ function Index() {
         className="py-16 px-4 bg-gradient-to-br from-white/90 to-gray-50/80 dark:from-gray-800/90 dark:to-gray-900/80 relative overflow-hidden"
         id="demo-schedule"
       >
-        <DecorativeBlur color="#fd5304" className="w-96 h-96 top-20 -left-40" />
-        <DecorativeBlur color="#5a33ee" className="w-80 h-80 bottom-10 right-0" />
+        {/* <DecorativeBlur color="#fd5304" className="w-96 h-96 top-20 -left-40" />
+        <DecorativeBlur color="#5a33ee" className="w-80 h-80 bottom-10 right-0" /> */}
 
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="grid md:grid-cols-2 gap-16">
@@ -631,11 +596,8 @@ function Index() {
       </section>
 
       {/* Why Section */}
-      <section
-        className="py-16 px-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden"
-        id="why-born"
-      >
-        <DecorativeBlur color="#c0f03e" className="w-80 h-80 -bottom-20 right-20" />
+      <section className="py-16 px-4 bg-gradient-to-br  relative overflow-hidden" id="why-born">
+        {/* <DecorativeBlur color="#c0f03e" className="w-80 h-80 -bottom-20 right-20" /> */}
 
         <div className="container mx-auto max-w-6xl text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl font-semibold text-pumpkin-orange mb-16">
@@ -658,7 +620,7 @@ function Index() {
         className="py-16 px-4 bg-gradient-to-br from-white/90 to-gray-50/80 dark:from-gray-800/90 dark:to-gray-900/80 relative overflow-hidden"
         id="know-more"
       >
-        <DecorativeBlur color="#5a33ee" className="w-80 h-80 top-20 left-1/4" />
+        {/* <DecorativeBlur color="#5a33ee" className="w-80 h-80 top-20 left-1/4" /> */}
 
         <div className="container mx-auto max-w-6xl relative z-10">
           <h2 className="text-3xl sm:text-4xl font-semibold text-iris-purple mb-16 text-center">
@@ -705,13 +667,7 @@ function Index() {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-lime-green/20 to-pumpkin-orange/10 rounded-2xl blur-xl transform -rotate-2"></div>
               <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl relative">
-                <LazyLoad height={450}>
-                  <img
-                    src={secondImage}
-                    alt={t('heroImageAlt')}
-                    className="w-full h-full object-cover rounded-2xl"
-                  />
-                </LazyLoad>
+                <PDFViewer pdfUrl={'dossier.pdf'} title="Nuestra propuesta en detalle" />
               </div>
             </div>
           </div>
