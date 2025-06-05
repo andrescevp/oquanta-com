@@ -29,13 +29,11 @@ export function PDFViewer({ pdfUrl, title }: { pdfUrl: string; title?: string })
     const loadPdf = async () => {
       if (typeof window !== 'undefined') {
         try {
-          // Add Promise.withResolvers polyfill before importing PDF.js
-          ensurePromiseWithResolvers()
           // Dynamically import react-pdf components
           const { Document, Page, pdfjs } = await import('react-pdf')
 
           // Set the worker source
-          pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.min.js`
+          pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.min.mjs`
 
           if (isMounted) {
             // Create a component that uses Document and Page
@@ -124,7 +122,7 @@ export function PDFViewer({ pdfUrl, title }: { pdfUrl: string; title?: string })
               aria-label="Download PDF"
             >
               <Download className="h-4 w-4" />
-              <span>Download</span>
+              <span>Descargar</span>
             </button>
           </div>
         </div>
