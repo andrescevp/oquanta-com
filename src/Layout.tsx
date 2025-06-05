@@ -1,61 +1,74 @@
-import React, { Suspense } from 'react';
-import { Instagram } from 'lucide-react';
-import { t } from './translations.ts';
-import WhatsAppButton from "./WhatsAppButton.tsx";
+import i18n from 'i18next'
+import React, { Suspense } from 'react'
+import { useTranslation, initReactI18next } from 'react-i18next'
 import { Outlet } from 'react-router-dom'
-import headerImage from './../images/branding_quanta_v2-24.jpg?w=250&format=png';
-import LazyLoad from 'react-lazy-load';
+
+import WhatsAppButton from './components/WhatsAppButton.tsx'
+import { HeadProvider } from './context/HeadContext'
+import { MenuProvider } from './context/MenuContext'
+import Navbar from './layout/Navbar.tsx'
+import PagesHead from './pages/PagesHead'
+
+i18n
+  .use(initReactI18next) // passes i18n down to react-i18next
+  .init({
+    // the translations
+    // (tip move them in a JSON file and import them,
+    // or even better, manage them via a UI: https://react.i18next.com/guides/multiple-translation-files#manage-your-translations-with-a-management-gui)
+    resources: {},
+    lng: 'es', // if you're using a language detector, do not define the lng option
+    fallbackLng: 'es',
+
+    interpolation: {
+      escapeValue: false // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
+    }
+  })
 
 const Layout = () => {
-    return (
-        <div className="min-h-screen bg-[#FFF9F5] snap-y">
-            <header className="bg-pure-white shadow-sm fixed w-full z-50">
-                <div className="container mx-auto px-4 py-4 flex justify-between items-center h-32">
-                    <div className="flex flex-col items-start">
-                        <a href="/">
-                            <LazyLoad width="250px">
-                                <img src={headerImage} alt="oQuanta"
-                                    className="w-full h-full object-cover rounded-lg" />
-                            </LazyLoad>
-                        </a>                                                            
-                    </div>                    
-                    <nav className="flex gap-4 items-center">
-                        <a href="/contact"
-                            className="bg-pumpkin-orange text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-pumpkin-orange-60">
-                            {t('navbar.contact')}
-                        </a>
-                        <a href="https://instagram.com/oquanta_es" className="text-black p-2 hover:text-pumpkin-orange"
-                            target="_blank">
-                            <Instagram className="w-5 h-5" />
-                        </a>
-                    </nav>
+  const { t } = useTranslation()
+  return (
+    <HeadProvider>
+      <MenuProvider>
+        <div className="min-h-screen snap-y">
+          <PagesHead />
+          <Navbar />
+          <main className="pt-32 relative from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+            <Suspense>
+              <Outlet />
+            </Suspense>
+          </main>
+          <footer className="relative py-12 px-4 bg-pure-white z-50">
+            <div className="container mx-auto max-w-6xl">
+              <div className="flex flex-col items-center mb-8">
+                <div className="text-2xl font-bold text-pumpkin-orange bg-pure-white">oQuanta.</div>
+                <div className="text-xs uppercase tracking-wider bg-pumpkin-orange text-white">
+                  {t('Speak up. Shape the future')}
                 </div>
-            </header>
-            <main className="pt-32">
-                <Suspense>
-                    <Outlet />
-                </Suspense>
-            </main>
-            <footer className="bg-white py-12 px-4">
-                <div className="container mx-auto max-w-6xl">
-                    <div className="flex flex-col items-center mb-8">
-                        <div className="text-2xl font-bold text-pumpkin-orange">oQuanta.</div>
-                        <div className="text-xs text-black-60 uppercase tracking-wider">{t('tagline')}</div>
-                    </div>
-                    <div className="text-center">
-                        <h3 className="font-bold text-black mb-4">{t('contact')}</h3>
-                        <div className="text-black-60 space-y-2">
-                            <p>{t('location')}</p>
-                            <p><a href={encodeURI(`mailto:${t('email')}`)} target='blank'>{t('email')}</a></p>
-                            <p><a href={encodeURI(`tel:${t('phone')}`)} target='blank'>{t('phone')}</a></p>
-                        </div>
-                    </div>
+              </div>
+              <div className="text-center">
+                <div className="space-y-2">
+                  <p>
+                    <a href={encodeURI(`mailto:${t('hola@oquanta.com')}`)} target="blank">
+                      {t('hola@oquanta.com')}
+                    </a>
+                  </p>
+                  <p>
+                    <a href={encodeURI(`tel:${t('+34669202916')}`)} target="blank">
+                      {t('669202916')}
+                    </a>
+                  </p>
                 </div>
-            </footer>
-            <WhatsAppButton phoneNumber="34669202916" message="Hola, me gustaría saber más sobre oQuanta."  />
-            
+              </div>
+            </div>
+          </footer>
+          <WhatsAppButton
+            phoneNumber="34669202916"
+            message="Hola, me gustaría saber más sobre oQuanta."
+          />
         </div>
-    );
+      </MenuProvider>
+    </HeadProvider>
+  )
 }
 
-export default Layout;
+export default Layout

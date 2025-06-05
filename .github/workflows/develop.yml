@@ -1,0 +1,117 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  build:
+    environment: oquanta-prod
+    runs-on: ubuntu-latest
+    env:
+      COMPOSER_NO_DEV: 1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+          echo "CONTENTFUL_ACCESS_TOKEN=${{ secrets.CONTENTFUL_ACCESS_TOKEN }}" >> .env.local
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+          cache: 'yarn'
+
+      - name: Install Node packages
+        run: yarn 
+
+      - name: Get Contentful data
+        run: yarn pull-contentful-data 
+
+      - name: Configure HTTP Basic Auth
+        run: |
+          echo "" >> public/.htaccess
+          echo "AuthType Basic" >> public/.htaccess
+          echo "AuthName \"Restricted Access\"" >> public/.htaccess
+          echo "AuthUserFile ${{ secrets.IONOS_HOSTING_ROOT }}/.my_etc/.htpasswd" >> public/.htaccess
+          echo "Require valid-user" >> public/.htaccess
+  
+
+      - name: Build assets
+        run: yarn build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: oquanta-com-preview
+          include-hidden-files: true
+          path: |
+            dist
+  deploy:
+    environment: oquanta-prod
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      SSH_ARGS: -o StrictHostKeyChecking=no -v
+      DEPLOY_FOLDER: ${{ secrets.IONOS_HOSTING_ROOT }}/deploy/oquanta-com-preview
+      DEPLOY_PATH: ${{ secrets.IONOS_HOSTING_ROOT }}/deploy/oquanta-com-preview/${{ github.run_id }}/
+      APP_PATH: ${{ secrets.IONOS_HOSTING_ROOT }}/oquanta-com-preview
+      DEPLOYMENTS_TO_KEEP: 3
+    steps:
+      - uses: actions/checkout@v4
+      # Make sure the @v0.9.0 matches the current version of the action
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: oquanta-com-preview
+          path: ${{ github.workspace }}/artifact
+
+      - name: Prepare deployment folder
+        run: |
+          ssh $SSH_ARGS ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+          "mkdir -p $DEPLOY_PATH && chmod 0774 $DEPLOY_PATH"
+
+      - name: rsync deployments
+        uses: up9cloud/action-rsync@master
+        env:
+          HOST: ${{ secrets.DEPLOY_HOST }}
+          KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+          TARGET: $DEPLOY_PATH
+          VERBOSE: true
+          USER: ${{ secrets.DEPLOY_USER }}
+          ARGS: -avq --progress
+          SSH_ARGS: '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+          SOURCE: artifact
+
+      - name: Set permissions to folders
+        run: |
+          ssh $SSH_ARGS ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+          "find ./deploy/oquanta-com-preview/${{ github.run_id }} -type d -exec chmod 0755 {} + && find ./deploy/oquanta-com-preview/${{ github.run_id }} -type f -exec chmod 0644 {} +"
+
+      - name: Set permissions to files
+        run: |
+          ssh $SSH_ARGS ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+          "find ./deploy/oquanta-com-preview/${{ github.run_id }} -type f -exec chmod 0644 {} +"
+
+      - name: Create symlink to real path
+        run: |
+          ssh $SSH_ARGS ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+          "ln -sfn ./deploy/oquanta-com-preview/${{ github.run_id }} ./oquanta-com-preview"
+
+      # list all folders in ./deploy/oquanta-com-preview/ remove all but last $DEPLOYMENTS_TO_KEEP created
+      - name: Remove old deployments
+        run: |
+          ssh $SSH_ARGS ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+          "cd ./deploy/oquanta-com-preview && ls -t | tail -n +$((DEPLOYMENTS_TO_KEEP+1)) | xargs rm -rf"
+
+      # zip each folder in ./deploy/oquanta-com-preview but ${{ github.run_id }}
+      - name: Archive old deployments
+        run: |
+          ssh $SSH_ARGS ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+          "cd ./deploy/oquanta-com-preview && ls -t | tail -n +$((DEPLOYMENTS_TO_KEEP+1)) | xargs -I {} tar -czf {}.tar.gz {}"
