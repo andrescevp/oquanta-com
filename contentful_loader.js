@@ -45,6 +45,13 @@ const slugToVariableName = slug => {
   return slug.replace(/-/g, '_')
 }
 
+const slugify = str => {
+  return str
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-') // replace non-alphanumeric characters with -
+    .replace(/^-|-$/g, '') // remove leading and trailing -
+}
+
 // show entry in console
 getEntries('blogEntry').then(entries => {
   console.log(entries)
@@ -278,15 +285,15 @@ getEntries('localBusiness').then(entries => {
 
     if (imageUrl) {
       const fileName = imageUrl.split('/').pop()
-      const name = fileName.split('.')[0]
-      if (!fs.existsSync(`images/localBusiness/${name}`)) {
-        fs.mkdirSync(`images/localBusiness/${name}`)
+      const nameSlug = slugify(value.fields.name)
+      if (!fs.existsSync(`images/localBusiness/${nameSlug}`)) {
+        fs.mkdirSync(`images/localBusiness/${nameSlug}`)
       }
-      images[name] = fileName
-      slugs[value.fields.name]['image'] = `./../images/localBusiness/${name}/${fileName}`
+      images[nameSlug] = fileName
+      slugs[value.fields.name]['image'] = `./../images/localBusiness/${nameSlug}/${fileName}`
 
       // download imageUrl
-      const file = fs.createWriteStream(`images/localBusiness/${name}/${fileName}`)
+      const file = fs.createWriteStream(`images/localBusiness/${nameSlug}/${fileName}`)
       https.get(`https:${imageUrl}`, function (response) {
         response.pipe(file)
         // after download completed close filestream
@@ -314,7 +321,7 @@ getEntries('localBusiness').then(entries => {
   TSStr += '\n\n'
   TSStr += 'export default localBusiness;'
   // write
-  fs.writeFile('src/LocalBusinesses.ts', TSStr, err => {
+  fs.writeFile('src/LocalBusiness.ts', TSStr, err => {
     if (err) throw err
     console.log('The file has been saved!')
   })

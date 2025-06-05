@@ -96,6 +96,13 @@ const PrizeCard = ({ month, prize, icon, description }) => {
   )
 }
 
+const slugify = (str: string) => {
+  return str
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-') // replace non-alphanumeric characters with -
+    .replace(/^-|-$/g, '') // remove leading and trailing -
+}
+
 // LocalBusiness Card component
 // LocalBusiness Card component
 const LocalBusinessCard = ({
@@ -112,7 +119,8 @@ const LocalBusinessCard = ({
   // Get the image for this business from the images collection
   const getBusinessImage = () => {
     // Convert the name to kebab-case to match the image keys
-    const businessKey = name.toLowerCase().replace(/\s+/g, '-')
+    const businessKey = slugify(name)
+    console.log('Fetching image for business:', businessKey)
     return localBusinessesImages[businessKey] || null
   }
 
@@ -232,6 +240,14 @@ function Rewards() {
       window.addEventListener('load', handleLoad)
       return () => window.removeEventListener('load', handleLoad)
     }
+  }, [])
+
+  const businesses = useMemo(() => {
+    // Convert localBusinesses to an array for mapping
+    return Object.entries(localBusinesses).map(([key, business]) => ({
+      ...business,
+      image: localBusinessesImages[key.toLowerCase().replace(/\s+/g, '-')]
+    }))
   }, [])
 
   return (
@@ -485,7 +501,7 @@ function Rewards() {
           </div>
         </div>
         <div className="grid md:grid-cols-2 gap-6 mt-8">
-          {Object.entries(localBusinesses).map(([key, business]) => (
+          {Object.entries(businesses).map(([key, business]) => (
             <LocalBusinessCard
               key={business.sys.id}
               name={business.fields.name}
