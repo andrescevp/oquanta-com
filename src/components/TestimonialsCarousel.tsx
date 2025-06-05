@@ -28,7 +28,7 @@ const TestimonialsCarousel: React.FC<TestimonialsCarouselProps> = ({ testimonial
 
   return (
     <div className="relative w-full">
-      <div className="relative" style={{ height: `${height}px` }}>
+      <div className="relative min-h-[200px] max-h-[200px] overflow-hidden transition-all duration-500 ease-in-out">
         {testimonials.map((testimony, index) => (
           <div
             key={index}
@@ -65,7 +65,7 @@ const TestimonialsCarousel: React.FC<TestimonialsCarouselProps> = ({ testimonial
                 }
               }}
             /> */}
-            <div className="rounded-lg shadow-lg p-4 mx-auto max-w-xl bg-white">
+            <div className="rounded-lg shadow-lg p-4 mx-auto max-w-xl bg-white min-h-[200px] h-[200px] text-ellipsis">
               <svg
                 className="w-8 h-8 text-gray-400 mb-4"
                 fill="currentColor"

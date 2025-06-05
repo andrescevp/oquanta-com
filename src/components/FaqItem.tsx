@@ -13,7 +13,7 @@ const FaqItem: React.FC<FaqItemProps> = ({ question, answer }) => {
   return (
     <div className="border-b border-gray-200 last:border-0 bg-white">
       <button
-        className="w-full py-4 px-6 flex justify-between items-center hover:bg-gray-50 transition-colors"
+        className="w-full py-4 px-6 flex justify-between items-center hover:bg-gray-50 transition-colors bg-white"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <h3 className="text-lg font-medium text-left text-gray-900">{question}</h3>

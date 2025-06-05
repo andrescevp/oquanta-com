@@ -233,10 +233,19 @@ function Index() {
       {/* <React.Suspense fallback={<div className="min-h-[50vh]" />}>
         <DataBackground isContentLoaded={isContentLoaded} />
       </React.Suspense> */}
-      <DecorativeBlur color="#5a33ee" className="w-96 h-96 top-50 left-10" />
+      <DecorativeBlur
+        color="#5a33ee"
+        className="w-40 h-40 top-50 left-10 lg:w-96 lg:h-96 lg:top-50 lg:left-10 md:w-96 md:h-96 md:top-50 md:left-10"
+      />
       {/* <DecorativeBlur color="#fd5304" className="w-96 h-96 top-50 left-10" /> */}
-      <DecorativeBlur color="#fd5304" className="w-96 h-96 top-[80vh] right-[50vw]" />
-      <DecorativeBlur color="#c0f03e" className="w-96 h-96 top-[10vh] right-40" />
+      <DecorativeBlur
+        color="#fd5304"
+        className="w-40 h-40 top-80 right-10 lg:w-96 lg:h-96 lg:top-[80vh] lg:right-[50vw] md:w-96 md:h-96 md:top-[80vh] md:left-40"
+      />
+      <DecorativeBlur
+        color="#c0f03e"
+        className="w-40 h-40 top-96 right-500 lg:w-96 lg:h-96 lg:top-[10vh] lg:right-40 md:w-96 md:h-96 md:top-[10vh] md:right-10"
+      />
 
       {/* Hero Section */}
       <section
@@ -514,7 +523,7 @@ function Index() {
           <h2 className="text-3xl sm:text-4xl font-semibold text-pumpkin-orange mb-16 text-center">
             {t('Testimonios reales de hosteleros')}
           </h2>
-          <div className={glassCard + ' p-6'}>
+          <div className={'p-4'}>
             {testimonies && <TestimonialsCarousel testimonials={testimonies} />}
           </div>
         </div>
@@ -596,9 +605,7 @@ function Index() {
       </section>
 
       {/* Why Section */}
-      <section className="py-16 px-4 bg-gradient-to-br  relative overflow-hidden" id="why-born">
-        {/* <DecorativeBlur color="#c0f03e" className="w-80 h-80 -bottom-20 right-20" /> */}
-
+      <section className="py-16 px-4 bg-gradient-to-br relative overflow-hidden" id="why-born">
         <div className="container mx-auto max-w-6xl text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl font-semibold text-pumpkin-orange mb-16">
             {t('¿Por qué nació oQuanta?')}
@@ -620,17 +627,15 @@ function Index() {
         className="py-16 px-4 bg-gradient-to-br from-white/90 to-gray-50/80 dark:from-gray-800/90 dark:to-gray-900/80 relative overflow-hidden"
         id="know-more"
       >
-        {/* <DecorativeBlur color="#5a33ee" className="w-80 h-80 top-20 left-1/4" /> */}
-
-        <div className="container mx-auto max-w-6xl relative z-10">
+        <div className="container mx-auto w-full relative z-10">
           <h2 className="text-3xl sm:text-4xl font-semibold text-iris-purple mb-16 text-center">
             {t('¿Quieres saber más?')}
           </h2>
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="space-y-6 md:space-y-0 md:grid md:grid-cols-2 gap-16 items-center w-full">
             <div className="space-y-6">
               <div className={glassCard + ' p-6 space-y-4'}>
                 <div className="space-y-3">
-                  <p className="text-gray-700 dark:text-gray-300">
+                  <p className="text-gray-700 dark:text-gray-300 ">
                     {t(
                       'Descubre en detalle cómo oQuanta puede ayudarte a mejorar tu negocio con datos reales y opiniones verificadas.'
                     )}
@@ -655,13 +660,12 @@ function Index() {
                   <span className="text-pumpkin-orange flex-shrink-0 mt-0.5">✓</span>
                   <p>{t('Casos de éxito de otros hosteleros.')}</p>
                 </div>
-
-                <div className="pt-4">
-                  <button className={modernButton + ' w-full justify-center'}>
-                    {t('Descargar dossier')}
-                    <ArrowRight className="w-5 h-5" />
-                  </button>
-                </div>
+              </div>
+              <div className="py-4">
+                <button className={modernButton + ' justify-center'}>
+                  {t('Descargar dossier')}
+                  <ArrowRight className="w-5 h-5" />
+                </button>
               </div>
             </div>
             <div className="relative">

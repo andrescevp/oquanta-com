@@ -9,7 +9,7 @@ import {
   MapPin,
   Star
 } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import LazyLoad from 'react-lazy-load'
 import { JsonLd } from 'react-schemaorg'
@@ -21,6 +21,8 @@ import {
 
 import CalendlyInline from '../components/CalendlyInline.tsx'
 import { useHead } from '../context/HeadContext.tsx'
+import { useMenu } from '../context/MenuContext.tsx'
+import { MenuItemSpecial } from '../layout/Navbar.tsx'
 import localBusinesses, { images as localBusinessesImages } from '../LocalBusiness.ts'
 
 // Import required images
@@ -196,6 +198,20 @@ function Rewards() {
   const [isContentLoaded, setIsContentLoaded] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
 
+  const menuItems = useMemo(
+    () => [
+      {
+        children: t('Volver al inicio'),
+        href: '/',
+        className: MenuItemSpecial,
+        position: 'right'
+      }
+    ],
+    [t]
+  )
+
+  useMenu(menuItems as never[])
+
   updateHead({
     title: `oQuanta - ${t('Gana premios por dar tu opinión')}`,
     description: t(
@@ -287,6 +303,9 @@ function Rewards() {
               <span className="bg-pumpkin-orange text-white px-1">{t('Valorar, ')}</span>
               <span className="text-iris-purple bg-lime-green px-1">{t('criticar, ')}</span>
               <span className="text-lime-green bg-iris-purple px-1">{t('opinar... ')}</span>
+            </p>
+
+            <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 font-bold">
               <span className="text-pumpkin-orange px-1 text-3xl">{t('Llámalo Q')}</span>
             </p>
 
@@ -387,7 +406,7 @@ function Rewards() {
 
           <div className="grid md:grid-cols-3 gap-6">
             <PrizeCard
-              month="MAYO"
+              month="JULIO"
               prize={t('Cena para 2 en el local en el que participes')}
               icon={
                 <div className="w-full h-full rounded-xl overflow-hidden">
@@ -403,7 +422,7 @@ function Rewards() {
             />
 
             <PrizeCard
-              month="JUNIO"
+              month="AGOSTO"
               prize={t('Tarjeta Amazon de 25€')}
               icon={
                 <div className="w-full h-full rounded-xl overflow-hidden">
@@ -419,8 +438,8 @@ function Rewards() {
             />
 
             <PrizeCard
-              month="JULIO"
-              prize={t('Cheque regalo de 20€ en cualquier local oQuanta')}
+              month="SEPTIEMBRE"
+              prize={t('Cheque regalo de 30€ en cualquier local oQuanta')}
               icon={
                 <div className="w-full h-full rounded-xl overflow-hidden">
                   <LazyLoad height={80}>

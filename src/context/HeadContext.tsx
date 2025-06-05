@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 
 interface HeadContextType {
   title: string
@@ -18,29 +18,43 @@ export interface HeadData {
 const HeadContext = createContext<HeadContextType | undefined>(undefined)
 
 const DEFAULT_HEAD_DATA: HeadData = {
-  title: 'oQuanta',
+  title: 'oQuanta - Inteligencia de negocio para hostelería',
   description:
     'Plataforma de encuestas de oQuanta que te ayuda a recopilar feedback real de tus clientes y mejorar tus servicios.',
-  canonicalLink: 'https://www.oquanta.com'
+  canonicalLink: 'https://www.oquanta.com/'
 }
 
 export const HeadProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [headData, setHeadData] = useState<HeadData>(DEFAULT_HEAD_DATA)
 
-  const updateHead = useCallback((newData: Partial<HeadData>) => {
+  const updateHead = (newData: Partial<HeadData>) => {
+    if (typeof window === 'undefined') {
+      // Evitar actualizaciones del head en el servidor
+      return
+    }
+    if (newData.canonicalLink === headData.canonicalLink) {
+      // Evitar actualizaciones innecesarias
+      return
+    }
+    console.log('Actualizando head con:', newData, headData)
     // Usar setTimeout para evitar actualizaciones anidadas durante el hot reload
-    setTimeout(() => {
-      setHeadData(prev => ({ ...prev, ...newData }))
-    }, 0)
-  }, [])
+    setHeadData(prev => {
+      if (!prev) {
+        return newData as HeadData
+      }
+      return {
+        ...prev,
+        ...newData
+      }
+    })
+  }
 
-  const contextValue = React.useMemo(
-    () => ({
+  const contextValue = React.useMemo(() => {
+    return {
       ...headData,
       updateHead
-    }),
-    [headData, updateHead]
-  )
+    } as HeadContextType
+  }, [headData])
 
   return <HeadContext.Provider value={contextValue}>{children}</HeadContext.Provider>
 }
