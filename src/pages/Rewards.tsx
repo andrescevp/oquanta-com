@@ -1,6 +1,14 @@
 import { Transition } from '@headlessui/react'
 import { clsx } from 'clsx'
-import { ArrowRight, ClipboardEdit, QrCode as QrCodeIcon, MessageSquare, Gift } from 'lucide-react'
+import {
+  ArrowRight,
+  ClipboardEdit,
+  QrCode as QrCodeIcon,
+  MessageSquare,
+  Gift,
+  MapPin,
+  Star
+} from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import LazyLoad from 'react-lazy-load'
@@ -13,12 +21,13 @@ import {
 
 import CalendlyInline from '../components/CalendlyInline.tsx'
 import { useHead } from '../context/HeadContext.tsx'
+import localBusinesses, { images as localBusinessesImages } from '../LocalBusiness.ts'
 
 // Import required images
+import giftCardImage from './../../images//meal2.jpeg?h=120&format=webp'
 import amazonCardImage from './../../images/amazon-card.png?h=120&format=webp'
 import secondImage from './../../images/Banner-Web-B2B-1-1024x1024.png?h=450&format=webp'
-import giftCardImage from './../../images/gift-card.png?h=120&format=webp'
-import dinnerImage from './../../images/restaurant-dinner.png?h=120&format=webp'
+import dinnerImage from './../../images/meal1.jpg?h=120&format=webp'
 
 // Reusable style classes
 const glassCard =
@@ -81,6 +90,102 @@ const PrizeCard = ({ month, prize, icon, description }) => {
         </div>
       </div>
       {description && <p className="text-gray-700 dark:text-gray-300 text-sm">{description}</p>}
+    </div>
+  )
+}
+
+// LocalBusiness Card component
+// LocalBusiness Card component
+const LocalBusinessCard = ({
+  name,
+  description,
+  locationLink
+}: {
+  name: string
+  description: string
+  locationLink: string
+}) => {
+  const { t } = useTranslation()
+
+  // Get the image for this business from the images collection
+  const getBusinessImage = () => {
+    // Convert the name to kebab-case to match the image keys
+    const businessKey = name.toLowerCase().replace(/\s+/g, '-')
+    return localBusinessesImages[businessKey] || null
+  }
+
+  const businessImage = getBusinessImage()
+
+  return (
+    <div className={clsx(glassCard, 'p-6 hover:translate-y-[-4px] transition-all duration-300')}>
+      <div className="flex items-center mb-4">
+        {businessImage ? (
+          <div className="w-16 h-16 rounded-lg overflow-hidden shadow-lg mr-4 flex-shrink-0">
+            <LazyLoad height={64}>
+              <img src={businessImage} alt={name} className="w-full h-full object-cover" />
+            </LazyLoad>
+          </div>
+        ) : (
+          <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-iris-purple to-pumpkin-orange flex items-center justify-center text-white font-bold text-xl mr-4 shadow-lg shadow-iris-purple/20 flex-shrink-0">
+            {name.charAt(0)}
+          </div>
+        )}
+
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{name}</h3>
+      </div>
+
+      <p className="text-gray-700 dark:text-gray-300 mb-4">{description}</p>
+
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex items-center space-x-1 text-pumpkin-orange">
+          <Star className="h-4 w-4 fill-current" />
+          <Star className="h-4 w-4 fill-current" />
+          <Star className="h-4 w-4 fill-current" />
+          <Star className="h-4 w-4 fill-current" />
+          <Star className="h-4 w-4 fill-current" />
+        </div>
+
+        <div className="flex gap-3">
+          <a
+            href={locationLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-iris-purple hover:text-iris-purple/80 transition-colors py-1.5 px-3 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
+            aria-label={`Ver ubicación de ${name}`}
+          >
+            <MapPin className="h-4 w-4" />
+            <span className="text-sm font-medium">{t('Ver ubicación')}</span>
+          </a>
+
+          {/* <a
+            href={`#survey-${name.toLowerCase().replace(/\s+/g, '-')}`}
+            className="flex items-center gap-1 text-pumpkin-orange hover:text-pumpkin-orange/80 transition-colors py-1.5 px-3 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
+            aria-label={`Dejar opinión en ${name}`}
+          >
+            <MessageSquare className="h-4 w-4" />
+            <span className="text-sm font-medium">{t('Opinar')}</span>
+          </a> */}
+        </div>
+      </div>
+
+      {/* Display business details */}
+      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="grid grid-cols-1 gap-2">
+          <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+            <div className="w-5 h-5 rounded-full bg-lime-green/20 flex items-center justify-center mr-2">
+              <Gift className="h-3 w-3 text-lime-green" />
+            </div>
+            {t('Participa en sorteos mensuales')}
+          </div>
+
+          <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+            <div className="w-5 h-5 rounded-full bg-pumpkin-orange/20 flex items-center justify-center mr-2">
+              <QrCodeIcon className="h-3 w-3 text-pumpkin-orange" />
+            </div>
+            {t('Escanea el código QR en el local')}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -263,7 +368,7 @@ function Rewards() {
 
       {/* Prizes Section */}
       <section
-        className="py-16 px-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden"
+        className="py-16 px-4 bg-gradient-to-br from-white/90 to-gray-50/80 dark:from-gray-800/90 dark:to-gray-900/80 relative overflow-hidden"
         id="premios"
       >
         <DecorativeBlur color="#5a33ee" className="w-96 h-64 top-40 -right-40" />
@@ -299,7 +404,7 @@ function Rewards() {
 
             <PrizeCard
               month="JUNIO"
-              prize={t('Tarjeta Amazon de 30€')}
+              prize={t('Tarjeta Amazon de 25€')}
               icon={
                 <div className="w-full h-full rounded-xl overflow-hidden">
                   <LazyLoad height={80}>
@@ -343,7 +448,7 @@ function Rewards() {
         className="py-16 px-4 bg-gradient-to-br from-white/90 to-gray-50/80 dark:from-gray-800/90 dark:to-gray-900/80 relative overflow-hidden"
         id="participar"
       >
-        {/* <DecorativeBlur color="#c0f03e" className="w-80 h-80 bottom-40 -right-20" /> */}
+        <DecorativeBlur color="#c0f03e" className="w-80 h-80 bottom-40 -right-20" />
 
         <div className="container mx-auto max-w-5xl relative z-10">
           <div className="text-center space-y-8">
@@ -357,15 +462,18 @@ function Rewards() {
                   'Busca el código QR en cualquier local de oQuanta, comparte tu opinión y entra automáticamente en nuestros sorteos mensuales.'
                 )}
               </p>
-
-              <div className="flex justify-center">
-                <a href="/" className={modernButton}>
-                  {t('Buscar locales oQuanta')}
-                  <ArrowRight className="w-5 h-5" />
-                </a>
-              </div>
             </div>
           </div>
+        </div>
+        <div className="grid md:grid-cols-2 gap-6 mt-8">
+          {Object.entries(localBusinesses).map(([key, business]) => (
+            <LocalBusinessCard
+              key={business.sys.id}
+              name={business.fields.name}
+              description={business.fields.description}
+              locationLink={business.fields.locationLink}
+            />
+          ))}
         </div>
       </section>
 

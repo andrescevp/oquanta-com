@@ -263,3 +263,59 @@ getEntries('pressPosts').then(entries => {
     console.log('The file has been saved!')
   })
 })
+
+// get entries localBusiness with {name, locationLink, description, file} similiar to blogEntry
+
+getEntries('localBusiness').then(entries => {
+  console.log(entries)
+  const slugs = {}
+  const images = {}
+  Object.entries(entries).forEach(([key, value]) => {
+    slugs[value.fields.name] = value
+    // create folder images/localBusiness/${slug}
+    // get asset
+    const imageUrl = value.fields.image?.fields?.file?.url
+
+    if (imageUrl) {
+      const fileName = imageUrl.split('/').pop()
+      const name = fileName.split('.')[0]
+      if (!fs.existsSync(`images/localBusiness/${name}`)) {
+        fs.mkdirSync(`images/localBusiness/${name}`)
+      }
+      images[name] = fileName
+      slugs[value.fields.name]['image'] = `./../images/localBusiness/${name}/${fileName}`
+
+      // download imageUrl
+      const file = fs.createWriteStream(`images/localBusiness/${name}/${fileName}`)
+      https.get(`https:${imageUrl}`, function (response) {
+        response.pipe(file)
+        // after download completed close filestream
+        file.on('finish', () => {
+          file.close()
+          console.log('Download Completed')
+        })
+      })
+    }
+  })
+  // convert to TS
+  let TSStr = ''
+  // loop throus images
+  Object.entries(images).forEach(([key, value]) => {
+    TSStr += `import ${slugToVariableName(key)}_file from './../images/localBusiness/${key}/${value}?h=50&format=webp';\n`
+  })
+  TSStr += '\n'
+  TSStr += 'export const images = {'
+  Object.entries(images).forEach(([key, value]) => {
+    TSStr += `"${key}": ${slugToVariableName(key)}_file,`
+  })
+  TSStr += '};\n\n'
+  // list of slugs
+  TSStr += 'export const localBusiness = ' + JSON.stringify(slugs, null, 2) + ';'
+  TSStr += '\n\n'
+  TSStr += 'export default localBusiness;'
+  // write
+  fs.writeFile('src/LocalBusinesses.ts', TSStr, err => {
+    if (err) throw err
+    console.log('The file has been saved!')
+  })
+})
