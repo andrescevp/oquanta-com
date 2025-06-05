@@ -661,12 +661,12 @@ function Index() {
                   <p>{t('Casos de éxito de otros hosteleros.')}</p>
                 </div>
               </div>
-              <div className="py-4">
+              {/* <div className="py-4">
                 <button className={modernButton + ' justify-center'}>
                   {t('Descargar dossier')}
                   <ArrowRight className="w-5 h-5" />
                 </button>
-              </div>
+              </div> */}
             </div>
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-lime-green/20 to-pumpkin-orange/10 rounded-2xl blur-xl transform -rotate-2"></div>

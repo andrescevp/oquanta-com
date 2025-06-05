@@ -122,7 +122,7 @@ export function PDFViewer({ pdfUrl, title }: { pdfUrl: string; title?: string })
               aria-label="Download PDF"
             >
               <Download className="h-4 w-4" />
-              <span>Descargar</span>
+              <span>Descargar dossier</span>
             </button>
           </div>
         </div>
