@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useCalendlyEventListener, InlineWidget } from 'react-calendly'
 
 function CalendlyInline() {
+  const minHeight = '598px'
+  const [height, setHeight] = useState(minHeight)
   useCalendlyEventListener({
     // onProfilePageViewed: () => console.log("onProfilePageViewed"),
     // onDateAndTimeSelected: () => console.log("onDateAndTimeSelected"),
@@ -17,9 +19,6 @@ function CalendlyInline() {
       }
     }
   })
-
-  const minHeight = '598px'
-  const [height, setHeight] = useState(minHeight)
 
   return (
     <InlineWidget
